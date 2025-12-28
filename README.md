@@ -1,10 +1,12 @@
-# mySPOT (ChatGPT)
+# !SPAM' (mySPOT OS - v.0,242)
 
 ### *Strategic Planning & Organization Tool*
 
 **Comprendre un système complexe. Structurer une stratégie. Passer à l’action.**
 
 ---
+
+![!spamOS](data/spam.jpg)
 
 ## 🧭 C’est quoi mySPOT ?
 
