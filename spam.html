@@ -1,0 +1,1220 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>NoBrainer://DeepOrga [HACKMODE]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #020304;
+      --bg-alt: #05080f;
+      --primary: #00ff9c;
+      --primary-soft: rgba(0,255,156,0.18);
+      --accent: #ff2e88;
+      --accent-soft: rgba(255,46,136,0.16);
+      --danger: #ff3860;
+      --warning: #ffd166;
+      --muted: #7a8a8f;
+      --text: #e8fff4;
+      --border: #182525;
+      --radius: 10px;
+      --mono: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --shadow: 0 0 40px rgba(0, 255, 156, 0.15);
+      --transition: 0.16s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #05110f 0, #000000 55%, #000000 100%);
+      font-family: var(--mono);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 10px;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.6) 0,
+        rgba(0,0,0,0.6) 1px,
+        rgba(0,0,0,0) 2px,
+        rgba(0,0,0,0) 3px
+      );
+      mix-blend-mode: soft-light;
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, transparent 0, transparent 60%, rgba(0,0,0,0.9) 100%);
+      mix-blend-mode: multiply;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .crt-flicker {
+      animation: crt-flicker 4s infinite;
+    }
+
+    @keyframes crt-flicker {
+      0%, 100% { opacity: 1; }
+      2% { opacity: 0.85; }
+      3% { opacity: 1; }
+      5% { opacity: 0.9; }
+      10% { opacity: 1; }
+      12% { opacity: 0.7; }
+      13% { opacity: 1; }
+      20% { opacity: 0.95; }
+      21% { opacity: 1; }
+      50% { opacity: 0.97; }
+    }
+
+    .wrap {
+      position: relative;
+      width: 100%;
+      max-width: 1120px;
+      border-radius: 16px;
+      border: 1px solid rgba(0,255,156,0.25);
+      background: radial-gradient(circle at top left, rgba(0,255,156,0.08), transparent 55%),
+                  radial-gradient(circle at bottom right, rgba(255,46,136,0.09), transparent 60%),
+                  linear-gradient(135deg, #020607, #020203);
+      padding: 8px 8px 10px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .wrap::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      border: 1px solid rgba(0,255,156,0.25);
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 4px 8px 6px;
+      border-radius: 10px;
+      background: radial-gradient(circle at top, rgba(0,255,156,0.15), transparent 65%);
+      border-bottom: 1px solid rgba(0,255,156,0.25);
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,255,156,0.75);
+      box-shadow: 0 0 18px rgba(0,255,156,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      color: #000;
+      background:
+        conic-gradient(from 210deg, #00ff9c, #16f2ff, #ff2e88, #00ff9c);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        repeating-linear-gradient(
+          45deg,
+          rgba(0,0,0,0.3) 0,
+          rgba(0,0,0,0.3) 1px,
+          transparent 2px,
+          transparent 4px
+        );
+      mix-blend-mode: soft-light;
+      opacity: 0.7;
+    }
+
+    .brand-text-title {
+      font-size: 0.9rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--primary);
+      text-shadow: 0 0 8px rgba(0,255,156,0.9);
+    }
+
+    .brand-text-sub {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .status-pill {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,156,0.4);
+      color: var(--primary);
+      background: rgba(0,0,0,0.75);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--primary);
+      box-shadow: 0 0 10px rgba(0,255,156,0.95);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 8px;
+      padding: 6px;
+    }
+
+    @media (max-width: 800px) {
+      main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    .panel {
+      border-radius: var(--radius);
+      border: 1px solid rgba(0,255,156,0.27);
+      background: radial-gradient(circle at top left, rgba(0,255,156,0.08), transparent 65%),
+                  radial-gradient(circle at bottom right, rgba(255,46,136,0.08), transparent 65%),
+                  #020506;
+      padding: 8px 9px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(255,255,255,0.06), transparent 22%),
+        linear-gradient(90deg, rgba(0,0,0,0.9), transparent 20%, transparent 80%, rgba(0,0,0,0.9));
+      mix-blend-mode: soft-light;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .panel-title {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+    }
+
+    .panel-title span {
+      color: var(--primary);
+    }
+
+    .panel-caption {
+      font-size: 0.7rem;
+      color: var(--muted);
+      opacity: 0.8;
+    }
+
+    .mono-tagline {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .inline-code {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.85);
+      border: 1px solid rgba(0,255,156,0.34);
+      font-size: 0.72rem;
+      color: var(--primary);
+    }
+
+    .accent { color: var(--accent); }
+    .primary { color: var(--primary); }
+
+    p, li {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    ul {
+      padding-left: 16px;
+      margin-top: 4px;
+    }
+
+    .hint {
+      font-size: 0.7rem;
+      margin-top: 4px;
+      color: var(--muted);
+      opacity: 0.85;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .badge {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 3px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,156,0.4);
+      color: var(--primary);
+      background: rgba(0,0,0,0.9);
+    }
+
+    .diff-row {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      margin: 6px 0;
+    }
+
+    .diff-chip {
+      font-size: 0.7rem;
+      padding: 4px 7px;
+      border-radius: 7px;
+      border: 1px solid rgba(0,255,156,0.4);
+      background: rgba(0,0,0,0.85);
+      color: var(--muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background var(--transition), border-color var(--transition), color var(--transition), transform var(--transition);
+    }
+
+    .diff-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--primary);
+      opacity: 0.3;
+      box-shadow: 0 0 8px rgba(0,255,156,0);
+      transition: opacity var(--transition), box-shadow var(--transition), transform var(--transition);
+    }
+
+    .diff-chip.active {
+      color: var(--primary);
+      background: var(--primary-soft);
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .diff-chip.active .diff-dot {
+      opacity: 1;
+      box-shadow: 0 0 8px rgba(0,255,156,0.8);
+      transform: scale(1.1);
+    }
+
+    .btn {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      border-radius: 8px;
+      border: 1px solid rgba(0,255,156,0.7);
+      background: radial-gradient(circle at top, rgba(0,255,156,0.25), rgba(0,0,0,0.95));
+      color: var(--primary);
+      padding: 5px 9px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background var(--transition), box-shadow var(--transition), transform var(--transition), color var(--transition);
+    }
+
+    .btn:hover {
+      background: radial-gradient(circle at top, rgba(0,255,156,0.35), rgba(0,0,0,1));
+      box-shadow: 0 0 20px rgba(0,255,156,0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(1px) scale(0.98);
+      box-shadow: 0 0 12px rgba(0,255,156,0.4);
+    }
+
+    .btn-ghost {
+      border-color: rgba(0,255,156,0.26);
+      background: rgba(0,0,0,0.85);
+      color: var(--muted);
+      text-transform: none;
+      letter-spacing: 0.05em;
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(0,255,156,0.65);
+      color: var(--primary);
+    }
+
+    .mission-box {
+      margin-top: 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,255,156,0.3);
+      background: rgba(0,0,0,0.9);
+      padding: 7px 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mission-box::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(120deg, rgba(0,255,156,0.1), transparent 35%),
+        linear-gradient(-120deg, rgba(255,46,136,0.1), transparent 40%);
+      mix-blend-mode: soft-light;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .mission-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      margin-bottom: 3px;
+      color: var(--muted);
+    }
+
+    .mission-label span {
+      color: var(--primary);
+    }
+
+    .mission-title {
+      font-size: 0.86rem;
+      color: var(--primary);
+      margin-bottom: 3px;
+    }
+
+    .mission-body {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .mission-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      font-size: 0.7rem;
+    }
+
+    .mission-tag {
+      border-radius: 999px;
+      padding: 2px 6px;
+      border: 1px solid rgba(0,255,156,0.35);
+      background: rgba(0,0,0,0.85);
+      color: var(--muted);
+    }
+
+    .mission-id {
+      color: var(--warning);
+    }
+
+    .field-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      margin-bottom: 3px;
+    }
+
+    input, textarea {
+      width: 100%;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      border-radius: 7px;
+      border: 1px solid rgba(0,255,156,0.35);
+      background: rgba(0,0,0,0.9);
+      color: var(--text);
+      padding: 6px 7px;
+      outline: none;
+      resize: vertical;
+      min-height: 32px;
+      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition), background var(--transition);
+    }
+
+    input:focus, textarea:focus {
+      border-color: rgba(0,255,156,0.85);
+      box-shadow: 0 0 12px rgba(0,255,156,0.5);
+      transform: translateY(-0.5px);
+      background: #000908;
+    }
+
+    textarea { min-height: 52px; }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .status {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .status.ok { color: var(--primary); }
+    .status.warn { color: var(--warning); }
+
+    .kbd {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(0,0,0,0.7);
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: 8px;
+      padding: 4px 8px 2px;
+      border-top: 1px solid rgba(0,255,156,0.28);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .footer-code { color: var(--primary); }
+
+    /* CONSOLE */
+
+    .console-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(0,0,0,0.95), rgba(0,0,0,0.98));
+      display: none;
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    .console-overlay.visible {
+      display: flex;
+    }
+
+    .console-window {
+      width: 100%;
+      max-width: 780px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,255,156,0.7);
+      background: #000303;
+      box-shadow: 0 0 40px rgba(0,255,156,0.6);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .console-header {
+      padding: 5px 7px;
+      border-bottom: 1px solid rgba(0,255,156,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      background: linear-gradient(90deg, rgba(0,255,156,0.24), rgba(0,0,0,1));
+      font-size: 0.72rem;
+    }
+
+    .console-dots {
+      display: flex;
+      gap: 4px;
+    }
+
+    .console-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #ff3b81;
+      box-shadow: 0 0 10px rgba(255,59,129,0.8);
+    }
+
+    .console-dot:nth-child(2) {
+      background: #ffd166;
+      box-shadow: 0 0 10px rgba(255,209,102,0.8);
+    }
+
+    .console-dot:nth-child(3) {
+      background: #00ff9c;
+      box-shadow: 0 0 10px rgba(0,255,156,0.8);
+    }
+
+    .console-title { color: var(--muted); }
+
+    .console-body {
+      padding: 7px;
+      background: #000000;
+      font-size: 0.75rem;
+      color: var(--primary);
+      max-height: 70vh;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    .console-line-system { color: var(--primary); }
+    .console-line-user { color: #16f2ff; }
+    .console-line-warn { color: var(--warning); }
+
+    .console-input-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 7px 6px;
+      border-top: 1px solid rgba(0,255,156,0.35);
+      background: #000303;
+    }
+
+    .console-prefix {
+      color: var(--primary);
+      font-size: 0.78rem;
+    }
+
+    .console-input {
+      flex: 1;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      border-radius: 6px;
+      border: 1px solid rgba(0,255,156,0.5);
+      background: #000000;
+      color: var(--text);
+      padding: 5px 6px;
+      outline: none;
+    }
+
+    .console-help {
+      font-size: 0.7rem;
+      color: var(--muted);
+      padding: 0 7px 4px;
+    }
+
+    .glitch {
+      position: relative;
+    }
+
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .glitch::before { color: #ff2e88; }
+    .glitch::after { color: #16f2ff; }
+
+    .glitch-active::before,
+    .glitch-active::after {
+      animation: glitch 0.4s infinite;
+    }
+
+    @keyframes glitch {
+      0% { opacity: 0; transform: translate(0,0); }
+      20% { opacity: 1; transform: translate(-1px,-1px); }
+      40% { opacity: 0.7; transform: translate(1px,1px); }
+      60% { opacity: 1; transform: translate(-1px,1px); }
+      80% { opacity: 0.7; transform: translate(1px,-1px); }
+      100% { opacity: 0; transform: translate(0,0); }
+    }
+  </style>
+</head>
+<body class="crt-flicker">
+
+<div class="wrap">
+  <header>
+    <div class="brand glitch" id="brand" data-text="NoBrainer://DeepOrga">
+      <div class="brand-mark">S?</div>
+      <div>
+        <div class="brand-text-title" id="brand-title">NOBRAINER://DEEPORGA</div>
+        <div class="brand-text-sub" id="brand-sub">instance: booting…</div>
+      </div>
+    </div>
+    <div class="status-pill">
+      <span class="status-dot"></span>
+      <span id="status-pill-text">session_local · hors_organigramme</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- COLONNE GAUCHE -->
+    <section class="panel">
+      <div class="panel-header">
+        <div class="panel-title">[ SYNOPSIS ] <span>/ organisation_derriere_l_organisation</span></div>
+        <div class="panel-caption">ceux qui décident ne sont jamais dans le diapo des 'décideurs'.</div>
+      </div>
+
+      <p class="mono-tagline">
+        <span class="inline-code">but_du_jeu()</span> =&gt; remonter jusqu’à l’<span class="primary">orga fantôme</span>
+        qui pilote tout en douce, sans jamais pouvoir le prouver.
+      </p>
+
+      <p>
+        Tu bosses peut-être déjà pour elle.  
+        Ou pour l’organisation qui travaille pour l’organisation qui travaille pour elle.  
+        <br>Sur l’organigramme, elle n’existe pas. Dans les faits, tout converge vers elle :
+        comités flous, décisions « venues d’en haut », mails sans auteur clair.
+      </p>
+
+      <ul>
+        <li>Règle #1 : plus c’est flou, plus c’est stratégique.</li>
+        <li>Règle #2 : ceux qui savent ne signent jamais de compte-rendu.</li>
+        <li>Règle #3 : si tu poses trop de questions, on t’envoie en « mission transversale ».</li>
+      </ul>
+
+      <p class="hint">
+        À chaque fois que tu entends « je n’ai pas toutes les cartes en main »,  
+        le jeu t’accorde +1 point de <span class="inline-code">lucidite_structurelle</span>.
+      </p>
+
+      <div class="badge-row">
+        <span class="badge">mode: deep_orga</span>
+        <span class="badge">surface: comités + réseaux</span>
+        <span class="badge" id="badge-crew">crew: ghost_layer</span>
+      </div>
+
+      <hr style="border:none;border-top:1px dashed rgba(0,255,156,0.3);margin:7px 0;">
+
+      <div class="panel-header">
+        <div class="panel-title">[ GÉNÉRATEUR ] <span>/ missions_IRL</span></div>
+        <div class="panel-caption">cartographier sans se cramer.</div>
+      </div>
+
+      <p>
+        Choisis un niveau, lance une mission, exécute-la dans ton environnement réel  
+        (boulot, assos, institution…) et laisse une <span class="primary">trace publique</span> quelque part.
+        L’organisation derrière l’organisation ne lira jamais officiellement ça, mais ses agents oui.
+      </p>
+
+      <div class="diff-row" id="diff-row">
+        <button class="diff-chip active" data-diff="easy">
+          <span class="diff-dot"></span> <span>lvl_01 · observation</span>
+        </button>
+        <button class="diff-chip" data-diff="medium">
+          <span class="diff-dot"></span> <span>lvl_02 · cartographie</span>
+        </button>
+        <button class="diff-chip" data-diff="hard">
+          <span class="diff-dot"></span> <span>lvl_03 · micro_leak</span>
+        </button>
+        <button class="diff-chip" data-diff="meta">
+          <span class="diff-dot"></span> <span>lvl_?? · paranoïa contrôlée</span>
+        </button>
+      </div>
+
+      <button class="btn" id="btn-generate">
+        <span>&gt; RUN_MISSION()</span>
+        <span class="primary">[ENTER]</span>
+      </button>
+
+      <div id="mission-box" class="mission-box" style="display:none;">
+        <div class="mission-label">
+          mission::<span id="mission-diff-label">lvl_??</span>
+        </div>
+        <div class="mission-title" id="mission-title">Titre</div>
+        <div class="mission-body" id="mission-body">Description.</div>
+        <div class="mission-meta">
+          <span class="mission-tag mission-id" id="mission-id">ID::X-00</span>
+          <span class="mission-tag" id="mission-tags">#tag</span>
+        </div>
+      </div>
+
+      <p class="hint">
+        Garde en tête : pas de harcèlement, pas de dox.  
+        On vise les <span class="primary">structures</span>, pas les personnes isolées.
+      </p>
+    </section>
+
+    <!-- COLONNE DROITE -->
+    <section class="panel">
+      <div class="panel-header">
+        <div class="panel-title">[ TRACE ] <span>/ journal_de_preuves</span></div>
+        <div class="panel-caption">rien n’est envoyé. think of it as un carnet noir chiffré dans ta tête.</div>
+      </div>
+
+      <p>
+        Colle ici l’<span class="primary">URL</span>, le handle, ou tout identifiant où tu publies
+        ta mission : thread, dépôt git, pad anonyme, article, zine PDF laissé traîner…  
+        Ça t’aide à garder un index local de tes ping vers l’orga fantôme.
+      </p>
+
+      <div style="margin-top:6px;">
+        <div class="field-label">trace_publique</div>
+        <input id="proof-link" placeholder="https://… · @pseudo@instance · IPFS CID · chemin/vers/le_zine.pdf">
+      </div>
+
+      <div style="margin-top:6px;">
+        <div class="field-label">note_interne</div>
+        <textarea id="proof-notes" placeholder="ce que tu as vu, compris, senti : signaux faibles, acteurs fantômes, phrases qui sonnent faux."></textarea>
+      </div>
+
+      <div class="row">
+        <button class="btn-ghost btn" id="btn-template">copier_template_post</button>
+        <span class="status" id="status">
+          Rappel : plus tu comprends, moins tu peux faire semblant de ne rien voir.
+        </span>
+      </div>
+
+      <hr style="border:none;border-top:1px dashed rgba(0,255,156,0.3);margin:7px 0;">
+
+      <div class="panel-header">
+        <div class="panel-title">[ DEPLOY ] <span>/ culte_statique</span></div>
+        <div class="panel-caption">la première couche de l’orga, c’est ton cercle.</div>
+      </div>
+
+      <p>
+        1. Sauvegarde ce fichier comme <span class="inline-code">index.html</span> sur ton disque ou une clé USB.  
+        2. Ouvre-le dans un navigateur : le jeu tourne déjà, <span class="primary">hors organigramme</span>.  
+        3. Héberge-le en statique (GitHub Pages, GitLab Pages, Vercel, serveur perso).  
+        4. Partage l’URL uniquement à des gens qui ont déjà senti « qu’il y a autre chose derrière tout ça ».
+      </p>
+
+      <p class="hint">
+        Fork rapide :  
+        – modifie le texte du synopsis pour coller à TON organisation.  
+        – adapte les missions directement dans <span class="inline-code">CONFIG.missions</span> (en bas du fichier).
+      </p>
+
+      <p class="hint">
+        Console secrète :  
+        – touche <span class="kbd">~</span> ou  
+        – combo <span class="kbd">↑↑↓↓←→←→BA</span> pour ouvrir le <span class="primary">debug des couches profondes</span>.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <div>
+      <span class="footer-code">log</span><span>(</span>
+      <span class="primary">"si tout le monde dit 'on n’a pas la main là-dessus', demande-toi qui l’a"</span><span>);</span>
+    </div>
+    <div>
+      instance_id::<span class="inline-code" id="instance-id">booting…</span>
+    </div>
+  </footer>
+</div>
+
+<!-- CONSOLE -->
+<div class="console-overlay" id="console-overlay">
+  <div class="console-window">
+    <div class="console-header">
+      <div class="console-dots">
+        <div class="console-dot"></div>
+        <div class="console-dot"></div>
+        <div class="console-dot"></div>
+      </div>
+      <div class="console-title" id="console-title">NoBrainer://DeepOrga · console</div>
+      <button class="btn btn-ghost" id="btn-close-console" style="font-size:0.7rem;padding:3px 7px;">exit()</button>
+    </div>
+    <div class="console-body" id="console-log">
+      <div class="console-line-system">[system] booting deep-orga debug shell…</div>
+      <div class="console-line-system">[system] type <span class="primary">help</span> to list commands.</div>
+    </div>
+    <div class="console-help">
+      note : l’organisation derrière l’organisation ne signe jamais ses mails. rien ne t’empêche d’en faire autant avec tes actes.
+    </div>
+    <div class="console-input-row">
+      <span class="console-prefix">&gt;&gt;</span>
+      <input id="console-input" class="console-input" autocomplete="off" placeholder="help">
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===========================
+  // CONFIG : variante 'organisation derrière l'organisation'
+  // ===========================
+
+  const CONFIG = {
+    gameName: "NoBrainer://DeepOrga",
+    crewName: "ghost_layer",
+    statusLine: "session_local · hors_organigramme",
+    consoleTitleSuffix: "NoBrainer://DeepOrga · console",
+    missions: {
+      easy: [
+        {
+          id: "E-DO-01",
+          title: "Qui décide vraiment ? (niveau café)",
+          body: "Pendant une journée, note à chaque fois que quelqu’un dit 'on a décidé que' ou 'ils ont décidé que'. À la fin, écris un court texte qui répond à la question : qui est 'on' ? qui est 'ils' ? Publie-le (anonymisé) en mode billet, thread ou note publique.",
+          tags: "#decision #on_ils #langage"
+        },
+        {
+          id: "E-DO-02",
+          title: "Organigramme négatif",
+          body: "Prends l’organigramme officiel de ton orga (ou imagine-le). Écris l’organigramme inverse : 'ceux qui ne sont jamais dans les slides mais qui font tout tourner'. Liste 5 à 10 rôles invisibles. Publie cette version négative en mode texte brut quelque part.",
+          tags: "#organigramme #invisible #travail"
+        },
+        {
+          id: "E-DO-03",
+          title: "Mantra de la couche cachée",
+          body: "Inventes un mantra qui pourrait appartenir à l’organisation derrière l’organisation (ex : 'plus c’est flou, plus c’est robuste'). Publie-le seul, sans contexte, comme si c’était une citation trouvée.",
+          tags: "#mantra #culture #deep_orga"
+        }
+      ],
+      medium: [
+        {
+          id: "M-DO-01",
+          title: "Cartographie des phrases-écran",
+          body: "Récolte au moins 7 phrases typiques qui coupent toute discussion ('ce n’est pas le bon niveau', 'ce n’est pas le bon moment', 'ça se décide ailleurs'…). Fais-en un petit lexique ironique : pour chaque phrase, ce qu’elle veut probablement dire en vrai. Publie ce lexique.",
+          tags: "#langage #pouvoir #lexique"
+        },
+        {
+          id: "M-DO-02",
+          title: "Schéma des couches",
+          body: "Dessine (même à l’ASCII-art) un schéma des couches de ton orga : visible, coulisses, backoffice, deep-orga. Montre comment l’info redescend ET se perd. Publie ce schéma quelque part (git, pad, mème, slide détournée…).",
+          tags: "#diagramme #couches #structure"
+        },
+        {
+          id: "M-DO-03",
+          title: "Procédure sans auteur",
+          body: "Repère une procédure, règle ou mail collectif où la personne qui décide n’apparaît nulle part. Réécris le texte en ajoutant une ligne fictive 'signé : l’organisation derrière l’organisation'. Publie cette version modifiée dans un espace hors-corporate (sans dox).",
+          tags: "#procedures #responsabilite #faux_colophon"
+        }
+      ],
+      hard: [
+        {
+          id: "H-DO-01",
+          title: "Bug report structurel",
+          body: "Choisis un dysfonctionnement récurrent (décisions opaques, projets lancés puis enterrés, priorités contradictoires). Écris un 'bug report' détaillé comme pour un logiciel : contexte, steps to reproduce, impact, hypothèse sur la couche qui décide vraiment, proposition de patch. Publie ce bug report.",
+          tags: "#bug_report #structure #lucidite"
+        },
+        {
+          id: "H-DO-02",
+          title: "Manifeste des gens du milieu",
+          body: "Écris un court manifeste (10–15 lignes) du point de vue des gens coincés entre le terrain et la deep-orga : ni assez haut pour décider, ni assez bas pour être franchement honnêtes. Fais-le circuler (anonyme possible).",
+          tags: "#manifeste #classe_moyenne_orga #couche_intermediaire"
+        },
+        {
+          id: "H-DO-03",
+          title: "Ghost governance pattern",
+          body: "Décris un 'pattern' de gouvernance fantôme que tu observes (ex : 'le comité qui n’apparaît dans aucun document mais valide tout'). Donne-lui un nom, décris ses symptômes, ses effets, et une ou deux stratégies de défense. Publie ce pattern comme si c’était de la doc open source.",
+          tags: "#pattern #gouvernance #ghost"
+        }
+      ],
+      meta: [
+        {
+          id: "X-DO-01",
+          title: "Je travaille peut-être pour vous",
+          body: "Publie quelque part : 'Je pense travailler pour une organisation qui n’existe dans aucun organigramme.' Laisse les gens réagir ou ignorer. Garde une trace des réponses. Considère que l’organisation derrière l’organisation lit par procuration.",
+          tags: "#meta #deep_orga #signal"
+        },
+        {
+          id: "X-DO-02",
+          title: "Dossier DeepOrga",
+          body: "Crée une page HTML statique (ou un simple markdown) intitulée 'Dossier DeepOrga' où tu compiles tes observations sur la couche invisible : phrases-types, structures, anecdotes. Héberge-la sans fanfare. Considère que c’est ton premier rapport d’agent double.",
+          tags: "#webstatique #rapport #infiltration"
+        },
+        {
+          id: "X-DO-03",
+          title: "Règle fondatrice non écrite",
+          body: "Écris en une seule phrase ce que tu soupçonnes être la règle fondatrice non écrite de ton système (ex : 'ne jamais prendre une décision qui rende la carte du pouvoir plus lisible'). Publie-la sans dire que c’est une règle. Si quelqu’un la reprend comme une évidence, le jeu marque un point.",
+          tags: "#regle_non_ecrite #fondation #intuition"
+        }
+      ]
+    },
+    difficultyLabels: {
+      easy: "lvl_01 · observation",
+      medium: "lvl_02 · cartographie",
+      hard: "lvl_03 · micro_leak",
+      meta: "lvl_?? · paranoïa_controlee"
+    }
+  };
+
+  // ===========================
+  // INIT UI
+  // ===========================
+
+  const brandTitleEl = document.getElementById("brand-title");
+  const brandSubEl = document.getElementById("brand-sub");
+  const badgeCrewEl = document.getElementById("badge-crew");
+  const statusPillText = document.getElementById("status-pill-text");
+  const instanceIdEl = document.getElementById("instance-id");
+  const consoleTitleEl = document.getElementById("console-title");
+
+  brandTitleEl.textContent = CONFIG.gameName.toUpperCase();
+  brandSubEl.textContent = "instance: online · crew::" + CONFIG.crewName;
+  badgeCrewEl.textContent = "crew: " + CONFIG.crewName;
+  statusPillText.textContent = CONFIG.statusLine;
+  consoleTitleEl.textContent = CONFIG.consoleTitleSuffix;
+
+  const instanceId = Math.random().toString(16).slice(2, 10);
+  instanceIdEl.textContent = instanceId;
+
+  // ===========================
+  // MISSION GENERATOR
+  // ===========================
+
+  const diffChips = document.querySelectorAll(".diff-chip");
+  const missionBox = document.getElementById("mission-box");
+  const missionTitleEl = document.getElementById("mission-title");
+  const missionBodyEl = document.getElementById("mission-body");
+  const missionIdEl = document.getElementById("mission-id");
+  const missionTagsEl = document.getElementById("mission-tags");
+  const missionDiffLabelEl = document.getElementById("mission-diff-label");
+  const btnGenerate = document.getElementById("btn-generate");
+
+  let currentDiff = "easy";
+
+  diffChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      diffChips.forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+      currentDiff = chip.dataset.diff;
+    });
+  });
+
+  function runMission() {
+    const pool = CONFIG.missions[currentDiff] || [];
+    if (pool.length === 0) return;
+    const mission = pool[Math.floor(Math.random() * pool.length)];
+
+    missionTitleEl.textContent = mission.title;
+    missionBodyEl.textContent = mission.body;
+    missionIdEl.textContent = "ID::" + mission.id;
+    missionTagsEl.textContent = mission.tags;
+    missionDiffLabelEl.textContent = CONFIG.difficultyLabels[currentDiff] || "lvl_??";
+    missionBox.style.display = "block";
+  }
+
+  btnGenerate.addEventListener("click", runMission);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && e.target.tagName !== "INPUT" && e.target.tagName !== "TEXTAREA") {
+      runMission();
+    }
+  });
+
+  // ===========================
+  // TEMPLATE DE POST
+  // ===========================
+
+  const proofLinkInput = document.getElementById("proof-link");
+  const proofNotesInput = document.getElementById("proof-notes");
+  const btnTemplate = document.getElementById("btn-template");
+  const statusEl = document.getElementById("status");
+
+  btnTemplate.addEventListener("click", () => {
+    const link = proofLinkInput.value.trim() || "<lien_ou_id_ici>";
+    const notes = proofNotesInput.value.trim() || "<résumé_rapide_de_la_mission>";
+    const missionTitle = missionTitleEl.textContent || "<mission_sans_titre>";
+    const missionId = (missionIdEl.textContent || "ID::N/A").replace("ID::", "").trim();
+
+    const template = [
+      "[" + CONFIG.gameName + "]",
+      "crew::" + CONFIG.crewName,
+      "instance::" + instanceId,
+      "",
+      "mission::" + missionTitle + " (" + missionId + ")",
+      "trace:: " + link,
+      "",
+      "notes::",
+      notes,
+      "",
+      "#deepOrga #anarchoGeek #dystopie #organisation #copainCopain"
+    ].join("\n");
+
+    navigator.clipboard.writeText(template).then(() => {
+      statusEl.textContent = "template copié. laisse-le fuiter dans l’écosystème de ton choix.";
+      statusEl.classList.remove("warn");
+      statusEl.classList.add("ok");
+    }).catch(() => {
+      statusEl.textContent = "impossible d’accéder au presse-papiers. tu peux toujours copier-coller à l’ancienne.";
+      statusEl.classList.remove("ok");
+      statusEl.classList.add("warn");
+      console.warn("clipboard_write_failed");
+    });
+  });
+
+  // ===========================
+  // GLITCH sur le logo
+  // ===========================
+
+  const brandEl = document.getElementById("brand");
+  let brandClicks = 0;
+
+  brandEl.addEventListener("click", () => {
+    brandClicks++;
+    brandEl.classList.toggle("glitch-active");
+    if (brandClicks === 3) {
+      statusEl.textContent = "easter egg : si tu cherches la couche cachée assez longtemps, tu la deviens.";
+      statusEl.classList.remove("warn");
+      statusEl.classList.add("ok");
+    }
+  });
+
+  // ===========================
+  // CONSOLE SECRÈTE
+  // ===========================
+
+  const consoleOverlay = document.getElementById("console-overlay");
+  const consoleInput = document.getElementById("console-input");
+  const consoleLog = document.getElementById("console-log");
+  const btnCloseConsole = document.getElementById("btn-close-console");
+
+  function openConsole(msg) {
+    consoleOverlay.classList.add("visible");
+    if (msg) addConsoleLine(msg, "system");
+    setTimeout(() => consoleInput.focus(), 30);
+  }
+
+  function closeConsole() {
+    consoleOverlay.classList.remove("visible");
+  }
+
+  btnCloseConsole.addEventListener("click", closeConsole);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "~") {
+      e.preventDefault();
+      openConsole("[system] console ouverte. aucun comité ne validera ce que tu vas taper ici.");
+    } else if (e.key === "Escape" && consoleOverlay.classList.contains("visible")) {
+      closeConsole();
+    }
+  });
+
+  function addConsoleLine(text, type = "system") {
+    const div = document.createElement("div");
+    if (type === "user") div.className = "console-line-user";
+    else if (type === "warn") div.className = "console-line-warn";
+    else div.className = "console-line-system";
+    div.textContent = text;
+    consoleLog.appendChild(div);
+    consoleLog.scrollTop = consoleLog.scrollHeight;
+  }
+
+  function handleCommand(raw) {
+    const cmd = raw.trim();
+    if (!cmd) return;
+    addConsoleLine("> " + cmd, "user");
+
+    const lower = cmd.toLowerCase();
+
+    if (lower === "help") {
+      addConsoleLine("commands: help, whois s, deep, hint, rules, seed, org, clear, exit.", "system");
+    } else if (lower === "whois s" || lower === "whois s?") {
+      addConsoleLine("S est la personne qui a compris qu’il existait une couche en plus, et qui n’a pas encore renoncé.", "system");
+    } else if (lower === "deep") {
+      addConsoleLine("deep-orga n’est inscrite dans aucun document, mais tous les documents la servent.", "system");
+      addConsoleLine("elle ne signe rien, mais tout le monde anticipe ses réactions.", "system");
+    } else if (lower === "hint") {
+      addConsoleLine("indice : chaque fois que quelqu’un dit 'je ne peux pas en parler', tu as touché la bonne couche.", "system");
+    } else if (lower === "rules") {
+      addConsoleLine("Règle #1 : ne jamais éclairer entièrement la carte.", "system");
+      addConsoleLine("Règle #2 : attribuer les torts à des individus, jamais aux structures.", "system");
+      addConsoleLine("Règle #3 : toute exception devient un précédent, donc on évite les exceptions.", "system");
+      addConsoleLine("Règle officieuse pour toi : ne deviens pas ce que tu cartographies.", "system");
+    } else if (lower === "seed") {
+      addConsoleLine("seed::" + Math.random().toString(16).slice(2, 10), "system");
+    } else if (lower === "org") {
+      addConsoleLine("toute organisation a sa 'couche profonde', même les collectifs horizontaux.", "system");
+      addConsoleLine("la question n’est pas 'est-ce qu’elle existe ?', mais 'qui la pilote aujourd’hui ?'.", "system");
+    } else if (lower === "clear") {
+      consoleLog.innerHTML = "";
+    } else if (lower === "exit") {
+      closeConsole();
+    } else {
+      addConsoleLine("commande inconnue. peut-être que la deep-orga t’a déjà réécrit.", "warn");
+    }
+  }
+
+  consoleInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      handleCommand(consoleInput.value);
+      consoleInput.value = "";
+    }
+  });
+
+  // ===========================
+  // KONAMI CODE (ouvre la console)
+  // ===========================
+
+  const konami = [
+    "ArrowUp","ArrowUp","ArrowDown","ArrowDown",
+    "ArrowLeft","ArrowRight","ArrowLeft","ArrowRight",
+    "b","a"
+  ];
+  let konamiIndex = 0;
+
+  document.addEventListener("keydown", (e) => {
+    const key = e.key;
+    if (key === konami[konamiIndex]) {
+      konamiIndex++;
+      if (konamiIndex === konami.length) {
+        konamiIndex = 0;
+        openConsole("[system] konami code détecté. niveau de suspicion : compatible avec les couches profondes.");
+      }
+    } else {
+      konamiIndex = 0;
+    }
+  });
+</script>
+
+</body>
+</html>
