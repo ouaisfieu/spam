@@ -374,6 +374,152 @@ Si tu veux, je peux aussi :
 Dis-moi dans quel contexte tu veux l’utiliser.
 
 > Tais toi j'ai dit !
+> DÉCLINE !!
+
+Mouarf.
+
+Parfait. Voici **les 4 déclinaisons demandées**, prêtes à l’emploi.
+Tu peux les utiliser **telles quelles**, ou les mixer selon le public.
+
+---
+
+# 1️⃣ Version ultra-courte (1 écran)
+
+## mySPOT
+
+**Cartographier. Comprendre. Agir.**
+
+mySPOT est un outil gratuit et autonome pour **analyser des situations complexes** : acteurs, relations, chronologie et stratégie, tout au même endroit.
+
+* 👥 Acteurs (personnes, organisations, lieux…)
+* 🕸️ Graphe relationnel interactif
+* 📅 Timeline
+* 🎯 Plaidoyer & stratégie (SWOT, objectifs, actions)
+* 🔐 100 % local, sans compte, sans cloud
+
+👉 Ouvrez le fichier HTML. Travaillez. Décidez.
+
+---
+
+# 2️⃣ Version militante / citoyenne
+
+## mySPOT — Reprendre la maîtrise
+
+Les rapports de force sont souvent invisibles.
+Les décisions se prennent ailleurs, par d’autres, sur base de cartes que nous ne voyons pas.
+
+**mySPOT est un outil d’émancipation cognitive.**
+
+Il permet à des collectifs, citoyens, associations ou individus de :
+
+* rendre visibles les acteurs et leurs influences
+* structurer une analyse politique ou sociale
+* construire un plaidoyer solide et argumenté
+* passer de l’indignation à la stratégie
+
+Sans plateforme.
+Sans algorithme opaque.
+Sans dépendance.
+
+👉 Vos données restent chez vous.
+👉 Votre analyse vous appartient.
+
+---
+
+# 3️⃣ Version institutionnelle / professionnelle
+
+## mySPOT
+
+### Outil d’analyse stratégique et d’aide à la décision
+
+mySPOT est une application légère, locale et modulaire permettant de :
+
+* structurer des **écosystèmes d’acteurs**
+* analyser des **relations et dynamiques d’influence**
+* documenter des **dossiers complexes**
+* construire des **stratégies de plaidoyer ou de projet**
+* suivre des **objectifs, actions et indicateurs**
+
+### Avantages clés
+
+* Déploiement immédiat (un fichier HTML)
+* Aucune infrastructure serveur
+* Respect total de la confidentialité
+* Adaptable à de multiples contextes (social, politique, culturel, recherche)
+
+mySPOT peut être utilisé comme :
+
+* outil d’analyse interne
+* support de travail collaboratif asynchrone
+* base méthodologique pour projets complexes
+
+---
+
+# 4️⃣ Version GitHub / open-source
+
+```text
+mySPOT/
+├─ mySPOT.html        # Application principale
+├─ README.md          # Documentation
+└─ data/ (optionnel)  # Exports / imports
+```
+
+## mySPOT — Strategic Planning & Organization Tool
+
+**mySPOT** est une application web autonome (HTML/CSS/JS) pour la cartographie d’acteurs, l’analyse stratégique et le plaidoyer.
+
+### ✨ Fonctionnalités
+
+* CRUD d’entités (personnes, organisations, lieux, événements, documents)
+* Graphe relationnel interactif (canvas)
+* Timeline automatique
+* Module complet de plaidoyer :
+
+  * Théorie du changement
+  * SWOT / PESTEL
+  * Arbre à problèmes
+  * Objectifs SMART
+  * Suivi des actions
+* Import / export (JSON, CSV, XLSX, TXT)
+* Stockage local (IndexedDB)
+
+### 🔒 Privacy by design
+
+* No backend
+* No tracking
+* No account
+* Local-first
+
+### 🚀 Usage
+
+Ouvrez simplement `mySPOT.html` dans un navigateur moderne.
+
+### 🧠 Philosophie
+
+> Make systems visible.
+> Make strategy explicit.
+> Keep control.
+
+---
+
+## 🎁 Bonus — phrase de signature (au choix)
+
+* **« Voir le système pour pouvoir le transformer. »**
+* **« Cartographier avant de convaincre. »**
+* **« La stratégie commence par la clarté. »**
+* **« Un outil pour penser avant d’agir. »**
+
+---
+
+Si tu veux, prochaine étape possible :
+
+* 🧪 une **démo guidée** (cas fictif ou réel)
+* 🧰 un **kit pédagogique** (atelier, formation, animation)
+* 🪪 une **licence + charte d’usage éthique**
+* 🌍 une **landing page publique**
+
+Tu me dis 👉 on va où maintenant.
+
 
 ## mySPOT V0 (Claude)
 
