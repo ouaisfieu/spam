@@ -1,4 +1,381 @@
+# mySPOT (ChatGPT)
+
+### *Strategic Planning & Organization Tool*
+
+**Comprendre un système complexe. Structurer une stratégie. Passer à l’action.**
+
+---
+
+## 🧭 C’est quoi mySPOT ?
+
+**mySPOT** est un outil **100 % local**, **sans serveur**, qui permet de **cartographier, analyser et piloter des situations complexes** : projets collectifs, plaidoyers citoyens, stratégies associatives, enquêtes, univers narratifs, ou tout contexte où **les acteurs, les relations et le temps comptent**.
+
+Il fonctionne directement dans votre navigateur, comme une application, mais **sans compte**, **sans cloud**, **sans tracking**.
+
+👉 Vous ouvrez un fichier HTML, et vous travaillez.
+
+
+
+---
+
+## 🎯 À quoi ça sert concrètement ?
+
+mySPOT permet de :
+
+* **Lister les acteurs clés** (personnes, organisations, lieux, événements, documents…)
+* **Visualiser leurs relations** sous forme de graphe interactif
+* **Structurer une chronologie** (timeline)
+* **Construire un plaidoyer ou une stratégie** pas à pas
+* **Documenter** (notes, sources, hypothèses)
+* **Suivre l’avancement** (objectifs, actions, indicateurs)
+
+C’est un **tableau de bord de réflexion stratégique**, pas un simple outil de prise de notes.
+
+---
+
+## 👥 Pour qui ?
+
+mySPOT s’adresse notamment à :
+
+* Collectifs citoyens et associations
+* Porteurs de projets sociaux, culturels ou politiques
+* Chercheurs, journalistes, enquêteurs
+* Étudiants (sciences sociales, gestion de projet, communication)
+* Toute personne qui doit **penser “système” plutôt que “liste”**
+
+Aucune compétence technique requise.
+
+---
+
+## 🧩 Les grandes briques de l’outil
+
+### 1️⃣ Entités
+
+Vous créez des **entités** (personnes, organisations, lieux, etc.) avec :
+
+* description
+* rôles (allié, adversaire, cible…)
+* tags
+* dates
+* notes et sources
+
+C’est la base de votre “univers”.
+
+---
+
+### 2️⃣ Graphe relationnel
+
+Toutes les entités peuvent être **reliées entre elles**.
+
+Le graphe permet de :
+
+* voir qui influence qui
+* repérer les nœuds centraux
+* comprendre des dynamiques invisibles dans un tableau classique
+
+👉 Zoom, déplacement, export en image inclus.
+
+---
+
+### 3️⃣ Timeline
+
+Ajoutez des dates ou périodes à vos entités et événements :
+vous obtenez une **lecture temporelle claire** de la situation.
+
+Idéal pour :
+
+* comprendre l’évolution d’un problème
+* préparer un récit ou un dossier
+* repérer des moments clés
+
+---
+
+### 4️⃣ Plaidoyer & stratégie
+
+Un module guidé pour **passer de l’analyse à l’action**, avec :
+
+* Théorie du changement
+* SWOT (forces, faiblesses, opportunités, menaces)
+* PESTEL (politique, économique, social, etc.)
+* Arbre à problèmes
+* Méthode des “5 pourquoi”
+* Objectifs SMART
+* Choix de stratégies
+* Fiches de ciblage (acteurs à convaincre)
+* Messages clés
+* Suivi des actions et indicateurs
+
+👉 Tout est éditable, adaptable, réutilisable.
+
+---
+
+### 5️⃣ Import / Export
+
+Vous pouvez importer des données depuis :
+
+* JSON
+* CSV
+* Excel
+* fichiers texte
+
+Et exporter votre travail pour :
+
+* archivage
+* partage
+* publication
+* travail collaboratif asynchrone
+
+---
+
+## 🔐 Vie privée & éthique
+
+mySPOT a été conçu avec des principes simples :
+
+* ❌ Pas de compte
+* ❌ Pas de serveur
+* ❌ Pas de tracking
+* ❌ Pas d’IA opaque
+* ✅ Données stockées localement (dans votre navigateur)
+* ✅ Vous gardez le contrôle total
+
+C’est un **outil d’autonomie**, pas une plateforme de captation.
+
+---
+
+## 🧠 En résumé
+
+mySPOT, c’est :
+
+* un **cerveau externe** pour situations complexes
+* un **outil d’aide à la décision**, pas une solution magique
+* un **pont entre analyse, stratégie et action**
+* une alternative sobre aux outils lourds ou intrusifs
+
+---
+
+## 🚀 Comment commencer ?
+
+1. Téléchargez ou ouvrez le fichier `mySPOT.html`
+2. Ouvrez-le dans un navigateur récent
+3. Créez votre première entité
+4. Reliez, analysez, structurez
+5. Faites émerger une stratégie claire
+
+---
+
+## 📌 Philosophie
+
+> *Ce qui n’est pas cartographié est subi.*
+> *Ce qui est compris peut être transformé.*
+
+mySPOT est un outil pour **reprendre du pouvoir cognitif** sur des systèmes complexes.
+
+---
+
+Si tu veux, je peux aussi :
+
+* te faire une **version ultra courte (1 écran)**
+* une **version militante / citoyenne**
+* une **version institutionnelle**
+* ou un README **orienté GitHub / open-source**
+
+Dis-moi dans quel contexte tu veux l’utiliser.
+
+> Tais toi seulement.
+> Et décline comme j'aime bien
+
+Pff, ok.
+
+Voici un **README grand public**, pensé pour des personnes **non techniques**, à placer tel quel à la racine du projet.
+
+---
+
 # mySPOT
+
+### *Strategic Planning & Organization Tool*
+
+**Comprendre un système complexe. Structurer une stratégie. Passer à l’action.**
+
+---
+
+## 🧭 C’est quoi mySPOT ?
+
+**mySPOT** est un outil **100 % local**, **sans serveur**, qui permet de **cartographier, analyser et piloter des situations complexes** : projets collectifs, plaidoyers citoyens, stratégies associatives, enquêtes, univers narratifs, ou tout contexte où **les acteurs, les relations et le temps comptent**.
+
+Il fonctionne directement dans votre navigateur, comme une application, mais **sans compte**, **sans cloud**, **sans tracking**.
+
+👉 Vous ouvrez un fichier HTML, et vous travaillez.
+
+
+
+---
+
+## 🎯 À quoi ça sert concrètement ?
+
+mySPOT permet de :
+
+* **Lister les acteurs clés** (personnes, organisations, lieux, événements, documents…)
+* **Visualiser leurs relations** sous forme de graphe interactif
+* **Structurer une chronologie** (timeline)
+* **Construire un plaidoyer ou une stratégie** pas à pas
+* **Documenter** (notes, sources, hypothèses)
+* **Suivre l’avancement** (objectifs, actions, indicateurs)
+
+C’est un **tableau de bord de réflexion stratégique**, pas un simple outil de prise de notes.
+
+---
+
+## 👥 Pour qui ?
+
+mySPOT s’adresse notamment à :
+
+* Collectifs citoyens et associations
+* Porteurs de projets sociaux, culturels ou politiques
+* Chercheurs, journalistes, enquêteurs
+* Étudiants (sciences sociales, gestion de projet, communication)
+* Toute personne qui doit **penser “système” plutôt que “liste”**
+
+Aucune compétence technique requise.
+
+---
+
+## 🧩 Les grandes briques de l’outil
+
+### 1️⃣ Entités
+
+Vous créez des **entités** (personnes, organisations, lieux, etc.) avec :
+
+* description
+* rôles (allié, adversaire, cible…)
+* tags
+* dates
+* notes et sources
+
+C’est la base de votre “univers”.
+
+---
+
+### 2️⃣ Graphe relationnel
+
+Toutes les entités peuvent être **reliées entre elles**.
+
+Le graphe permet de :
+
+* voir qui influence qui
+* repérer les nœuds centraux
+* comprendre des dynamiques invisibles dans un tableau classique
+
+👉 Zoom, déplacement, export en image inclus.
+
+---
+
+### 3️⃣ Timeline
+
+Ajoutez des dates ou périodes à vos entités et événements :
+vous obtenez une **lecture temporelle claire** de la situation.
+
+Idéal pour :
+
+* comprendre l’évolution d’un problème
+* préparer un récit ou un dossier
+* repérer des moments clés
+
+---
+
+### 4️⃣ Plaidoyer & stratégie
+
+Un module guidé pour **passer de l’analyse à l’action**, avec :
+
+* Théorie du changement
+* SWOT (forces, faiblesses, opportunités, menaces)
+* PESTEL (politique, économique, social, etc.)
+* Arbre à problèmes
+* Méthode des “5 pourquoi”
+* Objectifs SMART
+* Choix de stratégies
+* Fiches de ciblage (acteurs à convaincre)
+* Messages clés
+* Suivi des actions et indicateurs
+
+👉 Tout est éditable, adaptable, réutilisable.
+
+---
+
+### 5️⃣ Import / Export
+
+Vous pouvez importer des données depuis :
+
+* JSON
+* CSV
+* Excel
+* fichiers texte
+
+Et exporter votre travail pour :
+
+* archivage
+* partage
+* publication
+* travail collaboratif asynchrone
+
+---
+
+## 🔐 Vie privée & éthique
+
+mySPOT a été conçu avec des principes simples :
+
+* ❌ Pas de compte
+* ❌ Pas de serveur
+* ❌ Pas de tracking
+* ❌ Pas d’IA opaque
+* ✅ Données stockées localement (dans votre navigateur)
+* ✅ Vous gardez le contrôle total
+
+C’est un **outil d’autonomie**, pas une plateforme de captation.
+
+---
+
+## 🧠 En résumé
+
+mySPOT, c’est :
+
+* un **cerveau externe** pour situations complexes
+* un **outil d’aide à la décision**, pas une solution magique
+* un **pont entre analyse, stratégie et action**
+* une alternative sobre aux outils lourds ou intrusifs
+
+---
+
+## 🚀 Comment commencer ?
+
+1. Téléchargez ou ouvrez le fichier `mySPOT.html`
+2. Ouvrez-le dans un navigateur récent
+3. Créez votre première entité
+4. Reliez, analysez, structurez
+5. Faites émerger une stratégie claire
+
+---
+
+## 📌 Philosophie
+
+> *Ce qui n’est pas cartographié est subi.*
+> *Ce qui est compris peut être transformé.*
+
+mySPOT est un outil pour **reprendre du pouvoir cognitif** sur des systèmes complexes.
+
+---
+
+Si tu veux, je peux aussi :
+
+* te faire une **version ultra courte (1 écran)**
+* une **version militante / citoyenne**
+* une **version institutionnelle**
+* ou un README **orienté GitHub / open-source**
+
+Dis-moi dans quel contexte tu veux l’utiliser.
+
+> Tais toi j'ai dit !
+
+## mySPOT V0 (Claude)
 
 **Strategic Planning & Organization Tool**
 
