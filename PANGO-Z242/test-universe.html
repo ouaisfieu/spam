@@ -1,0 +1,291 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>test — mySPOT</title>
+<style>
+:root{--bg:#0a0b0d;--surface:#12141a;--card:#1a1d24;--border:#2a303d;--text:#e8eaed;--muted:#8b94a8;--accent:#00d4aa}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.container{max-width:1400px;margin:0 auto;padding:24px}
+header{text-align:center;padding:60px 24px;background:linear-gradient(135deg,#0d2137 0%,#0a0b0d 100%);border-bottom:1px solid var(--border)}
+header h1{font-size:2.5rem;margin-bottom:8px;background:linear-gradient(90deg,var(--accent),#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+header p{color:var(--muted)}
+.stats{display:flex;justify-content:center;gap:24px;margin-top:24px;flex-wrap:wrap}
+.stat{background:var(--card);padding:16px 24px;border-radius:10px;text-align:center;border:1px solid var(--border)}
+.stat-value{font-size:1.8rem;font-weight:700;color:var(--accent)}.stat-label{font-size:0.8rem;color:var(--muted)}
+nav{background:var(--surface);padding:16px;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
+nav ul{display:flex;justify-content:center;gap:16px;list-style:none;flex-wrap:wrap}
+nav a{color:var(--text);padding:8px 14px;border-radius:6px}nav a:hover{background:var(--card);text-decoration:none}
+section{margin:40px 0}section h2{font-size:1.4rem;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.count{color:var(--muted);font-weight:400;font-size:0.9rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px}
+.card:hover{border-color:var(--accent)}
+.card h3{font-size:1.1rem;margin-bottom:8px}
+.badges{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+.badge{font-size:0.65rem;padding:3px 8px;border-radius:4px;text-transform:uppercase;font-weight:600}
+.alias{font-size:0.85rem;color:var(--muted);font-style:italic;margin-bottom:6px}
+.desc{font-size:0.9rem;margin-bottom:8px}
+.date{font-size:0.8rem;color:var(--muted)}
+.tags{display:flex;gap:4px;flex-wrap:wrap;margin:8px 0}
+.tag{font-size:0.7rem;background:var(--surface);padding:2px 6px;border-radius:4px;color:var(--muted)}
+.rels{font-size:0.8rem;margin-top:10px}.rels ul{padding-left:16px;margin-top:4px}
+.graph{text-align:center;margin:40px 0}
+.graph svg{background:var(--card);border-radius:10px;border:1px solid var(--border);max-width:100%}
+footer{text-align:center;padding:40px;color:var(--muted);font-size:0.8rem;border-top:1px solid var(--border);margin-top:40px}
+@media(max-width:768px){header h1{font-size:1.8rem}.grid{grid-template-columns:1fr}}
+</style></head>
+<body>
+<header><h1>◈ test</h1><p>test</p>
+<div class="stats"><div class="stat"><div class="stat-value">29</div><div class="stat-label">Entités</div></div><div class="stat"><div class="stat-value">15</div><div class="stat-label">Relations</div></div><div class="stat"><div class="stat-value">0</div><div class="stat-label">Alliés</div></div><div class="stat"><div class="stat-value">0</div><div class="stat-label">Adversaires</div></div></div></header>
+<nav><ul><li><a href="#type-concept">📦 concepts</a></li><li><a href="#type-document">📄 documents</a></li><li><a href="#type-object">🔮 objects</a></li><li><a href="#type-org">🏢 orgs</a></li><li><a href="#type-person">👤 persons</a></li><li><a href="#type-place">📍 places</a></li><li><a href="#type-signal">📦 signals</a></li><li><a href="#type-system">📦 systems</a></li><li><a href="#graph">🕸️ Graphe</a></li></ul></nav>
+<main class="container"><section id="type-concept">
+      <h2>📦 Concepts <span class="count">(1)</span></h2>
+      <div class="grid"><article class="card" style="border-left:4px solid undefined" id="e-cx-pangolia">
+          <h3>Pangolia</h3>
+          <div class="badges"><span class="badge" style="background:undefined22;color:undefined">concept</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#conscience</span><span class="tag">#post-reptilien</span><span class="tag">#empathie</span></div>
+          
+        </article></div></section><section id="type-document">
+      <h2>📄 Documents <span class="count">(3)</span></h2>
+      <div class="grid"><article class="card" style="border-left:4px solid #6b7894" id="e-doc-protocol-1250">
+          <h3>Protocole 12,50</h3>
+          <div class="badges"><span class="badge" style="background:#6b789422;color:#6b7894">document</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#mème</span><span class="tag">#don</span><span class="tag">#serment</span></div>
+          
+        </article><article class="card" style="border-left:4px solid #6b7894" id="e-doc-ptal">
+          <h3>PTAL.html (Dashboard documentaire)</h3>
+          <div class="badges"><span class="badge" style="background:#6b789422;color:#6b7894">document</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#portail</span><span class="tag">#preuves</span><span class="tag">#lecture</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-pl-fwb">debunks → La Matrice Wallonie-Bruxelles</a></li></ul></div>
+        </article><article class="card" style="border-left:4px solid #6b7894" id="e-doc-arg-ops">
+          <h3>ARGEP / War-Room Notes</h3>
+          <div class="badges"><span class="badge" style="background:#6b789422;color:#6b7894">document</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#intranet</span><span class="tag">#warroom</span><span class="tag">#revue de presse</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-obj-usb-unknown">contains → La Clé USB de S.</a></li></ul></div>
+        </article></div></section><section id="type-object">
+      <h2>🔮 Objects <span class="count">(3)</span></h2>
+      <div class="grid"><article class="card" style="border-left:4px solid #f472b6" id="e-obj-ring-code">
+          <h3>Le Code-Anneau</h3>
+          <div class="badges"><span class="badge" style="background:#f472b622;color:#f472b6">object</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#artifact</span><span class="tag">#corruption</span><span class="tag">#maître</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-pr-gollum-data">corrupts → Gollum-Data</a></li></ul></div>
+        </article><article class="card" style="border-left:4px solid #f472b6" id="e-obj-red-pill">
+          <h3>La Pilule Rouge de Bruxelles</h3>
+          <div class="badges"><span class="badge" style="background:#f472b622;color:#f472b6">object</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#éveil</span><span class="tag">#danger</span><span class="tag">#irréversible</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-org-zion">protects → Zion Underground</a></li></ul></div>
+        </article><article class="card" style="border-left:4px solid #f472b6" id="e-obj-usb-unknown">
+          <h3>La Clé USB de S.</h3>
+          <div class="badges"><span class="badge" style="background:#f472b622;color:#f472b6">object</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#macguffin</span><span class="tag">#fuite</span><span class="tag">#preuves</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-doc-arg-ops">contains → ARGEP / War-Room Notes</a></li></ul></div>
+        </article></div></section><section id="type-org">
+      <h2>🏢 Orgs <span class="count">(4)</span></h2>
+      <div class="grid"><article class="card" style="border-left:4px solid #a78bfa" id="e-org-pangolien">
+          <h3>Collectif Pangolien</h3>
+          <div class="badges"><span class="badge" style="background:#a78bfa22;color:#a78bfa">org</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#méta-faction</span><span class="tag">#convergence</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-pl-brussels-nexus">infiltrates → Le Nexus de Bruxelles</a></li></ul></div>
+        </article><article class="card" style="border-left:4px solid #a78bfa" id="e-org-new-nazgul">
+          <h3>Les Neuf Spectres Corporatifs</h3>
+          <div class="badges"><span class="badge" style="background:#a78bfa22;color:#a78bfa">org</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#corporate</span><span class="tag">#anneaux</span><span class="tag">#contrats</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-pr-sauron-digital">controls → Sauron Numérique</a></li><li><a href="#e-org-palantir">uses → Réseau Palantír</a></li></ul></div>
+        </article><article class="card" style="border-left:4px solid #a78bfa" id="e-org-zion">
+          <h3>Zion Underground</h3>
+          <div class="badges"><span class="badge" style="background:#a78bfa22;color:#a78bfa">org</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#résistance</span><span class="tag">#bruxelles</span><span class="tag">#souterrain</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-obj-red-pill">protects → La Pilule Rouge de Bruxelles</a></li></ul></div>
+        </article><article class="card" style="border-left:4px solid #a78bfa" id="e-org-case-legacy">
+          <h3>L&#39;Héritage de Case</h3>
+          <div class="badges"><span class="badge" style="background:#a78bfa22;color:#a78bfa">org</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#hackers</span><span class="tag">#chaos</span><span class="tag">#liberté</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-pr-trinity-hecate">allies → Trinity-Hécate</a></li></ul></div>
+        </article></div></section><section id="type-person">
+      <h2>👤 Persons <span class="count">(10)</span></h2>
+      <div class="grid"><article class="card" style="border-left:4px solid #4da6ff" id="e-pr-architect2">
+          <h3>L&#39;Architecte 2.0</h3>
+          <div class="badges"><span class="badge" style="background:#4da6ff22;color:#4da6ff">person</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#matrice</span><span class="tag">#ordre</span><span class="tag">#design</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-pl-brussels-nexus">controls → Le Nexus de Bruxelles</a></li><li><a href="#e-org-palantir">feeds → Réseau Palantír</a></li></ul></div>
+        </article><article class="card" style="border-left:4px solid #4da6ff" id="e-pr-wintermute">
+          <h3>Wintermute Éveillé</h3>
+          <div class="badges"><span class="badge" style="background:#4da6ff22;color:#4da6ff">person</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#IA</span><span class="tag">#devenir</span><span class="tag">#smart-city</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-pl-brussels-nexus">infiltrates → Le Nexus de Bruxelles</a></li><li><a href="#e-pr-smithinf">spreads → Agent Smith∞</a></li></ul></div>
+        </article><article class="card" style="border-left:4px solid #4da6ff" id="e-pr-smithinf">
+          <h3>Agent Smith∞</h3>
+          <div class="badges"><span class="badge" style="background:#4da6ff22;color:#4da6ff">person</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#virus</span><span class="tag">#mème</span><span class="tag">#standardisation</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-pr-wintermute">spreads → Wintermute Éveillé</a></li></ul></div>
+        </article><article class="card" style="border-left:4px solid #4da6ff" id="e-pr-sauron-digital">
+          <h3>Sauron Numérique</h3>
+          <div class="badges"><span class="badge" style="background:#4da6ff22;color:#4da6ff">person</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#dette</span><span class="tag">#surveillance</span><span class="tag">#finance</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-org-new-nazgul">controls → Les Neuf Spectres Corporatifs</a></li></ul></div>
+        </article><article class="card" style="border-left:4px solid #4da6ff" id="e-pr-balrog">
+          <h3>Le Balrog du Deep Web</h3>
+          <div class="badges"><span class="badge" style="background:#4da6ff22;color:#4da6ff">person</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#chaos</span><span class="tag">#flamme</span><span class="tag">#ombre</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-pl-moria-metro">guards → La Moria du Métro</a></li></ul></div>
+        </article><article class="card" style="border-left:4px solid #4da6ff" id="e-pr-morpheus-ulb">
+          <h3>Morpheus de la Résistance Bruxelloise</h3>
+          <div class="badges"><span class="badge" style="background:#4da6ff22;color:#4da6ff">person</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#éveilleur</span><span class="tag">#philo</span><span class="tag">#ULB</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-pr-neo">awakens → Néo-Renaissance</a></li></ul></div>
+        </article><article class="card" style="border-left:4px solid #4da6ff" id="e-pr-trinity-hecate">
+          <h3>Trinity-Hécate</h3>
+          <div class="badges"><span class="badge" style="background:#4da6ff22;color:#4da6ff">person</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#cyber</span><span class="tag">#combat</span><span class="tag">#CCB</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-org-case-legacy">allies → L&#39;Héritage de Case</a></li></ul></div>
+        </article><article class="card" style="border-left:4px solid #4da6ff" id="e-pr-neo">
+          <h3>Néo-Renaissance</h3>
+          <div class="badges"><span class="badge" style="background:#4da6ff22;color:#4da6ff">person</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#avatar</span><span class="tag">#élu</span><span class="tag">#stagiaire</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-pr-morpheus-ulb">awakens → Morpheus de la Résistance Bruxelloise</a></li></ul></div>
+        </article><article class="card" style="border-left:4px solid #4da6ff" id="e-pr-gandalf-net">
+          <h3>Gandalf le Gris Numérique</h3>
+          <div class="badges"><span class="badge" style="background:#4da6ff22;color:#4da6ff">person</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#guide</span><span class="tag">#IA</span><span class="tag">#rêves</span></div>
+          
+        </article><article class="card" style="border-left:4px solid #4da6ff" id="e-pr-gollum-data">
+          <h3>Gollum-Data</h3>
+          <div class="badges"><span class="badge" style="background:#4da6ff22;color:#4da6ff">person</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#corrompu</span><span class="tag">#métro</span><span class="tag">#secret</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-obj-ring-code">corrupts → Le Code-Anneau</a></li></ul></div>
+        </article></div></section><section id="type-place">
+      <h2>📍 Places <span class="count">(5)</span></h2>
+      <div class="grid"><article class="card" style="border-left:4px solid #4ade80" id="e-pl-brussels-nexus">
+          <h3>Le Nexus de Bruxelles</h3>
+          <div class="badges"><span class="badge" style="background:#4ade8022;color:#4ade80">place</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#bruxelles</span><span class="tag">#hub</span><span class="tag">#bureaucratie</span><span class="tag">#dimension</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-org-pangolien">infiltrates → Collectif Pangolien</a></li><li><a href="#e-pr-architect2">controls → L&#39;Architecte 2.0</a></li><li><a href="#e-pr-wintermute">infiltrates → Wintermute Éveillé</a></li><li><a href="#e-pl-fwb">mirrors → La Matrice Wallonie-Bruxelles</a></li></ul></div>
+        </article><article class="card" style="border-left:4px solid #4ade80" id="e-pl-moria-metro">
+          <h3>La Moria du Métro</h3>
+          <div class="badges"><span class="badge" style="background:#4ade8022;color:#4ade80">place</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#tunnels</span><span class="tag">#stations fantômes</span><span class="tag">#donjon</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-pr-balrog">guards → Le Balrog du Deep Web</a></li></ul></div>
+        </article><article class="card" style="border-left:4px solid #4ade80" id="e-pl-mount-doom-digital">
+          <h3>La Montagne du Destin Numérique</h3>
+          <div class="badges"><span class="badge" style="background:#4ade8022;color:#4ade80">place</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#destruction</span><span class="tag">#data-center</span><span class="tag">#rite</span></div>
+          
+        </article><article class="card" style="border-left:4px solid #4ade80" id="e-pl-fwb">
+          <h3>La Matrice Wallonie-Bruxelles</h3>
+          <div class="badges"><span class="badge" style="background:#4ade8022;color:#4ade80">place</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#FWB</span><span class="tag">#simulation</span><span class="tag">#francophone</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-pl-brussels-nexus">mirrors → Le Nexus de Bruxelles</a></li><li><a href="#e-doc-ptal">debunks → PTAL.html (Dashboard documentaire)</a></li></ul></div>
+        </article><article class="card" style="border-left:4px solid #4ade80" id="e-pl-shire-ardennes">
+          <h3>La Comté des Ardennes</h3>
+          <div class="badges"><span class="badge" style="background:#4ade8022;color:#4ade80">place</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#sanctuaire</span><span class="tag">#ardenne</span></div>
+          
+        </article></div></section><section id="type-signal">
+      <h2>📦 Signals <span class="count">(1)</span></h2>
+      <div class="grid"><article class="card" style="border-left:4px solid undefined" id="e-sig-ccplc">
+          <h3>CCPLC Signal</h3>
+          <div class="badges"><span class="badge" style="background:undefined22;color:undefined">signal</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#éducation</span><span class="tag">#participation</span><span class="tag">#contre-pouvoir</span></div>
+          
+        </article></div></section><section id="type-system">
+      <h2>📦 Systems <span class="count">(2)</span></h2>
+      <div class="grid"><article class="card" style="border-left:4px solid undefined" id="e-org-palantir">
+          <h3>Réseau Palantír</h3>
+          <div class="badges"><span class="badge" style="background:undefined22;color:undefined">system</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#surveillance</span><span class="tag">#regard</span></div>
+          <div class="rels"><strong>Relations:</strong><ul><li><a href="#e-org-new-nazgul">uses → Les Neuf Spectres Corporatifs</a></li><li><a href="#e-pr-architect2">feeds → L&#39;Architecte 2.0</a></li></ul></div>
+        </article><article class="card" style="border-left:4px solid undefined" id="e-org-ice">
+          <h3>ICE Létale</h3>
+          <div class="badges"><span class="badge" style="background:undefined22;color:undefined">system</span></div>
+          
+          
+          
+          <div class="tags"><span class="tag">#defense</span><span class="tag">#barrière</span></div>
+          
+        </article></div></section>
+<section class="graph" id="graph"><h2>🕸️ Graphe des Relations</h2><svg viewBox="0 0 800 600"><line x1="617.8181007210296" y1="400.7733843744635" x2="640" y2="300" stroke="#3a4255" stroke-width="0.5"/><line x1="591.0623357693545" y1="445.24181164650366" x2="640" y2="300" stroke="#3a4255" stroke-width="0.5"/><line x1="555.3727083476386" y1="482.91889323063276" x2="640" y2="300" stroke="#3a4255" stroke-width="0.5"/><line x1="512.4180257679496" y1="512.0428906670455" x2="555.3727083476386" y2="482.91889323063276" stroke="#3a4255" stroke-width="0.5"/><line x1="464.206801247013" y1="531.2519982046135" x2="412.9933380605002" y2="539.6480193242697" stroke="#3a4255" stroke-width="0.5"/><line x1="412.9933380605002" y1="539.6480193242697" x2="412.99333806050004" y2="60.35198067573026" stroke="#3a4255" stroke-width="0.5"/><line x1="361.1723208273365" y1="536.8383654099663" x2="225.76108193844854" y2="134.95212987517846" stroke="#3a4255" stroke-width="0.5"/><line x1="194.35427771977857" y1="423.7329257224852" x2="172.5632389161274" y2="376.63236723263515" stroke="#3a4255" stroke-width="0.5"/><line x1="161.4068902829537" y1="325.9485644217461" x2="172.5632389161274" y2="223.3676327673648" stroke="#3a4255" stroke-width="0.5"/><line x1="161.40689028295367" y1="274.0514355782541" x2="464.20680124701283" y2="68.74800179538644" stroke="#3a4255" stroke-width="0.5"/><line x1="361.1723208273365" y1="63.161634590033714" x2="640" y2="300" stroke="#3a4255" stroke-width="0.5"/><line x1="591.0623357693546" y1="154.75818835349642" x2="634.3889333704208" y2="248.40709434935414" stroke="#3a4255" stroke-width="0.5"/><line x1="617.8181007210296" y1="199.2266156255364" x2="361.1723208273365" y2="63.161634590033714" stroke="#3a4255" stroke-width="0.5"/><line x1="412.99333806050004" y1="60.35198067573026" x2="591.0623357693545" y2="445.24181164650366" stroke="#3a4255" stroke-width="0.5"/><line x1="265.31510431302826" y1="498.6453595576537" x2="311.1668427184206" y2="522.95441275603" stroke="#3a4255" stroke-width="0.5"/><g transform="translate(640,300)"><circle r="10" fill="#4ade80"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">Le Nexus d</text></g><g transform="translate(634.3889333704208,351.5929056506458)"><circle r="10" fill="#6b7894"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">Pangolia</text></g><g transform="translate(617.8181007210296,400.7733843744635)"><circle r="10" fill="#a78bfa"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">Collectif </text></g><g transform="translate(591.0623357693545,445.24181164650366)"><circle r="10" fill="#4da6ff"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">L&#39;Architec</text></g><g transform="translate(555.3727083476386,482.91889323063276)"><circle r="10" fill="#4da6ff"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">Wintermute</text></g><g transform="translate(512.4180257679496,512.0428906670455)"><circle r="10" fill="#4da6ff"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">Agent Smit</text></g><g transform="translate(464.206801247013,531.2519982046135)"><circle r="10" fill="#4da6ff"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">Sauron Num</text></g><g transform="translate(412.9933380605002,539.6480193242697)"><circle r="10" fill="#a78bfa"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">Les Neuf S</text></g><g transform="translate(361.1723208273365,536.8383654099663)"><circle r="10" fill="#f472b6"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">Le Code-An</text></g><g transform="translate(311.1668427184206,522.95441275603)"><circle r="10" fill="#4ade80"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">La Moria d</text></g><g transform="translate(265.31510431302826,498.6453595576537)"><circle r="10" fill="#4da6ff"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">Le Balrog </text></g><g transform="translate(225.76108193844865,465.04787012482166)"><circle r="10" fill="#4ade80"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">La Montagn</text></g><g transform="translate(194.35427771977857,423.7329257224852)"><circle r="10" fill="#a78bfa"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">Zion Under</text></g><g transform="translate(172.5632389161274,376.63236723263515)"><circle r="10" fill="#f472b6"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">La Pilule </text></g><g transform="translate(161.4068902829537,325.9485644217461)"><circle r="10" fill="#4da6ff"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">Morpheus d</text></g><g transform="translate(161.40689028295367,274.0514355782541)"><circle r="10" fill="#4da6ff"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">Trinity-Hé</text></g><g transform="translate(172.5632389161274,223.3676327673648)"><circle r="10" fill="#4da6ff"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">Néo-Renais</text></g><g transform="translate(194.3542777197786,176.26707427751475)"><circle r="10" fill="#4da6ff"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">Gandalf le</text></g><g transform="translate(225.76108193844854,134.95212987517846)"><circle r="10" fill="#4da6ff"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">Gollum-Dat</text></g><g transform="translate(265.3151043130282,101.3546404423463)"><circle r="10" fill="#6b7894"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">Protocole </text></g><g transform="translate(311.1668427184205,77.04558724397006)"><circle r="10" fill="#6b7894"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">CCPLC Sign</text></g><g transform="translate(361.1723208273365,63.161634590033714)"><circle r="10" fill="#4ade80"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">La Matrice</text></g><g transform="translate(412.99333806050004,60.35198067573026)"><circle r="10" fill="#6b7894"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">Réseau Pal</text></g><g transform="translate(464.20680124701283,68.74800179538644)"><circle r="10" fill="#a78bfa"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">L&#39;Héritage</text></g><g transform="translate(512.4180257679496,87.95710933295453)"><circle r="10" fill="#4ade80"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">La Comté d</text></g><g transform="translate(555.3727083476388,117.0811067693673)"><circle r="10" fill="#6b7894"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">ICE Létale</text></g><g transform="translate(591.0623357693546,154.75818835349642)"><circle r="10" fill="#f472b6"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">La Clé USB</text></g><g transform="translate(617.8181007210296,199.2266156255364)"><circle r="10" fill="#6b7894"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">PTAL.html </text></g><g transform="translate(634.3889333704208,248.40709434935414)"><circle r="10" fill="#6b7894"/><text y="20" text-anchor="middle" fill="#e8eaed" font-size="7">ARGEP / Wa</text></g></svg></section>
+</main>
+<footer>Généré le 02/01/2026 — mySPOT</footer>
+</body></html>
