@@ -1,0 +1,1876 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>LE GUICHET Z-242</title>
+    <meta name="description" content="Forge d'identités pour La Réserve">
+    <meta name="theme-color" content="#0d0d12">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+<style>
+/* ═══════════════════════════════════════════════════════════
+   LE GUICHET Z-242 — ULTIMATE EDITION
+   Obsidian Graph View Aesthetic • Mobile-First Premium
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+    /* === OBSIDIAN PALETTE === */
+    --void: #08080c;
+    --abyss: #0d0d12;
+    --deep: #121218;
+    --surface: #18181f;
+    --elevated: #1f1f28;
+    --hover: #262630;
+    --border: rgba(255,255,255,0.06);
+    --border-active: rgba(255,255,255,0.12);
+    
+    /* === NODE SPECTRUM === */
+    --node-purple: #a855f7;
+    --node-violet: #8b5cf6;
+    --node-pink: #ec4899;
+    --node-rose: #f43f5e;
+    --node-cyan: #06b6d4;
+    --node-teal: #14b8a6;
+    --node-green: #22c55e;
+    --node-lime: #84cc16;
+    --node-amber: #f59e0b;
+    --node-orange: #f97316;
+    --node-blue: #3b82f6;
+    --node-indigo: #6366f1;
+    
+    /* === GLOW VARIANTS === */
+    --glow-purple: rgba(168,85,247,0.4);
+    --glow-pink: rgba(236,72,153,0.4);
+    --glow-cyan: rgba(6,182,212,0.4);
+    --glow-green: rgba(34,197,94,0.4);
+    --glow-amber: rgba(245,158,11,0.4);
+    
+    /* === TYPE MAPPING === */
+    --type-agent: var(--node-purple);
+    --type-complice: var(--node-pink);
+    --type-figurant: var(--node-cyan);
+    --type-temoin: var(--node-amber);
+    --type-expert: var(--node-green);
+    
+    /* === TEXT === */
+    --text-100: #ffffff;
+    --text-90: #f1f5f9;
+    --text-70: #cbd5e1;
+    --text-50: #94a3b8;
+    --text-30: #64748b;
+    --text-20: #475569;
+    
+    /* === TYPOGRAPHY === */
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    
+    /* === METRICS === */
+    --nav-h: 68px;
+    --header-h: 56px;
+    --safe-t: env(safe-area-inset-top, 0px);
+    --safe-b: env(safe-area-inset-bottom, 0px);
+    --safe-l: env(safe-area-inset-left, 0px);
+    --safe-r: env(safe-area-inset-right, 0px);
+    --r-xs: 6px;
+    --r-sm: 10px;
+    --r-md: 14px;
+    --r-lg: 20px;
+    --r-xl: 28px;
+    --r-full: 9999px;
+    
+    /* === MOTION === */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --dur-fast: 150ms;
+    --dur-normal: 250ms;
+    --dur-slow: 400ms;
+    --dur-slower: 600ms;
+}
+
+/* === RESET === */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { font-size: 16px; -webkit-text-size-adjust: 100%; height: 100%; }
+body { 
+    font-family: var(--font-sans); 
+    background: var(--void); 
+    color: var(--text-90); 
+    line-height: 1.5;
+    min-height: 100%;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+input, button, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; border: none; background: none; }
+a { color: inherit; text-decoration: none; }
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--text-20); border-radius: 3px; }
+::selection { background: var(--node-purple); color: white; }
+
+/* === ANIMATED BACKGROUND === */
+.bg-graph {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.bg-graph::before {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    background: 
+        radial-gradient(ellipse 600px 400px at 20% 30%, var(--glow-purple), transparent 50%),
+        radial-gradient(ellipse 500px 500px at 80% 20%, var(--glow-cyan), transparent 50%),
+        radial-gradient(ellipse 400px 600px at 60% 80%, var(--glow-pink), transparent 50%),
+        radial-gradient(ellipse 300px 300px at 10% 90%, var(--glow-green), transparent 50%);
+    opacity: 0.12;
+    animation: bgFloat 30s ease-in-out infinite;
+}
+
+@keyframes bgFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(2%, 1%) rotate(1deg); }
+    50% { transform: translate(-1%, 2%) rotate(-1deg); }
+    75% { transform: translate(1%, -1%) rotate(0.5deg); }
+}
+
+/* === LAYOUT === */
+.app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-top: var(--safe-t);
+    padding-bottom: calc(var(--nav-h) + var(--safe-b));
+}
+
+/* === HEADER === */
+.header {
+    position: sticky;
+    top: var(--safe-t);
+    z-index: 100;
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    background: linear-gradient(to bottom, var(--abyss) 0%, rgba(13,13,18,0.8) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--border);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.logo-mark {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--node-purple) 0%, var(--node-pink) 100%);
+    border-radius: var(--r-sm);
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: white;
+    box-shadow: 0 0 24px var(--glow-purple), inset 0 1px 0 rgba(255,255,255,0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.logo-mark::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.2) 50%, transparent 60%);
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { transform: translateX(-100%); }
+    50% { transform: translateX(100%); }
+}
+
+.logo-text {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.9375rem;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--text-100) 0%, var(--text-70) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.logo-sub {
+    font-size: 0.625rem;
+    color: var(--text-30);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: -2px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.25rem;
+}
+
+/* === MAIN === */
+.main {
+    flex: 1;
+    padding: 0 1rem;
+    max-width: 480px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* === VIEWS === */
+.view {
+    display: none;
+    padding: 1.25rem 0 2rem;
+}
+
+.view.active {
+    display: block;
+    animation: viewIn var(--dur-slow) var(--ease-out);
+}
+
+@keyframes viewIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* === BOTTOM NAV === */
+.nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: calc(var(--nav-h) + var(--safe-b));
+    padding-bottom: var(--safe-b);
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex;
+    z-index: 1000;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+.nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    color: var(--text-30);
+    transition: color var(--dur-fast);
+    position: relative;
+}
+
+.nav-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--node-purple);
+    border-radius: 0 0 2px 2px;
+    transform: translateX(-50%);
+    transition: width var(--dur-normal) var(--ease-out);
+    box-shadow: 0 0 12px var(--glow-purple);
+}
+
+.nav-item.active {
+    color: var(--text-100);
+}
+
+.nav-item.active::before {
+    width: 32px;
+}
+
+.nav-icon {
+    font-size: 1.375rem;
+    transition: transform var(--dur-fast) var(--ease-spring);
+}
+
+.nav-item:active .nav-icon {
+    transform: scale(0.9);
+}
+
+.nav-item.active .nav-icon {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 8px var(--glow-purple));
+}
+
+.nav-label {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   COMPONENTS
+   ═══════════════════════════════════════════════════════════ */
+
+/* === BUTTONS === */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 44px;
+    padding: 0 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    border-radius: var(--r-sm);
+    transition: all var(--dur-fast);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
+    transform: translateX(-100%);
+    transition: transform var(--dur-slow);
+}
+
+.btn:active::before {
+    transform: translateX(100%);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--node-purple) 0%, var(--node-violet) 100%);
+    color: white;
+    box-shadow: 0 4px 20px var(--glow-purple), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 10px var(--glow-purple);
+}
+
+.btn-ghost {
+    color: var(--text-50);
+    background: transparent;
+}
+
+.btn-ghost:active {
+    background: var(--hover);
+    color: var(--text-90);
+}
+
+.btn-secondary {
+    background: var(--elevated);
+    color: var(--text-90);
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:active {
+    background: var(--hover);
+}
+
+.btn-sm { height: 36px; padding: 0 0.875rem; font-size: 0.75rem; }
+.btn-lg { height: 52px; padding: 0 1.75rem; font-size: 0.875rem; border-radius: var(--r-md); }
+.btn-block { width: 100%; }
+.btn-icon { width: 44px; padding: 0; }
+.btn-icon.btn-sm { width: 36px; }
+
+/* === INPUTS === */
+.input {
+    width: 100%;
+    height: 48px;
+    padding: 0 1rem;
+    font-size: 1rem;
+    background: var(--elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    transition: all var(--dur-fast);
+    -webkit-appearance: none;
+}
+
+.input:focus {
+    outline: none;
+    border-color: var(--node-purple);
+    box-shadow: 0 0 0 3px var(--glow-purple);
+}
+
+.input::placeholder { color: var(--text-20); }
+
+.input-sm { height: 40px; font-size: 0.9375rem; }
+
+.textarea {
+    min-height: 100px;
+    padding: 0.875rem 1rem;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394a3b8'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.875rem center;
+    padding-right: 2.5rem;
+}
+
+.label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-30);
+    margin-bottom: 0.5rem;
+}
+
+.form-group { margin-bottom: 1.25rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+/* === CARDS === */
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    transition: all var(--dur-fast);
+}
+
+.card:active {
+    background: var(--elevated);
+}
+
+.card-glow {
+    box-shadow: 0 0 40px -10px var(--glow-purple);
+}
+
+/* === NODE CARD (Character) === */
+.node-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    position: relative;
+}
+
+.node-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--node-color, var(--node-purple)), transparent 80%);
+}
+
+.node-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, var(--node-color, var(--node-purple)) 0%, transparent 70%);
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+.node-card[data-type="agent"] { --node-color: var(--node-purple); }
+.node-card[data-type="complice"] { --node-color: var(--node-pink); }
+.node-card[data-type="figurant"] { --node-color: var(--node-cyan); }
+.node-card[data-type="temoin"] { --node-color: var(--node-amber); }
+.node-card[data-type="expert"] { --node-color: var(--node-green); }
+
+.node-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
+}
+
+.node-avatar {
+    width: 52px;
+    height: 52px;
+    background: var(--elevated);
+    border: 2px solid var(--node-color, var(--node-purple));
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    box-shadow: 0 0 20px var(--node-color, var(--glow-purple));
+    position: relative;
+}
+
+.node-avatar::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border: 1px solid var(--node-color, var(--node-purple));
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: avatarPulse 2s ease-out infinite;
+}
+
+@keyframes avatarPulse {
+    0% { transform: scale(1); opacity: 0.3; }
+    100% { transform: scale(1.3); opacity: 0; }
+}
+
+.node-identity { flex: 1; min-width: 0; }
+
+.node-codename {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--node-color, var(--node-purple));
+    margin-bottom: 0.125rem;
+    text-shadow: 0 0 20px var(--node-color, var(--glow-purple));
+}
+
+.node-realname {
+    font-size: 0.8125rem;
+    color: var(--text-50);
+    margin-bottom: 0.5rem;
+}
+
+.node-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    height: 22px;
+    padding: 0 0.625rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--node-color, var(--border));
+    border-radius: var(--r-full);
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--node-color, var(--text-50));
+}
+
+.node-content {
+    padding: 0 1.25rem 1.25rem;
+}
+
+.node-section {
+    margin-bottom: 1.25rem;
+}
+
+.node-section:last-child { margin-bottom: 0; }
+
+.node-section-title {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-30);
+    margin-bottom: 0.625rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.node-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+.node-text {
+    font-size: 0.875rem;
+    color: var(--text-70);
+    line-height: 1.7;
+}
+
+.node-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 0 1.25rem 1rem;
+    font-size: 0.75rem;
+    color: var(--text-50);
+}
+
+.node-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+/* === STATS === */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+}
+
+.stat {
+    background: var(--elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    padding: 0.625rem;
+    text-align: center;
+}
+
+.stat-value {
+    font-family: var(--font-mono);
+    font-size: 1.25rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--node-purple), var(--node-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-30);
+    margin-top: 0.125rem;
+}
+
+/* === TAGS === */
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+}
+
+.tag {
+    height: 26px;
+    padding: 0 0.625rem;
+    display: inline-flex;
+    align-items: center;
+    background: var(--elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--r-full);
+    font-size: 0.75rem;
+    color: var(--text-70);
+}
+
+.tag-positive { border-color: var(--node-green); color: var(--node-green); }
+.tag-negative { border-color: var(--node-rose); color: var(--node-rose); }
+.tag-neutral { border-color: var(--node-cyan); color: var(--node-cyan); }
+
+/* === OPTIONS GRID === */
+.options {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.5rem;
+}
+
+.option {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    background: var(--elevated);
+    border: 2px solid transparent;
+    border-radius: var(--r-md);
+    transition: all var(--dur-fast);
+    cursor: pointer;
+}
+
+.option:active {
+    transform: scale(0.95);
+}
+
+.option.selected {
+    border-color: var(--node-purple);
+    background: rgba(168,85,247,0.1);
+    box-shadow: 0 0 24px -4px var(--glow-purple);
+}
+
+.option-icon {
+    font-size: 1.5rem;
+    transition: transform var(--dur-fast) var(--ease-spring);
+}
+
+.option.selected .option-icon {
+    transform: scale(1.15);
+}
+
+.option-label {
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-30);
+}
+
+.option.selected .option-label {
+    color: var(--node-purple);
+}
+
+/* === GRAPH CANVAS === */
+.graph-wrap {
+    position: relative;
+    aspect-ratio: 1;
+    max-height: 320px;
+    margin: 0 auto 1.5rem;
+}
+
+.graph-canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--r-lg);
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+/* === LIST === */
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+.list-item {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 0.875rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    cursor: pointer;
+    transition: all var(--dur-fast);
+}
+
+.list-item:active {
+    background: var(--elevated);
+    transform: scale(0.99);
+}
+
+.list-avatar {
+    width: 44px;
+    height: 44px;
+    background: var(--elevated);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    border: 2px solid var(--border);
+    transition: all var(--dur-fast);
+}
+
+.list-item[data-type="agent"] .list-avatar { border-color: var(--node-purple); box-shadow: 0 0 12px var(--glow-purple); }
+.list-item[data-type="complice"] .list-avatar { border-color: var(--node-pink); box-shadow: 0 0 12px var(--glow-pink); }
+.list-item[data-type="figurant"] .list-avatar { border-color: var(--node-cyan); box-shadow: 0 0 12px var(--glow-cyan); }
+.list-item[data-type="temoin"] .list-avatar { border-color: var(--node-amber); box-shadow: 0 0 12px var(--glow-amber); }
+.list-item[data-type="expert"] .list-avatar { border-color: var(--node-green); box-shadow: 0 0 12px var(--glow-green); }
+
+.list-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.list-title {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.list-sub {
+    font-size: 0.75rem;
+    color: var(--text-30);
+    margin-top: 0.125rem;
+}
+
+.list-action {
+    color: var(--text-20);
+    transition: color var(--dur-fast);
+}
+
+.list-item:active .list-action {
+    color: var(--text-50);
+}
+
+/* === SECTION === */
+.section {
+    margin-bottom: 2rem;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.section-title {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-30);
+}
+
+/* === EMPTY STATE === */
+.empty {
+    text-align: center;
+    padding: 3rem 1.5rem;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.4;
+}
+
+.empty-title {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--text-70);
+    margin-bottom: 0.375rem;
+}
+
+.empty-text {
+    font-size: 0.875rem;
+    color: var(--text-30);
+    margin-bottom: 1.5rem;
+}
+
+/* === MODAL === */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(8,8,12,0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: flex-end;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--dur-normal);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal {
+    width: 100%;
+    max-height: 90vh;
+    background: var(--deep);
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+    overflow: hidden;
+    transform: translateY(100%);
+    transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.modal-overlay.active .modal {
+    transform: translateY(0);
+}
+
+.modal-handle {
+    width: 36px;
+    height: 4px;
+    background: var(--text-20);
+    border-radius: 2px;
+    margin: 0.75rem auto;
+}
+
+.modal-header {
+    padding: 0.25rem 1.25rem 1rem;
+    text-align: center;
+}
+
+.modal-title {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.modal-body {
+    padding: 0 1.25rem;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.modal-footer {
+    padding: 1rem 1.25rem calc(1rem + var(--safe-b));
+    display: flex;
+    gap: 0.75rem;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+}
+
+.modal-footer .btn { flex: 1; }
+
+/* === TOAST === */
+.toast-wrap {
+    position: fixed;
+    top: calc(var(--safe-t) + 0.75rem);
+    left: 0.75rem;
+    right: 0.75rem;
+    z-index: 3000;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    pointer-events: auto;
+    animation: toastIn var(--dur-slow) var(--ease-out);
+}
+
+.toast-success { border-left: 3px solid var(--node-green); }
+.toast-error { border-left: 3px solid var(--node-rose); }
+.toast-info { border-left: 3px solid var(--node-cyan); }
+
+@keyframes toastIn {
+    from { opacity: 0; transform: translateY(-12px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.toast-icon { font-size: 1.125rem; }
+.toast-text { font-size: 0.875rem; }
+
+/* === RESULT === */
+.result {
+    margin-top: 1.5rem;
+    animation: resultIn var(--dur-slow) var(--ease-out);
+}
+
+@keyframes resultIn {
+    from { opacity: 0; transform: translateY(20px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.result-actions {
+    display: flex;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: var(--elevated);
+    border-top: 1px solid var(--border);
+}
+
+.result-actions .btn { flex: 1; }
+
+/* === HERO === */
+.hero {
+    text-align: center;
+    padding: 1.5rem 0 2rem;
+}
+
+.hero-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--text-100) 0%, var(--node-purple) 50%, var(--node-cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-text {
+    font-size: 0.9375rem;
+    color: var(--text-50);
+}
+
+/* === DIVIDER === */
+.divider {
+    height: 1px;
+    background: var(--border);
+    margin: 1rem 0;
+}
+
+/* === UTILITIES === */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+.text-center { text-align: center; }
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+
+/* === TABLET+ === */
+@media (min-width: 640px) {
+    .main { max-width: 540px; }
+    .modal { max-width: 480px; margin: auto; border-radius: var(--r-xl); }
+    .modal-footer { padding-bottom: 1.25rem; }
+    .options { grid-template-columns: repeat(5, 1fr); gap: 0.75rem; }
+}
+</style>
+</head>
+<body>
+    <div class="bg-graph"></div>
+    
+    <div class="app">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-mark">Z</div>
+                <div>
+                    <div class="logo-text">GUICHET Z-242</div>
+                    <div class="logo-sub">Forge d'identités</div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-ghost btn-icon" onclick="exportAll()" title="Exporter">📤</button>
+            </div>
+        </header>
+        
+        <main class="main">
+            <!-- FORGE VIEW -->
+            <div class="view active" id="view-forge">
+                <div class="hero">
+                    <h1 class="hero-title">Forge d'Identités</h1>
+                    <p class="hero-text">Créez des personnages pour vos opérations</p>
+                </div>
+                
+                <div class="section">
+                    <label class="label">Type d'agent</label>
+                    <div class="options" id="typeOptions">
+                        <div class="option selected" data-type="agent">
+                            <span class="option-icon">🕵️</span>
+                            <span class="option-label">Agent</span>
+                        </div>
+                        <div class="option" data-type="complice">
+                            <span class="option-icon">🤝</span>
+                            <span class="option-label">Complice</span>
+                        </div>
+                        <div class="option" data-type="figurant">
+                            <span class="option-icon">👤</span>
+                            <span class="option-label">Figurant</span>
+                        </div>
+                        <div class="option" data-type="temoin">
+                            <span class="option-icon">👁️</span>
+                            <span class="option-label">Témoin</span>
+                        </div>
+                        <div class="option" data-type="expert">
+                            <span class="option-icon">🎓</span>
+                            <span class="option-label">Expert</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row mb-2">
+                    <div class="form-group" style="margin-bottom:0">
+                        <label class="label">Genre</label>
+                        <select class="input input-sm select" id="genGender">
+                            <option value="random">🎲 Aléatoire</option>
+                            <option value="m">Masculin</option>
+                            <option value="f">Féminin</option>
+                            <option value="nb">Non-binaire</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom:0">
+                        <label class="label">Profondeur</label>
+                        <select class="input input-sm select" id="genDepth">
+                            <option value="light">Légère</option>
+                            <option value="standard" selected>Standard</option>
+                            <option value="deep">Profonde</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary btn-lg btn-block" id="forgeBtn">
+                    ⚡ Forger une identité
+                </button>
+                
+                <div id="forgeResult"></div>
+            </div>
+            
+            <!-- TEAM VIEW -->
+            <div class="view" id="view-team">
+                <div class="section-header">
+                    <span class="section-title" id="teamCount">Équipe (0/9)</span>
+                    <button class="btn btn-sm btn-secondary" onclick="openAddTeam()">+ Ajouter</button>
+                </div>
+                
+                <div class="graph-wrap">
+                    <canvas class="graph-canvas" id="graphCanvas"></canvas>
+                </div>
+                
+                <div class="list" id="teamList"></div>
+            </div>
+            
+            <!-- ROSTER VIEW -->
+            <div class="view" id="view-roster">
+                <div class="form-group">
+                    <input type="text" class="input" id="searchInput" placeholder="🔍 Rechercher...">
+                </div>
+                <div class="list" id="rosterList"></div>
+            </div>
+            
+            <!-- CREATE VIEW -->
+            <div class="view" id="view-create">
+                <div class="section-header">
+                    <span class="section-title">Nouveau dossier</span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="label">Nom de code *</label>
+                    <input type="text" class="input" id="editCodename" placeholder="Agent Gaufre">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="label">Nom réel</label>
+                        <input type="text" class="input input-sm" id="editRealname" placeholder="Jean Dupont">
+                    </div>
+                    <div class="form-group">
+                        <label class="label">Âge</label>
+                        <input type="number" class="input input-sm" id="editAge" placeholder="35">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="label">Type</label>
+                        <select class="input input-sm select" id="editType">
+                            <option value="agent">🕵️ Agent</option>
+                            <option value="complice">🤝 Complice</option>
+                            <option value="figurant">👤 Figurant</option>
+                            <option value="temoin">👁️ Témoin</option>
+                            <option value="expert">🎓 Expert</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="label">Lieu</label>
+                        <input type="text" class="input input-sm" id="editLocation" placeholder="Bruxelles">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="label">Couverture</label>
+                    <input type="text" class="input" id="editCover" placeholder="Profession de façade">
+                </div>
+                
+                <div class="form-group">
+                    <label class="label">Légende</label>
+                    <textarea class="input textarea" id="editLegend" placeholder="Histoire de couverture..."></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <button class="btn btn-secondary" onclick="resetEditor()">Effacer</button>
+                    <button class="btn btn-primary" onclick="saveManual()">💾 Sauvegarder</button>
+                </div>
+            </div>
+            
+            <!-- TOOLS VIEW -->
+            <div class="view" id="view-tools">
+                <div class="hero">
+                    <h2 class="hero-title">🛠️ Outils</h2>
+                </div>
+                
+                <div class="list">
+                    <div class="list-item" onclick="showNameGen()">
+                        <div class="list-avatar">🏷️</div>
+                        <div class="list-content">
+                            <div class="list-title">Générateur de noms</div>
+                            <div class="list-sub">Noms de code, pseudos, identités</div>
+                        </div>
+                        <span class="list-action">→</span>
+                    </div>
+                    <div class="list-item" onclick="exportAll()">
+                        <div class="list-avatar">📤</div>
+                        <div class="list-content">
+                            <div class="list-title">Exporter tout</div>
+                            <div class="list-sub">JSON complet</div>
+                        </div>
+                        <span class="list-action">→</span>
+                    </div>
+                    <div class="list-item" onclick="importData()">
+                        <div class="list-avatar">📥</div>
+                        <div class="list-content">
+                            <div class="list-title">Importer</div>
+                            <div class="list-sub">Restaurer depuis JSON</div>
+                        </div>
+                        <span class="list-action">→</span>
+                    </div>
+                    <div class="list-item" onclick="clearAll()">
+                        <div class="list-avatar">🗑️</div>
+                        <div class="list-content">
+                            <div class="list-title">Tout effacer</div>
+                            <div class="list-sub">Supprimer toutes les données</div>
+                        </div>
+                        <span class="list-action">→</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <nav class="nav">
+            <div class="nav-item active" data-view="forge">
+                <span class="nav-icon">⚡</span>
+                <span class="nav-label">Forge</span>
+            </div>
+            <div class="nav-item" data-view="team">
+                <span class="nav-icon">👥</span>
+                <span class="nav-label">Team</span>
+            </div>
+            <div class="nav-item" data-view="roster">
+                <span class="nav-icon">📋</span>
+                <span class="nav-label">Roster</span>
+            </div>
+            <div class="nav-item" data-view="create">
+                <span class="nav-icon">✏️</span>
+                <span class="nav-label">Créer</span>
+            </div>
+            <div class="nav-item" data-view="tools">
+                <span class="nav-icon">🛠️</span>
+                <span class="nav-label">Outils</span>
+            </div>
+        </nav>
+    </div>
+    
+    <div class="toast-wrap" id="toasts"></div>
+    
+    <!-- Detail Modal -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal">
+            <div class="modal-handle"></div>
+            <div class="modal-body" id="detailBody"></div>
+            <div class="modal-footer" id="detailFooter"></div>
+        </div>
+    </div>
+    
+    <!-- Add Team Modal -->
+    <div class="modal-overlay" id="addModal">
+        <div class="modal">
+            <div class="modal-handle"></div>
+            <div class="modal-header"><h3 class="modal-title">Ajouter à l'équipe</h3></div>
+            <div class="modal-body">
+                <div class="options mb-2" style="grid-template-columns: repeat(3,1fr);" id="addSourceOpts">
+                    <div class="option selected" data-src="roster" onclick="setAddSrc('roster')">
+                        <span class="option-icon">📋</span>
+                        <span class="option-label">Roster</span>
+                    </div>
+                    <div class="option" data-src="new" onclick="setAddSrc('new')">
+                        <span class="option-icon">🎲</span>
+                        <span class="option-label">Générer</span>
+                    </div>
+                    <div class="option" data-src="real" onclick="setAddSrc('real')">
+                        <span class="option-icon">👤</span>
+                        <span class="option-label">Réel</span>
+                    </div>
+                </div>
+                <div id="addRosterSec">
+                    <label class="label">Personnage</label>
+                    <select class="input select" id="addSelect"></select>
+                </div>
+                <div id="addRealSec" style="display:none">
+                    <div class="form-group">
+                        <label class="label">Nom</label>
+                        <input type="text" class="input" id="realName" placeholder="Nom complet">
+                    </div>
+                    <label class="label">Rôle</label>
+                    <select class="input select" id="realRole">
+                        <option value="complice">🤝 Complice</option>
+                        <option value="figurant">👤 Figurant</option>
+                        <option value="temoin">👁️ Témoin</option>
+                        <option value="expert">🎓 Expert</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('addModal')">Annuler</button>
+                <button class="btn btn-primary" onclick="confirmAdd()">Ajouter</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Names Modal -->
+    <div class="modal-overlay" id="namesModal">
+        <div class="modal">
+            <div class="modal-handle"></div>
+            <div class="modal-header"><h3 class="modal-title">Générateur de noms</h3></div>
+            <div class="modal-body">
+                <div class="form-row mb-2">
+                    <div class="form-group" style="margin-bottom:0">
+                        <label class="label">Type</label>
+                        <select class="input input-sm select" id="nameType">
+                            <option value="codename">Nom de code</option>
+                            <option value="full">Nom complet</option>
+                            <option value="pseudo">Pseudo</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom:0">
+                        <label class="label">Style</label>
+                        <select class="input input-sm select" id="nameStyle">
+                            <option value="be">🧇 Belge</option>
+                            <option value="spy">🕵️ Espion</option>
+                            <option value="food">🍟 Gastro</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block mb-2" onclick="genNames()">Générer 10 noms</button>
+                <div class="list" id="namesList"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-block" onclick="closeModal('namesModal')">Fermer</button>
+            </div>
+        </div>
+    </div>
+    
+    <input type="file" id="fileInput" accept=".json" style="display:none" onchange="handleImport(this)">
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// LE GUICHET Z-242 — ULTIMATE ENGINE
+// ═══════════════════════════════════════════════════════════
+
+const D = {
+    fn: { m: ['Jean','Pierre','Marc','Philippe','Luc','Thierry','Patrick','Benoît','François','Olivier','Nicolas','Wim','Jan','Dirk','Koen','Bart','Tom'], f: ['Marie','Anne','Isabelle','Nathalie','Sophie','Véronique','Caroline','Céline','Julie','Aurélie','Hilde','Katrien','Sofie','Charlotte','Emma'], nb: ['Alex','Charlie','Dominique','Claude','Camille','Sacha','Lou','Sam'] },
+    ln: ['Peeters','Janssens','Maes','Jacobs','Mertens','Willems','Claes','Goossens','Wouters','De Smedt','Dubois','Lambert','Dupont','Martin','Simon','Van den Berg','Leclercq','Hermans'],
+    code: { food: ['Gaufre','Frites','Speculoos','Carbonnade','Moules','Praline','Waterzooi','Stoofvlees','Boulet','Cramique','Pistolet','Crevette','Chicon','Mitraillette','Lacquemant'], spy: ['Spectre','Nexus','Cipher','Vector','Prism','Nova','Zenith','Vertex','Echo','Shadow','Phantom','Wraith','Ghost','Raven','Viper'], color: ['Écarlate','Azur','Ombre','Jade','Ambre','Cobalt','Opale','Vermillon','Ivoire'] },
+    cover: ['Fonctionnaire SPF Emploi','Agent FOREM','Employé communal','Développeur web','Analyste IT','Assistant social','Conseiller emploi','Journaliste freelance','Comptable','Commercial','Formateur','Community manager','Bibliothécaire','Infirmier','Architecte','Avocat stagiaire','Médiateur culturel','Chef de projet','Data analyst','UX Designer'],
+    city: ['Bruxelles','Anvers','Gand','Charleroi','Liège','Bruges','Namur','Louvain','Mons','Hasselt','Ostende','Waterloo','Wavre','Tournai','Verviers'],
+    trait: { p: ['Discret','Méthodique','Patient','Loyal','Observateur','Adaptable','Calme','Analytique','Empathique','Fiable','Tenace','Créatif','Diplomate'], n: ['Méfiant','Obstiné','Impatient','Cynique','Solitaire','Perfectionniste','Paranoïaque','Réservé','Anxieux','Têtu'] },
+    skill: ['Infiltration','Surveillance','Langues','Informatique','Négociation','Analyse','Bureaucratie','Photographie','Réseautage','Cryptographie','Filature','Self-défense','Falsification','Manipulation'],
+    legend: {
+        light: ["Employé·e de bureau standard. Célibataire, routine prévisible.","Jeune diplômé·e en recherche d'emploi. Profil discret.","Indépendant·e, horaires flexibles, peu de contacts."],
+        standard: ["Ancien·ne employé·e reconverti·e après un burn-out. A déménagé récemment pour un nouveau départ. Fréquente les cafés du quartier, membre d'un club de sport.","Consultant·e freelance, travaille depuis son domicile. Missions ponctuelles chez différents clients. Voyage occasionnellement. Discret·e sur sa vie privée.","Fonctionnaire de carrière, 15 ans d'ancienneté. Routine très stable. Passions uniquement le week-end. Deux enfants adultes."],
+        deep: ["Parcours complet vérifié : études universitaires, premier emploi à 24 ans, progression normale. Propriétaire depuis 5 ans. Animal de compagnie. Abonnement salle de sport. Compte épargne standard. Réseau social modéré mais authentique. Historique en ligne cohérent sur 8 ans."]
+    }
+};
+
+const S = {
+    chars: JSON.parse(localStorage.getItem('z242c') || '[]'),
+    team: JSON.parse(localStorage.getItem('z242t') || '[]'),
+    type: 'agent',
+    addSrc: 'roster',
+    cur: null
+};
+
+const icons = { agent: '🕵️', complice: '🤝', figurant: '👤', temoin: '👁️', expert: '🎓' };
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+
+document.addEventListener('DOMContentLoaded', () => {
+    initNav();
+    initForge();
+    initGraph();
+    render();
+});
+
+function initNav() {
+    document.querySelectorAll('.nav-item').forEach(n => n.onclick = () => go(n.dataset.view));
+}
+
+function go(v) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.view === v));
+    document.querySelectorAll('.view').forEach(el => el.classList.toggle('active', el.id === `view-${v}`));
+    if (v === 'team') { renderTeam(); drawGraph(); }
+    if (v === 'roster') renderRoster();
+}
+
+// ═══════════════════════════════════════════════════════════
+// FORGE
+// ═══════════════════════════════════════════════════════════
+
+function initForge() {
+    document.querySelectorAll('#typeOptions .option').forEach(o => {
+        o.onclick = () => {
+            document.querySelectorAll('#typeOptions .option').forEach(x => x.classList.remove('selected'));
+            o.classList.add('selected');
+            S.type = o.dataset.type;
+            haptic();
+        };
+    });
+    document.getElementById('forgeBtn').onclick = forge;
+}
+
+function forge() {
+    haptic();
+    const g = document.getElementById('genGender').value;
+    const d = document.getElementById('genDepth').value;
+    const gender = g === 'random' ? pick(['m','f','nb']) : g;
+    
+    const c = {
+        id: uid(),
+        codename: genCode(),
+        realname: genName(gender),
+        type: S.type,
+        gender,
+        age: 25 + ~~(Math.random() * 30),
+        location: pick(D.city),
+        cover: pick(D.cover),
+        legend: pick(D.legend[d] || D.legend.standard),
+        strengths: pickN(D.trait.p, 2),
+        weaknesses: pickN(D.trait.n, 1),
+        skills: pickN(D.skill, 3),
+        stats: { INF: roll(), DIS: roll(), PER: roll(), TEC: roll(), END: roll(), ADA: roll() },
+        fictional: true,
+        ts: Date.now()
+    };
+    
+    S.cur = c;
+    showResult(c);
+}
+
+function showResult(c) {
+    document.getElementById('forgeResult').innerHTML = `
+        <div class="result">
+            ${renderCard(c)}
+            <div class="result-actions">
+                <button class="btn btn-secondary btn-icon" onclick="forge()">🎲</button>
+                <button class="btn btn-secondary" onclick="saveRoster()">💾 Roster</button>
+                <button class="btn btn-primary" onclick="saveTeam()">👥 Team</button>
+            </div>
+        </div>
+    `;
+}
+
+function renderCard(c) {
+    return `
+    <div class="node-card" data-type="${c.type}">
+        <div class="node-header">
+            <div class="node-avatar">${icons[c.type]}</div>
+            <div class="node-identity">
+                <div class="node-codename">${esc(c.codename)}</div>
+                <div class="node-realname">${esc(c.realname)}</div>
+                <span class="node-badge">${c.type}</span>
+                ${c.fictional === false ? '<span class="node-badge" style="--node-color:var(--node-amber)">Réel</span>' : ''}
+            </div>
+        </div>
+        <div class="node-meta">
+            <span class="node-meta-item">📍 ${esc(c.location || '?')}</span>
+            <span class="node-meta-item">🎂 ${c.age || '?'} ans</span>
+        </div>
+        <div class="node-content">
+            ${c.cover ? `<div class="node-section"><div class="node-section-title">Couverture</div><div class="node-text">${esc(c.cover)}</div></div>` : ''}
+            ${c.legend ? `<div class="node-section"><div class="node-section-title">Légende</div><div class="node-text">${esc(c.legend)}</div></div>` : ''}
+            ${c.stats ? `<div class="node-section"><div class="node-section-title">Stats</div><div class="stats-grid">${Object.entries(c.stats).map(([k,v]) => `<div class="stat"><div class="stat-value">${v}</div><div class="stat-label">${k}</div></div>`).join('')}</div></div>` : ''}
+            ${c.strengths?.length || c.weaknesses?.length ? `<div class="node-section"><div class="node-section-title">Traits</div><div class="tags">${(c.strengths||[]).map(s=>`<span class="tag tag-positive">+ ${s}</span>`).join('')}${(c.weaknesses||[]).map(s=>`<span class="tag tag-negative">− ${s}</span>`).join('')}</div></div>` : ''}
+            ${c.skills?.length ? `<div class="node-section"><div class="node-section-title">Compétences</div><div class="tags">${c.skills.map(s=>`<span class="tag tag-neutral">${s}</span>`).join('')}</div></div>` : ''}
+        </div>
+    </div>`;
+}
+
+function saveRoster() {
+    if (!S.cur) return;
+    if (!S.chars.find(x => x.id === S.cur.id)) { S.chars.push(S.cur); save(); }
+    toast('Ajouté au roster', 'success');
+}
+
+function saveTeam() {
+    if (!S.cur) return;
+    if (S.team.length >= 9) return toast('Équipe complète', 'error');
+    saveRoster();
+    if (!S.team.includes(S.cur.id)) { S.team.push(S.cur.id); save(); updateCount(); }
+    toast('Ajouté à l\'équipe!', 'success');
+}
+
+// ═══════════════════════════════════════════════════════════
+// TEAM
+// ═══════════════════════════════════════════════════════════
+
+function renderTeam() {
+    updateCount();
+    const el = document.getElementById('teamList');
+    if (!S.team.length) {
+        el.innerHTML = `<div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Équipe vide</div><div class="empty-text">Forgez ou ajoutez des personnages</div><button class="btn btn-primary" onclick="go('forge')">⚡ Forger</button></div>`;
+        return;
+    }
+    el.innerHTML = S.team.map((id, i) => {
+        const c = S.chars.find(x => x.id === id);
+        if (!c) return '';
+        return `<div class="list-item" data-type="${c.type}" onclick="viewChar('${c.id}')"><div class="list-avatar">${icons[c.type]}</div><div class="list-content"><div class="list-title">${esc(c.codename)}</div><div class="list-sub">${c.type} · ${esc(c.location||'?')}</div></div><button class="btn btn-ghost btn-icon btn-sm" onclick="event.stopPropagation();rmTeam(${i})">✕</button></div>`;
+    }).join('');
+}
+
+function updateCount() {
+    document.getElementById('teamCount').textContent = `Équipe (${S.team.length}/9)`;
+}
+
+function rmTeam(i) {
+    S.team.splice(i, 1);
+    save();
+    renderTeam();
+    drawGraph();
+    toast('Retiré', 'info');
+}
+
+function openAddTeam() {
+    const avail = S.chars.filter(c => !S.team.includes(c.id));
+    document.getElementById('addSelect').innerHTML = '<option value="">Sélectionner...</option>' + avail.map(c => `<option value="${c.id}">${esc(c.codename)} (${c.type})</option>`).join('');
+    openModal('addModal');
+}
+
+function setAddSrc(s) {
+    S.addSrc = s;
+    document.querySelectorAll('#addSourceOpts .option').forEach(o => o.classList.toggle('selected', o.dataset.src === s));
+    document.getElementById('addRosterSec').style.display = s === 'roster' ? 'block' : 'none';
+    document.getElementById('addRealSec').style.display = s === 'real' ? 'block' : 'none';
+}
+
+function confirmAdd() {
+    if (S.team.length >= 9) return toast('Équipe complète', 'error');
+    
+    if (S.addSrc === 'roster') {
+        const id = document.getElementById('addSelect').value;
+        if (!id) return toast('Sélectionnez', 'error');
+        if (!S.team.includes(id)) S.team.push(id);
+    } else if (S.addSrc === 'new') {
+        forge();
+        if (S.cur) { S.chars.push(S.cur); S.team.push(S.cur.id); }
+    } else if (S.addSrc === 'real') {
+        const n = document.getElementById('realName').value.trim();
+        if (!n) return toast('Nom requis', 'error');
+        const c = { id: uid(), codename: n, realname: n, type: document.getElementById('realRole').value, fictional: false, ts: Date.now() };
+        S.chars.push(c);
+        S.team.push(c.id);
+        document.getElementById('realName').value = '';
+    }
+    
+    save();
+    closeModal('addModal');
+    renderTeam();
+    drawGraph();
+    toast('Ajouté!', 'success');
+}
+
+// ═══════════════════════════════════════════════════════════
+// GRAPH
+// ═══════════════════════════════════════════════════════════
+
+let canvas, ctx;
+
+function initGraph() {
+    canvas = document.getElementById('graphCanvas');
+    ctx = canvas.getContext('2d');
+    window.addEventListener('resize', drawGraph);
+    drawGraph();
+}
+
+function drawGraph() {
+    if (!canvas) return;
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr);
+    
+    const w = rect.width, h = rect.height;
+    const cx = w / 2, cy = h / 2;
+    const r = Math.min(cx, cy) - 45;
+    
+    ctx.clearRect(0, 0, w, h);
+    
+    // Lines
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 9; i++) {
+        const a = (i * 2 * Math.PI / 9) - Math.PI / 2;
+        const x = cx + r * Math.cos(a);
+        const y = cy + r * Math.sin(a);
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+    }
+    
+    // Center
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 30);
+    grad.addColorStop(0, '#a855f7');
+    grad.addColorStop(1, '#ec4899');
+    ctx.fillStyle = grad;
+    ctx.shadowColor = 'rgba(168,85,247,0.5)';
+    ctx.shadowBlur = 30;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 28, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    
+    ctx.fillStyle = '#fff';
+    ctx.font = '20px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('🎯', cx, cy);
+    
+    // Nodes
+    const colors = { agent: '#a855f7', complice: '#ec4899', figurant: '#06b6d4', temoin: '#f59e0b', expert: '#22c55e' };
+    
+    for (let i = 0; i < 9; i++) {
+        const a = (i * 2 * Math.PI / 9) - Math.PI / 2;
+        const x = cx + r * Math.cos(a);
+        const y = cy + r * Math.sin(a);
+        
+        const charId = S.team[i];
+        const char = charId ? S.chars.find(c => c.id === charId) : null;
+        
+        if (char) {
+            const col = colors[char.type] || '#a855f7';
+            ctx.shadowColor = col;
+            ctx.shadowBlur = 15;
+            ctx.fillStyle = col;
+            ctx.beginPath();
+            ctx.arc(x, y, 22, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = '#fff';
+            ctx.font = '16px sans-serif';
+            ctx.fillText(icons[char.type], x, y);
+        } else {
+            ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.arc(x, y, 18, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillStyle = 'rgba(255,255,255,0.2)';
+            ctx.font = '14px sans-serif';
+            ctx.fillText('+', x, y);
+        }
+    }
+}
+
+// ═══════════════════════════════════════════════════════════
+// ROSTER
+// ═══════════════════════════════════════════════════════════
+
+function renderRoster() {
+    const q = document.getElementById('searchInput')?.value.toLowerCase() || '';
+    const list = S.chars.filter(c => !q || c.codename?.toLowerCase().includes(q) || c.realname?.toLowerCase().includes(q));
+    const el = document.getElementById('rosterList');
+    
+    if (!list.length) {
+        el.innerHTML = `<div class="empty"><div class="empty-icon">📋</div><div class="empty-title">Roster vide</div><div class="empty-text">Les personnages forgés apparaîtront ici</div></div>`;
+        return;
+    }
+    
+    el.innerHTML = list.map(c => `
+        <div class="list-item" data-type="${c.type}" onclick="viewChar('${c.id}')">
+            <div class="list-avatar">${icons[c.type]}</div>
+            <div class="list-content">
+                <div class="list-title">${esc(c.codename)}</div>
+                <div class="list-sub">${c.type} · ${esc(c.cover || c.location || '?')}</div>
+            </div>
+            ${S.team.includes(c.id) ? '<span style="color:var(--node-green)">✓</span>' : ''}
+        </div>
+    `).join('');
+}
+
+document.getElementById('searchInput')?.addEventListener('input', renderRoster);
+
+function viewChar(id) {
+    const c = S.chars.find(x => x.id === id);
+    if (!c) return;
+    S.cur = c;
+    
+    document.getElementById('detailBody').innerHTML = renderCard(c);
+    
+    const inTeam = S.team.includes(c.id);
+    document.getElementById('detailFooter').innerHTML = `
+        <button class="btn btn-secondary" onclick="closeModal('detailModal')">Fermer</button>
+        ${inTeam 
+            ? `<button class="btn btn-primary" style="--node-color:var(--node-rose)" onclick="delChar('${c.id}')">🗑️ Supprimer</button>`
+            : `<button class="btn btn-primary" onclick="addCharTeam('${c.id}')">👥 Ajouter</button>`
+        }
+    `;
+    openModal('detailModal');
+}
+
+function addCharTeam(id) {
+    if (S.team.length >= 9) return toast('Équipe complète', 'error');
+    if (!S.team.includes(id)) { S.team.push(id); save(); updateCount(); }
+    closeModal('detailModal');
+    toast('Ajouté!', 'success');
+}
+
+function delChar(id) {
+    S.chars = S.chars.filter(c => c.id !== id);
+    S.team = S.team.filter(x => x !== id);
+    save();
+    closeModal('detailModal');
+    renderRoster();
+    renderTeam();
+    drawGraph();
+    toast('Supprimé', 'info');
+}
+
+// ═══════════════════════════════════════════════════════════
+// CREATE
+// ═══════════════════════════════════════════════════════════
+
+function resetEditor() {
+    ['editCodename','editRealname','editAge','editLocation','editCover','editLegend'].forEach(x => document.getElementById(x).value = '');
+    document.getElementById('editType').value = 'agent';
+}
+
+function saveManual() {
+    const cn = document.getElementById('editCodename').value.trim();
+    if (!cn) return toast('Nom de code requis', 'error');
+    const c = {
+        id: uid(),
+        codename: cn,
+        realname: document.getElementById('editRealname').value.trim(),
+        age: parseInt(document.getElementById('editAge').value) || null,
+        type: document.getElementById('editType').value,
+        location: document.getElementById('editLocation').value.trim(),
+        cover: document.getElementById('editCover').value.trim(),
+        legend: document.getElementById('editLegend').value.trim(),
+        fictional: true,
+        ts: Date.now()
+    };
+    S.chars.push(c);
+    save();
+    resetEditor();
+    toast('Sauvegardé!', 'success');
+}
+
+// ═══════════════════════════════════════════════════════════
+// NAMES
+// ═══════════════════════════════════════════════════════════
+
+function showNameGen() { openModal('namesModal'); }
+
+function genNames() {
+    const t = document.getElementById('nameType').value;
+    const s = document.getElementById('nameStyle').value;
+    const list = [];
+    for (let i = 0; i < 10; i++) list.push(genNameStyle(t, s));
+    document.getElementById('namesList').innerHTML = list.map(n => `
+        <div class="list-item" onclick="copyName('${esc(n)}')">
+            <div class="list-content"><div class="list-title" style="font-family:var(--font-mono)">${esc(n)}</div></div>
+            <span class="list-action">📋</span>
+        </div>
+    `).join('');
+}
+
+function genNameStyle(t, s) {
+    if (t === 'codename') {
+        if (s === 'food') return 'Agent ' + pick(D.code.food);
+        if (s === 'spy') return pick(D.code.spy);
+        return genCode();
+    }
+    if (t === 'pseudo') return pick(['Neo','Dark','Cyber','Zero']) + pick(D.code.color) + pick(['_42','X','2K']);
+    return genName(pick(['m','f','nb']));
+}
+
+function copyName(n) {
+    navigator.clipboard.writeText(n);
+    toast('Copié: ' + n, 'success');
+}
+
+// ═══════════════════════════════════════════════════════════
+// TOOLS
+// ═══════════════════════════════════════════════════════════
+
+function exportAll() {
+    const d = { app: 'Z-242', v: '3.0', ts: Date.now(), chars: S.chars, team: S.team };
+    dl(JSON.stringify(d, null, 2), 'z242-backup.json', 'application/json');
+    toast('Exporté!', 'success');
+}
+
+function importData() { document.getElementById('fileInput').click(); }
+
+function handleImport(input) {
+    const f = input.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = e => {
+        try {
+            const d = JSON.parse(e.target.result);
+            if (d.chars) {
+                S.chars = [...S.chars, ...d.chars];
+                S.team = [...S.team, ...(d.team || [])];
+                save();
+                render();
+                toast(`${d.chars.length} personnages importés`, 'success');
+            }
+        } catch { toast('Erreur d\'import', 'error'); }
+    };
+    r.readAsText(f);
+    input.value = '';
+}
+
+function clearAll() {
+    if (!confirm('Effacer toutes les données?')) return;
+    S.chars = [];
+    S.team = [];
+    save();
+    render();
+    toast('Données effacées', 'info');
+}
+
+// ═══════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════
+
+function uid() { return 'Z' + Math.random().toString(36).substr(2, 8).toUpperCase(); }
+function genCode() { return pick(Object.values(D.code).flat()); }
+function genName(g) { return pick(D.fn[g] || D.fn.nb) + ' ' + pick(D.ln); }
+function roll() { return 3 + ~~(Math.random()*6) + ~~(Math.random()*6) + ~~(Math.random()*6); }
+function pick(a) { return a[~~(Math.random() * a.length)]; }
+function pickN(a, n) { return [...a].sort(() => Math.random() - 0.5).slice(0, n); }
+function esc(s) { return s ? String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])) : ''; }
+function save() { localStorage.setItem('z242c', JSON.stringify(S.chars)); localStorage.setItem('z242t', JSON.stringify(S.team)); }
+function render() { renderRoster(); renderTeam(); drawGraph(); updateCount(); }
+
+function dl(content, name, type) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([content], { type }));
+    a.download = name;
+    a.click();
+}
+
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+function toast(msg, type = 'info') {
+    const t = document.createElement('div');
+    t.className = `toast toast-${type}`;
+    t.innerHTML = `<span class="toast-icon">${{success:'✓',error:'✕',info:'ℹ'}[type]}</span><span class="toast-text">${msg}</span>`;
+    document.getElementById('toasts').appendChild(t);
+    setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 2500);
+}
+
+function haptic() { if (navigator.vibrate) navigator.vibrate(10); }
+
+document.querySelectorAll('.modal-overlay').forEach(m => m.onclick = e => { if (e.target === m) m.classList.remove('active'); });
+document.onkeydown = e => { if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active')); };
+
+console.log('%c⚡ GUICHET Z-242 v3.0', 'color:#a855f7;font-size:20px;font-weight:bold');
+</script>
+</body>
+</html>

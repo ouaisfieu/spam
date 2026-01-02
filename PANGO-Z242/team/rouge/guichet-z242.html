@@ -1,0 +1,2395 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dossier">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LE GUICHET Z-242 — Générateur de Personnages & Légendes</title>
+    <meta name="description" content="Créez votre personnage, forgez votre légende, assemblez votre équipe.">
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+/* ============================================
+   LE GUICHET Z-242 — STYLES
+   Aesthetic: Administrative forms meets spy dossiers
+   ============================================ */
+
+:root {
+    /* Dossier theme - like old administrative files */
+    --bg-primary: #f4f1eb;
+    --bg-secondary: #ebe6dc;
+    --bg-card: #fffef9;
+    --bg-dark: #2c2c2c;
+    --bg-stamp: #c41e3a;
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --text-muted: #7a7a7a;
+    --text-typed: #000080;
+    --accent-1: #c41e3a;
+    --accent-2: #1e5c8a;
+    --accent-3: #2d5016;
+    --border-dark: #8b7355;
+    --border-light: #d4cbb8;
+    --paper-lines: repeating-linear-gradient(transparent, transparent 27px, #e8e0d0 28px);
+    --paper-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+    --stamp-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+    --font-typewriter: 'Special Elite', 'Courier Prime', monospace;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+/* Dark/Classified theme */
+[data-theme="classified"] {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #242424;
+    --bg-card: #2a2a2a;
+    --bg-dark: #000;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --text-muted: #666;
+    --text-typed: #00ff00;
+    --border-dark: #444;
+    --border-light: #333;
+    --paper-lines: none;
+}
+
+/* Reset */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    background-image: var(--paper-texture);
+    min-height: 100vh;
+}
+
+/* Typography */
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; }
+.typewriter { font-family: var(--font-typewriter); color: var(--text-typed); }
+.mono { font-family: var(--font-mono); }
+code { font-family: var(--font-mono); background: var(--bg-secondary); padding: 0.1em 0.3em; border-radius: 3px; }
+
+/* Layout */
+.app {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
+}
+
+@media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar { 
+        position: fixed; 
+        left: -300px; 
+        top: 0; 
+        height: 100vh; 
+        z-index: 1000;
+        transition: left 0.3s;
+    }
+    .sidebar.open { left: 0; }
+    .main { margin-left: 0; }
+}
+
+/* Sidebar */
+.sidebar {
+    background: var(--bg-dark);
+    color: #fff;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+    border-bottom: 3px solid var(--accent-1);
+}
+
+.sidebar-logo {
+    font-family: var(--font-typewriter);
+    font-size: 1.1rem;
+    color: var(--accent-1);
+    letter-spacing: 0.05em;
+}
+
+.sidebar-subtitle {
+    font-size: 0.7rem;
+    color: #888;
+    margin-top: 0.25rem;
+    font-family: var(--font-mono);
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 1rem 0;
+}
+
+.nav-section {
+    margin-bottom: 1.5rem;
+}
+
+.nav-section-title {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #666;
+    padding: 0 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    color: #aaa;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+    font-size: 0.9rem;
+}
+
+.nav-item:hover {
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+}
+
+.nav-item.active {
+    background: rgba(196, 30, 58, 0.2);
+    color: var(--accent-1);
+    border-left-color: var(--accent-1);
+}
+
+.nav-icon { width: 20px; text-align: center; }
+
+.sidebar-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #333;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* Main content */
+.main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background: var(--bg-card);
+    border-bottom: 2px solid var(--border-light);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.header-title {
+    font-family: var(--font-typewriter);
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.header-stamp {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: var(--accent-1);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transform: rotate(-2deg);
+    box-shadow: var(--stamp-shadow);
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.content {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Views */
+.view { display: none; }
+.view.active { display: block; animation: fadeIn 0.3s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* Cards - Dossier style */
+.dossier {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    box-shadow: 
+        3px 3px 0 var(--border-dark),
+        0 10px 30px rgba(0,0,0,0.1);
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.dossier::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20px;
+    right: 20px;
+    height: 30px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-light);
+    clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+}
+
+.dossier-header {
+    padding: 2.5rem 1.5rem 1rem;
+    border-bottom: 2px solid var(--border-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.dossier-title {
+    font-family: var(--font-typewriter);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.dossier-ref {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.dossier-body {
+    padding: 1.5rem;
+    background-image: var(--paper-lines);
+}
+
+.dossier-footer {
+    padding: 1rem 1.5rem;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Stamps */
+.stamp {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: 3px solid currentColor;
+    border-radius: 3px;
+    font-family: var(--font-typewriter);
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transform: rotate(-3deg);
+    opacity: 0.85;
+}
+
+.stamp-red { color: var(--accent-1); }
+.stamp-blue { color: var(--accent-2); }
+.stamp-green { color: var(--accent-3); }
+.stamp-classified {
+    background: var(--accent-1);
+    color: #fff;
+    border-color: var(--accent-1);
+}
+
+/* Form elements - Typewriter style */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem;
+    font-family: var(--font-typewriter);
+    font-size: 1rem;
+    color: var(--text-typed);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--border-dark);
+    transition: all 0.2s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-bottom-color: var(--accent-1);
+    background: rgba(196, 30, 58, 0.03);
+}
+
+.form-input::placeholder {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.form-textarea {
+    min-height: 100px;
+    resize: vertical;
+    border: 2px solid var(--border-light);
+    padding: 1rem;
+    background: var(--bg-card);
+}
+
+.form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.form-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.form-checkbox input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent-1);
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: 2px solid;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: var(--accent-1);
+    color: #fff;
+    border-color: var(--accent-1);
+}
+
+.btn-primary:hover {
+    background: #a01830;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(196, 30, 58, 0.3);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-primary);
+    border-color: var(--border-dark);
+}
+
+.btn-secondary:hover {
+    background: var(--bg-secondary);
+}
+
+.btn-ghost {
+    background: transparent;
+    border-color: transparent;
+    color: var(--text-secondary);
+}
+
+.btn-ghost:hover {
+    color: var(--accent-1);
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+}
+
+.btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+}
+
+/* Character card */
+.character-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border-dark);
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+
+.character-header {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-bottom: 2px solid var(--border-dark);
+}
+
+.character-photo {
+    width: 120px;
+    height: 150px;
+    background: var(--bg-dark);
+    border: 3px solid var(--border-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    color: #fff;
+    position: relative;
+}
+
+.character-photo::after {
+    content: 'PHOTO';
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.6rem;
+    font-family: var(--font-mono);
+    letter-spacing: 0.2em;
+    color: #666;
+}
+
+.character-identity {
+    flex: 1;
+}
+
+.character-codename {
+    font-family: var(--font-typewriter);
+    font-size: 1.5rem;
+    color: var(--accent-1);
+    margin-bottom: 0.25rem;
+}
+
+.character-realname {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+.character-type {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border: 2px solid;
+    margin-right: 0.5rem;
+}
+
+.type-complice { color: #8b5cf6; border-color: #8b5cf6; background: rgba(139,92,246,0.1); }
+.type-figurant { color: #06b6d4; border-color: #06b6d4; background: rgba(6,182,212,0.1); }
+.type-temoin { color: #f59e0b; border-color: #f59e0b; background: rgba(245,158,11,0.1); }
+.type-expert { color: #10b981; border-color: #10b981; background: rgba(16,185,129,0.1); }
+.type-agent { color: var(--accent-1); border-color: var(--accent-1); background: rgba(196,30,58,0.1); }
+
+.character-body {
+    padding: 1.5rem;
+}
+
+.character-section {
+    margin-bottom: 1.5rem;
+}
+
+.character-section-title {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed var(--border-light);
+}
+
+.character-legend {
+    font-family: var(--font-typewriter);
+    line-height: 1.8;
+    color: var(--text-typed);
+}
+
+.character-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 0.75rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+}
+
+.stat-value {
+    font-family: var(--font-typewriter);
+    font-size: 1.5rem;
+    color: var(--accent-1);
+}
+
+.stat-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
+
+.character-traits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.trait {
+    padding: 0.25rem 0.75rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+}
+
+.trait-positive { border-color: var(--accent-3); color: var(--accent-3); }
+.trait-negative { border-color: var(--accent-1); color: var(--accent-1); }
+.trait-neutral { border-color: var(--accent-2); color: var(--accent-2); }
+
+/* Team grid */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.team-slot {
+    background: var(--bg-card);
+    border: 2px dashed var(--border-light);
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.team-slot:hover {
+    border-color: var(--accent-1);
+    background: rgba(196, 30, 58, 0.03);
+}
+
+.team-slot.filled {
+    border-style: solid;
+    border-color: var(--border-dark);
+}
+
+.slot-empty {
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.slot-empty-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Generator */
+.generator-panel {
+    background: var(--bg-card);
+    border: 2px solid var(--border-dark);
+    padding: 2rem;
+}
+
+.generator-title {
+    font-family: var(--font-typewriter);
+    font-size: 1.25rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.generator-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.generator-option {
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border: 2px solid transparent;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.generator-option:hover {
+    border-color: var(--accent-1);
+}
+
+.generator-option.selected {
+    border-color: var(--accent-1);
+    background: rgba(196, 30, 58, 0.1);
+}
+
+.generator-option-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.generator-option-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+
+.generator-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+/* Results display */
+.result-display {
+    background: #000;
+    color: #00ff00;
+    font-family: var(--font-mono);
+    padding: 1.5rem;
+    border: 2px solid #00ff00;
+    margin: 1.5rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.result-display::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 255, 0, 0.03) 2px,
+        rgba(0, 255, 0, 0.03) 4px
+    );
+    pointer-events: none;
+}
+
+.result-line {
+    margin-bottom: 0.5rem;
+}
+
+.result-label {
+    color: #00aa00;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal {
+    background: var(--bg-card);
+    border: 3px solid var(--border-dark);
+    box-shadow: 8px 8px 0 rgba(0,0,0,0.3);
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: translateY(20px);
+    transition: transform 0.3s;
+}
+
+.modal-overlay.active .modal {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: var(--bg-secondary);
+    border-bottom: 2px solid var(--border-dark);
+}
+
+.modal-title {
+    font-family: var(--font-typewriter);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.modal-close {
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: 2px solid var(--border-dark);
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.modal-close:hover {
+    background: var(--accent-1);
+    border-color: var(--accent-1);
+    color: #fff;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+/* Toast */
+.toast-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 3000;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    background: var(--bg-card);
+    border: 2px solid var(--border-dark);
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+    margin-bottom: 0.5rem;
+    animation: toastIn 0.3s;
+}
+
+@keyframes toastIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.toast-success { border-left: 4px solid var(--accent-3); }
+.toast-error { border-left: 4px solid var(--accent-1); }
+
+/* Mobile menu toggle */
+.menu-toggle {
+    display: none;
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    width: 56px;
+    height: 56px;
+    background: var(--accent-1);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 999;
+    box-shadow: 0 4px 20px rgba(196, 30, 58, 0.4);
+}
+
+@media (max-width: 900px) {
+    .menu-toggle { display: flex; align-items: center; justify-content: center; }
+}
+
+/* Utilities */
+.text-center { text-align: center; }
+.text-muted { color: var(--text-muted); }
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mt-2 { margin-top: 1rem; }
+.flex { display: flex; }
+.flex-between { justify-content: space-between; }
+.gap-1 { gap: 0.5rem; }
+.gap-2 { gap: 1rem; }
+
+/* Animations */
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink {
+    0%, 50% { border-color: transparent; }
+    51%, 100% { border-color: var(--accent-1); }
+}
+
+.typing-effect {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid var(--accent-1);
+    animation: typing 2s steps(40) 1s forwards, blink 0.7s infinite;
+}
+
+/* Print styles for character sheets */
+@media print {
+    .sidebar, .main-header, .menu-toggle, .btn { display: none !important; }
+    .main { margin: 0; }
+    .content { padding: 0; max-width: 100%; }
+    .character-card { break-inside: avoid; box-shadow: none; border: 2px solid #000; }
+}
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">🏛️ LE GUICHET Z-242</div>
+                <div class="sidebar-subtitle">Générateur de Personnages & Légendes</div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Création</div>
+                    <div class="nav-item active" data-view="generator">
+                        <span class="nav-icon">🎲</span>
+                        <span>Générateur</span>
+                    </div>
+                    <div class="nav-item" data-view="editor">
+                        <span class="nav-icon">✏️</span>
+                        <span>Éditeur manuel</span>
+                    </div>
+                    <div class="nav-item" data-view="legends">
+                        <span class="nav-icon">📜</span>
+                        <span>Légendes</span>
+                    </div>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Équipe</div>
+                    <div class="nav-item" data-view="team">
+                        <span class="nav-icon">👥</span>
+                        <span>Ma Team</span>
+                    </div>
+                    <div class="nav-item" data-view="roster">
+                        <span class="nav-icon">📋</span>
+                        <span>Roster complet</span>
+                    </div>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Outils</div>
+                    <div class="nav-item" data-view="names">
+                        <span class="nav-icon">🏷️</span>
+                        <span>Générateur de noms</span>
+                    </div>
+                    <div class="nav-item" data-view="export">
+                        <span class="nav-icon">📤</span>
+                        <span>Export / Import</span>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div>Dossiers: <span id="characterCount">0</span></div>
+                <div style="margin-top:0.25rem">Projet La Réserve</div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main">
+            <header class="main-header">
+                <h1 class="header-title">
+                    <span id="viewTitle">Générateur</span>
+                    <span class="header-stamp">Z-242</span>
+                </h1>
+                <div class="header-actions">
+                    <button class="btn btn-ghost" id="themeToggle" title="Changer de thème">🌓</button>
+                    <button class="btn btn-primary" id="quickGenerate">
+                        <span>🎲</span>
+                        <span>Générer</span>
+                    </button>
+                </div>
+            </header>
+            
+            <div class="content">
+                <!-- Generator View -->
+                <div class="view active" id="view-generator">
+                    <div class="generator-panel">
+                        <h2 class="generator-title">🎲 Générateur de Personnage</h2>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Type de personnage</label>
+                            <div class="generator-options" id="typeOptions">
+                                <div class="generator-option selected" data-type="agent">
+                                    <div class="generator-option-icon">🕵️</div>
+                                    <div class="generator-option-label">Agent</div>
+                                </div>
+                                <div class="generator-option" data-type="complice">
+                                    <div class="generator-option-icon">🤝</div>
+                                    <div class="generator-option-label">Complice</div>
+                                </div>
+                                <div class="generator-option" data-type="figurant">
+                                    <div class="generator-option-icon">👤</div>
+                                    <div class="generator-option-label">Figurant</div>
+                                </div>
+                                <div class="generator-option" data-type="temoin">
+                                    <div class="generator-option-icon">👁️</div>
+                                    <div class="generator-option-label">Témoin</div>
+                                </div>
+                                <div class="generator-option" data-type="expert">
+                                    <div class="generator-option-icon">🎓</div>
+                                    <div class="generator-option-label">Expert</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Origine</label>
+                                <select class="form-input form-select" id="genOrigin">
+                                    <option value="random">🎲 Aléatoire</option>
+                                    <option value="belgique">🇧🇪 Belgique</option>
+                                    <option value="france">🇫🇷 France</option>
+                                    <option value="international">🌍 International</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Genre</label>
+                                <select class="form-input form-select" id="genGender">
+                                    <option value="random">🎲 Aléatoire</option>
+                                    <option value="m">Masculin</option>
+                                    <option value="f">Féminin</option>
+                                    <option value="nb">Non-binaire</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Options</label>
+                            <div class="flex gap-2" style="flex-wrap: wrap;">
+                                <label class="form-checkbox">
+                                    <input type="checkbox" id="genLegend" checked>
+                                    <span>Générer une légende</span>
+                                </label>
+                                <label class="form-checkbox">
+                                    <input type="checkbox" id="genStats" checked>
+                                    <span>Générer des stats</span>
+                                </label>
+                                <label class="form-checkbox">
+                                    <input type="checkbox" id="genTraits" checked>
+                                    <span>Générer des traits</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="generator-actions">
+                            <button class="btn btn-primary btn-lg" id="generateBtn">
+                                🎲 Générer un personnage
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Generated result -->
+                    <div id="generatedResult" style="margin-top: 2rem;"></div>
+                </div>
+                
+                <!-- Editor View -->
+                <div class="view" id="view-editor">
+                    <div class="dossier">
+                        <div class="dossier-header">
+                            <div>
+                                <h2 class="dossier-title">Nouveau Dossier</h2>
+                                <div class="dossier-ref">REF: <span id="editorRef">Z-242-XXXX</span></div>
+                            </div>
+                            <div class="stamp stamp-blue">En création</div>
+                        </div>
+                        
+                        <div class="dossier-body">
+                            <h3 style="font-family: var(--font-typewriter); margin-bottom: 1rem;">IDENTITÉ</h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Nom de code *</label>
+                                    <input type="text" class="form-input" id="editCodename" placeholder="Agent Gaufre">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Nom réel</label>
+                                    <input type="text" class="form-input" id="editRealname" placeholder="Jean Dupont">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Type</label>
+                                    <select class="form-input form-select" id="editType">
+                                        <option value="agent">🕵️ Agent</option>
+                                        <option value="complice">🤝 Complice</option>
+                                        <option value="figurant">👤 Figurant</option>
+                                        <option value="temoin">👁️ Témoin</option>
+                                        <option value="expert">🎓 Expert</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Statut</label>
+                                    <select class="form-input form-select" id="editStatus">
+                                        <option value="actif">✅ Actif</option>
+                                        <option value="dormant">😴 Dormant</option>
+                                        <option value="compromis">⚠️ Compromis</option>
+                                        <option value="extrait">🚀 Extrait</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Âge</label>
+                                    <input type="number" class="form-input" id="editAge" placeholder="35">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Localisation</label>
+                                    <input type="text" class="form-input" id="editLocation" placeholder="Bruxelles">
+                                </div>
+                            </div>
+                            
+                            <hr style="border: none; border-top: 2px dashed var(--border-light); margin: 1.5rem 0;">
+                            
+                            <h3 style="font-family: var(--font-typewriter); margin-bottom: 1rem;">COUVERTURE</h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Profession de couverture</label>
+                                <input type="text" class="form-input" id="editCover" placeholder="Fonctionnaire au SPF Emploi">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Légende (histoire de couverture)</label>
+                                <textarea class="form-input form-textarea" id="editLegend" placeholder="Décrivez l'histoire de couverture du personnage..."></textarea>
+                            </div>
+                            
+                            <hr style="border: none; border-top: 2px dashed var(--border-light); margin: 1.5rem 0;">
+                            
+                            <h3 style="font-family: var(--font-typewriter); margin-bottom: 1rem;">COMPÉTENCES & TRAITS</h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Spécialités (séparées par des virgules)</label>
+                                <input type="text" class="form-input" id="editSkills" placeholder="Infiltration, Langues, Bureaucratie">
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Forces</label>
+                                    <input type="text" class="form-input" id="editStrengths" placeholder="Discret, Patient">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Faiblesses</label>
+                                    <input type="text" class="form-input" id="editWeaknesses" placeholder="Impatient, Méfiant">
+                                </div>
+                            </div>
+                            
+                            <hr style="border: none; border-top: 2px dashed var(--border-light); margin: 1.5rem 0;">
+                            
+                            <h3 style="font-family: var(--font-typewriter); margin-bottom: 1rem;">NOTES</h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Notes confidentielles</label>
+                                <textarea class="form-input form-textarea" id="editNotes" placeholder="Informations supplémentaires..."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-checkbox">
+                                    <input type="checkbox" id="editFictional" checked>
+                                    <span>Personnage fictif</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="dossier-footer">
+                            <button class="btn btn-ghost" onclick="resetEditor()">🗑️ Effacer</button>
+                            <div class="flex gap-1">
+                                <button class="btn btn-secondary" id="previewCharBtn">👁️ Aperçu</button>
+                                <button class="btn btn-primary" id="saveCharBtn">💾 Sauvegarder</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Legends View -->
+                <div class="view" id="view-legends">
+                    <div class="dossier">
+                        <div class="dossier-header">
+                            <div>
+                                <h2 class="dossier-title">Générateur de Légendes</h2>
+                                <div class="dossier-ref">Histoires de couverture</div>
+                            </div>
+                        </div>
+                        
+                        <div class="dossier-body">
+                            <p class="mb-3">Une <strong>légende</strong> est l'histoire de couverture complète d'un agent : son passé fictif, sa profession, ses habitudes, ses contacts. Une bonne légende doit être mémorable, cohérente et vérifiable.</p>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Secteur d'activité</label>
+                                    <select class="form-input form-select" id="legendSector">
+                                        <option value="random">🎲 Aléatoire</option>
+                                        <option value="admin">🏛️ Administration</option>
+                                        <option value="tech">💻 Technologie</option>
+                                        <option value="social">🤝 Social</option>
+                                        <option value="culture">🎭 Culture</option>
+                                        <option value="commerce">🛒 Commerce</option>
+                                        <option value="sante">🏥 Santé</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Niveau de complexité</label>
+                                    <select class="form-input form-select" id="legendComplexity">
+                                        <option value="simple">Simple (base)</option>
+                                        <option value="standard" selected>Standard</option>
+                                        <option value="detaillee">Détaillée</option>
+                                        <option value="profonde">Profonde (deep cover)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="generator-actions">
+                                <button class="btn btn-primary btn-lg" id="generateLegendBtn">
+                                    📜 Générer une légende
+                                </button>
+                            </div>
+                            
+                            <div id="legendResult" style="margin-top: 2rem;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Team View -->
+                <div class="view" id="view-team">
+                    <div class="flex flex-between mb-3">
+                        <h2 style="font-family: var(--font-typewriter);">👥 Mon Équipe</h2>
+                        <button class="btn btn-primary" onclick="openModal('addToTeamModal')">+ Ajouter</button>
+                    </div>
+                    
+                    <p class="text-muted mb-3">Assemblez votre équipe de 9 personnes maximum (fictives et/ou réelles).</p>
+                    
+                    <div class="team-grid" id="teamGrid">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+                
+                <!-- Roster View -->
+                <div class="view" id="view-roster">
+                    <div class="flex flex-between mb-3">
+                        <h2 style="font-family: var(--font-typewriter);">📋 Roster Complet</h2>
+                        <div class="flex gap-1">
+                            <input type="text" class="form-input" id="rosterSearch" placeholder="🔍 Rechercher..." style="width: 200px;">
+                            <select class="form-input form-select" id="rosterFilter" style="width: 150px;">
+                                <option value="">Tous</option>
+                                <option value="agent">Agents</option>
+                                <option value="complice">Complices</option>
+                                <option value="figurant">Figurants</option>
+                                <option value="temoin">Témoins</option>
+                                <option value="expert">Experts</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div id="rosterList"></div>
+                </div>
+                
+                <!-- Names Generator View -->
+                <div class="view" id="view-names">
+                    <div class="dossier">
+                        <div class="dossier-header">
+                            <div>
+                                <h2 class="dossier-title">Générateur de Noms</h2>
+                                <div class="dossier-ref">Identités & pseudonymes</div>
+                            </div>
+                        </div>
+                        
+                        <div class="dossier-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Type</label>
+                                    <select class="form-input form-select" id="nameType">
+                                        <option value="full">Nom complet</option>
+                                        <option value="codename">Nom de code</option>
+                                        <option value="pseudo">Pseudonyme</option>
+                                        <option value="cover">Identité de couverture</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Style</label>
+                                    <select class="form-input form-select" id="nameStyle">
+                                        <option value="belgian">🧇 Belge</option>
+                                        <option value="french">🥖 Français</option>
+                                        <option value="bureaucratic">🏛️ Bureaucratique</option>
+                                        <option value="spy">🕵️ Espion</option>
+                                        <option value="food">🍟 Gastronomique</option>
+                                        <option value="absurd">🎪 Absurde</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="generator-actions">
+                                <button class="btn btn-primary" id="generateNamesBtn">
+                                    🏷️ Générer 10 noms
+                                </button>
+                            </div>
+                            
+                            <div class="result-display" id="namesResult" style="display: none;">
+                                <!-- Filled by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Export View -->
+                <div class="view" id="view-export">
+                    <div class="dossier">
+                        <div class="dossier-header">
+                            <div>
+                                <h2 class="dossier-title">Export / Import</h2>
+                                <div class="dossier-ref">Gestion des dossiers</div>
+                            </div>
+                        </div>
+                        
+                        <div class="dossier-body">
+                            <div class="form-row" style="margin-bottom: 2rem;">
+                                <div style="flex: 1;">
+                                    <h3 style="font-family: var(--font-typewriter); margin-bottom: 1rem;">📤 Exporter</h3>
+                                    <div class="flex gap-1" style="flex-wrap: wrap;">
+                                        <button class="btn btn-secondary" onclick="exportData('json')">📄 JSON</button>
+                                        <button class="btn btn-secondary" onclick="exportData('html')">🌐 HTML</button>
+                                        <button class="btn btn-secondary" onclick="exportData('md')">📝 Markdown</button>
+                                        <button class="btn btn-secondary" onclick="exportData('pdf')">📕 PDF (print)</button>
+                                    </div>
+                                </div>
+                                <div style="flex: 1;">
+                                    <h3 style="font-family: var(--font-typewriter); margin-bottom: 1rem;">📥 Importer</h3>
+                                    <label class="btn btn-secondary" style="cursor: pointer;">
+                                        <input type="file" accept=".json" style="display: none;" onchange="importData(this)">
+                                        📄 Importer JSON
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <hr style="border: none; border-top: 2px dashed var(--border-light); margin: 1.5rem 0;">
+                            
+                            <h3 style="font-family: var(--font-typewriter); margin-bottom: 1rem;">🔗 Intégration La Réserve</h3>
+                            <p class="text-muted mb-2">Exportez vos personnages vers La Réserve pour les utiliser comme recrues dans vos actions.</p>
+                            <button class="btn btn-primary" onclick="exportToReserve()">
+                                🔄 Exporter vers La Réserve
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Mobile menu toggle -->
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    
+    <!-- Toast container -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <!-- Modals -->
+    <div class="modal-overlay" id="addToTeamModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Ajouter à l'équipe</h3>
+                <button class="modal-close" onclick="closeModal('addToTeamModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Source</label>
+                    <div class="generator-options" id="addSourceOptions">
+                        <div class="generator-option selected" data-source="roster">
+                            <div class="generator-option-icon">📋</div>
+                            <div class="generator-option-label">Du roster</div>
+                        </div>
+                        <div class="generator-option" data-source="generate">
+                            <div class="generator-option-icon">🎲</div>
+                            <div class="generator-option-label">Générer</div>
+                        </div>
+                        <div class="generator-option" data-source="real">
+                            <div class="generator-option-icon">👤</div>
+                            <div class="generator-option-label">Personne réelle</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="addFromRoster">
+                    <div class="form-group">
+                        <label class="form-label">Sélectionner un personnage</label>
+                        <select class="form-input form-select" id="rosterSelect">
+                            <option value="">-- Choisir --</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="addRealPerson" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Nom</label>
+                        <input type="text" class="form-input" id="realPersonName" placeholder="Nom de la personne réelle">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Rôle dans l'équipe</label>
+                        <select class="form-input form-select" id="realPersonRole">
+                            <option value="complice">🤝 Complice</option>
+                            <option value="figurant">👤 Figurant</option>
+                            <option value="temoin">👁️ Témoin</option>
+                            <option value="expert">🎓 Expert</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Note</label>
+                        <input type="text" class="form-input" id="realPersonNote" placeholder="Relation, contexte...">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeModal('addToTeamModal')">Annuler</button>
+                <button class="btn btn-primary" onclick="addToTeam()">Ajouter</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="characterPreviewModal">
+        <div class="modal" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Aperçu du personnage</h3>
+                <button class="modal-close" onclick="closeModal('characterPreviewModal')">×</button>
+            </div>
+            <div class="modal-body" id="characterPreviewContent">
+                <!-- Filled by JS -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeModal('characterPreviewModal')">Fermer</button>
+                <button class="btn btn-primary" onclick="saveFromPreview()">💾 Sauvegarder</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// ============================================
+// LE GUICHET Z-242 — APPLICATION
+// ============================================
+
+// Data stores
+const DATA = {
+    // Belgian first names
+    firstNames: {
+        m: ['Jean', 'Pierre', 'Marc', 'Philippe', 'Michel', 'Luc', 'Thierry', 'Patrick', 'Eric', 'Benoît', 'François', 'Christophe', 'Didier', 'Yves', 'Bernard', 'Alain', 'Olivier', 'Laurent', 'Nicolas', 'Stéphane', 'Wim', 'Jan', 'Dirk', 'Koen', 'Bart', 'Pieter', 'Geert', 'Tom', 'Kevin', 'Jef'],
+        f: ['Marie', 'Anne', 'Isabelle', 'Nathalie', 'Catherine', 'Christine', 'Sophie', 'Véronique', 'Martine', 'Françoise', 'Brigitte', 'Sylvie', 'Patricia', 'Valérie', 'Caroline', 'Céline', 'Julie', 'Aurélie', 'Hilde', 'Griet', 'Lies', 'An', 'Katrien', 'Sofie', 'Els', 'Leen', 'Lotte', 'Charlotte'],
+        nb: ['Alex', 'Charlie', 'Dominique', 'Claude', 'Camille', 'Sacha', 'Eden', 'Lou', 'Max', 'Sam']
+    },
+    
+    // Belgian last names
+    lastNames: ['Peeters', 'Janssens', 'Maes', 'Jacobs', 'Mertens', 'Willems', 'Claes', 'Goossens', 'Wouters', 'De Smedt', 'Dubois', 'Lambert', 'Dupont', 'Martin', 'Simon', 'Laurent', 'Leroy', 'Moreau', 'Lefebvre', 'Renard', 'Van den Berg', 'De Cock', 'Leclercq', 'Claessens', 'Hermans'],
+    
+    // Code names by theme
+    codeNames: {
+        food: ['Gaufre', 'Frites', 'Speculoos', 'Carbonnade', 'Moules', 'Praline', 'Waterzooi', 'Stoofvlees', 'Boulet', 'Cramique', 'Pistolet', 'Filet Américain', 'Crevette', 'Endive', 'Chicon'],
+        landmarks: ['Atomium', 'Manneken', 'Grand-Place', 'Cinquantenaire', 'Sablon', 'Ardenne', 'Meuse', 'Sambre', 'Semois', 'Durbuy'],
+        animals: ['Renard', 'Hibou', 'Faucon', 'Loup', 'Blaireau', 'Héron', 'Sanglier', 'Cerf', 'Corbeau', 'Alouette'],
+        colors: ['Écarlate', 'Azur', 'Ombre', 'Cendre', 'Jade', 'Ambre', 'Ivoire', 'Cobalt', 'Vermillon', 'Opale'],
+        abstract: ['Silence', 'Écho', 'Spectre', 'Nexus', 'Cipher', 'Vector', 'Prism', 'Nova', 'Zenith', 'Vertex']
+    },
+    
+    // Professions for cover
+    coverProfessions: {
+        admin: ['Fonctionnaire SPF Emploi', 'Agent FOREM', 'Employé communal', 'Greffier', 'Secrétaire administratif', 'Contrôleur ONEM', 'Agent CPAS', 'Archiviste', 'Inspecteur social'],
+        tech: ['Développeur web', 'Analyste IT', 'Support technique', 'Chef de projet digital', 'Data analyst', 'Administrateur système', 'UX Designer', 'Consultant cybersécurité'],
+        social: ['Assistant social', 'Éducateur', 'Médiateur', 'Conseiller emploi', 'Coach professionnel', 'Formateur', 'Animateur socioculturel', 'Coordinateur associatif'],
+        culture: ['Journaliste', 'Artiste indépendant', 'Galeriste', 'Bibliothécaire', 'Attaché de presse', 'Community manager', 'Photographe', 'Vidéaste'],
+        commerce: ['Représentant commercial', 'Chef de rayon', 'Responsable achats', 'Gestionnaire de stock', 'Comptable', 'Agent immobilier', 'Conseiller bancaire'],
+        sante: ['Infirmier', 'Aide-soignant', 'Secrétaire médical', 'Kinésithérapeute', 'Pharmacien', 'Psychologue', 'Diététicien']
+    },
+    
+    // Character traits
+    traits: {
+        positive: ['Discret', 'Méthodique', 'Patient', 'Loyal', 'Observateur', 'Adaptable', 'Resourceful', 'Calme', 'Analytique', 'Empathique', 'Créatif', 'Organisé', 'Fiable', 'Diplomate', 'Tenace'],
+        negative: ['Méfiant', 'Obstiné', 'Impatient', 'Cynique', 'Solitaire', 'Perfectionniste', 'Paranoïaque', 'Impulsif', 'Réservé', 'Rigide', 'Anxieux', 'Distrait', 'Susceptible', 'Têtu'],
+        neutral: ['Routinier', 'Introverti', 'Extraverti', 'Analytique', 'Intuitif', 'Pragmatique', 'Idéaliste', 'Autonome', 'Collaboratif', 'Compétitif']
+    },
+    
+    // Skills
+    skills: ['Infiltration', 'Surveillance', 'Falsification', 'Langues', 'Informatique', 'Réseautage', 'Négociation', 'Filature', 'Cryptographie', 'Manipulation', 'Analyse', 'Communication', 'Bureaucratie', 'Recherche', 'Photographie', 'Conduite', 'Self-défense', 'Premiers soins', 'Médias sociaux', 'Droit', 'Finance'],
+    
+    // Legend templates
+    legendTemplates: {
+        simple: [
+            "Employé·e de bureau standard, sans histoire particulière. Célibataire, vit seul·e dans un appartement en périphérie. Routine prévisible : travail, courses, Netflix.",
+            "Jeune diplômé·e en recherche d'emploi. Vit encore chez ses parents. Actif·ve sur les réseaux sociaux mais sans audience notable.",
+            "Travailleur·se indépendant·e dans le secteur des services. Horaires flexibles. Peu de contacts réguliers."
+        ],
+        standard: [
+            "Ancien·ne employé·e de {sector}, reconverti·e après un burn-out. A déménagé à {city} il y a {years} ans pour prendre un nouveau départ. Fréquente régulièrement le café {place} et est membre d'un club de {hobby}. Connu·e pour être discret·e mais serviable.",
+            "Consultant·e freelance spécialisé·e dans {specialty}. Travaille depuis son domicile, avec des missions ponctuelles chez différents clients. Voyage régulièrement pour le travail. Relationship status : compliqué.",
+            "Fonctionnaire de niveau B au {institution}. 15 ans de carrière sans vagues. Passionné·e de {hobby} le week-end. Deux enfants adultes, divorcé·e. Routine très stable et prévisible."
+        ],
+        detaillee: [
+            "Né·e à {birthplace} en {birthyear}, a grandi dans un milieu {background}. Études en {education} à l'ULB/UCL/UGent. Premier emploi chez {firstjob} de {startyear} à {endyear}. Licenciement économique. Période de chômage de {months} mois. Formation en {training}. Embauche actuelle en {currentyear}. Propriétaire d'un appartement à {address}. Un chat nommé {petname}. Abonnement au club de sport {gym}. Compte épargne à la {bank}. Véhicule : {car}. Hobbies : {hobbies}.",
+        ],
+        profonde: [
+            "IDENTITÉ ÉTABLIE DEPUIS {years} ANS.\n\nHistorique complet vérifié et documenté. Numéro national enregistré. Diplômes authentifiés. Historique bancaire sur {bankyears} ans. Propriété immobilière avec acte notarié. Véhicule immatriculé. Médecin traitant : Dr. {doctor}. Dernière hospitalisation : {hospital} en {hospitalyear}. Casier judiciaire vierge. Déclarations fiscales en règle. Réseau social établi : {contacts} contacts vérifiables. Présence en ligne depuis {onlineyears} ans avec historique cohérent."
+        ]
+    },
+    
+    // Belgian cities
+    cities: ['Bruxelles', 'Anvers', 'Gand', 'Charleroi', 'Liège', 'Bruges', 'Namur', 'Louvain', 'Mons', 'Malines', 'Alost', 'Courtrai', 'Hasselt', 'Sint-Niklaas', 'Ostende', 'Tournai', 'Genk', 'Seraing', 'Roeselare', 'Verviers', 'Mouscron', 'Waterloo', 'Wavre', 'Arlon', 'Eupen'],
+    
+    // Hobbies
+    hobbies: ['randonnée', 'lecture', 'cuisine', 'jardinage', 'photographie', 'cyclisme', 'natation', 'yoga', 'jeux vidéo', 'cinéma', 'musique', 'dessin', 'bénévolat', 'bricolage', 'collections', 'généalogie', 'œnologie', 'brassage amateur', 'poterie', 'birdwatching']
+};
+
+// State
+const state = {
+    characters: JSON.parse(localStorage.getItem('z242-characters') || '[]'),
+    team: JSON.parse(localStorage.getItem('z242-team') || '[]'),
+    currentView: 'generator',
+    selectedType: 'agent',
+    addSource: 'roster',
+    previewData: null,
+    theme: localStorage.getItem('z242-theme') || 'dossier'
+};
+
+// ============================================
+// INITIALIZATION
+// ============================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    applyTheme(state.theme);
+    initNavigation();
+    initGenerator();
+    initEditor();
+    initLegends();
+    initNames();
+    initTeam();
+    renderRoster();
+    updateCounts();
+    console.log('🏛️ Le Guichet Z-242 initialisé');
+});
+
+// ============================================
+// NAVIGATION
+// ============================================
+
+function initNavigation() {
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => showView(item.dataset.view));
+    });
+    
+    document.getElementById('menuToggle').addEventListener('click', () => {
+        document.getElementById('sidebar').classList.toggle('open');
+    });
+    
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    document.getElementById('quickGenerate').addEventListener('click', generateCharacter);
+}
+
+function showView(view) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.view === view));
+    document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === `view-${view}`));
+    
+    const titles = {
+        generator: 'Générateur',
+        editor: 'Éditeur manuel',
+        legends: 'Légendes',
+        team: 'Mon Équipe',
+        roster: 'Roster',
+        names: 'Générateur de noms',
+        export: 'Export / Import'
+    };
+    document.getElementById('viewTitle').textContent = titles[view] || view;
+    
+    document.getElementById('sidebar').classList.remove('open');
+    state.currentView = view;
+    
+    if (view === 'team') renderTeam();
+    if (view === 'roster') renderRoster();
+}
+
+function toggleTheme() {
+    state.theme = state.theme === 'dossier' ? 'classified' : 'dossier';
+    applyTheme(state.theme);
+    localStorage.setItem('z242-theme', state.theme);
+}
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+}
+
+// ============================================
+// GENERATOR
+// ============================================
+
+function initGenerator() {
+    // Type options
+    document.querySelectorAll('#typeOptions .generator-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+            document.querySelectorAll('#typeOptions .generator-option').forEach(o => o.classList.remove('selected'));
+            opt.classList.add('selected');
+            state.selectedType = opt.dataset.type;
+        });
+    });
+    
+    document.getElementById('generateBtn').addEventListener('click', generateCharacter);
+}
+
+function generateCharacter() {
+    const type = state.selectedType;
+    const origin = document.getElementById('genOrigin').value;
+    const gender = document.getElementById('genGender').value;
+    const withLegend = document.getElementById('genLegend').checked;
+    const withStats = document.getElementById('genStats').checked;
+    const withTraits = document.getElementById('genTraits').checked;
+    
+    const actualGender = gender === 'random' ? pick(['m', 'f', 'nb']) : gender;
+    
+    const character = {
+        id: generateId(),
+        codename: generateCodename(),
+        realname: generateRealName(actualGender),
+        type: type,
+        status: 'actif',
+        age: 25 + Math.floor(Math.random() * 35),
+        gender: actualGender,
+        location: pick(DATA.cities),
+        cover: pick(DATA.coverProfessions[pick(Object.keys(DATA.coverProfessions))]),
+        fictional: true,
+        createdAt: new Date().toISOString()
+    };
+    
+    if (withLegend) {
+        character.legend = generateLegend('standard', character);
+    }
+    
+    if (withStats) {
+        character.stats = {
+            infiltration: rollStat(),
+            discretion: rollStat(),
+            persuasion: rollStat(),
+            technique: rollStat(),
+            endurance: rollStat(),
+            adaptabilite: rollStat()
+        };
+    }
+    
+    if (withTraits) {
+        character.strengths = pickMultiple(DATA.traits.positive, 2);
+        character.weaknesses = pickMultiple(DATA.traits.negative, 1);
+        character.skills = pickMultiple(DATA.skills, 3);
+    }
+    
+    state.previewData = character;
+    displayGeneratedCharacter(character);
+}
+
+function displayGeneratedCharacter(char) {
+    const container = document.getElementById('generatedResult');
+    container.innerHTML = renderCharacterCard(char) + `
+        <div class="flex gap-1 mt-2" style="justify-content: center;">
+            <button class="btn btn-primary" onclick="saveGeneratedCharacter()">💾 Sauvegarder</button>
+            <button class="btn btn-secondary" onclick="addToTeamDirect()">👥 Ajouter à l'équipe</button>
+            <button class="btn btn-ghost" onclick="generateCharacter()">🎲 Régénérer</button>
+        </div>
+    `;
+}
+
+function renderCharacterCard(char) {
+    const typeIcons = { agent: '🕵️', complice: '🤝', figurant: '👤', temoin: '👁️', expert: '🎓' };
+    const statusLabels = { actif: '✅ Actif', dormant: '😴 Dormant', compromis: '⚠️ Compromis', extrait: '🚀 Extrait' };
+    
+    return `
+        <div class="character-card">
+            <div class="character-header">
+                <div class="character-photo">${typeIcons[char.type] || '👤'}</div>
+                <div class="character-identity">
+                    <div class="character-codename">${esc(char.codename)}</div>
+                    <div class="character-realname">${esc(char.realname || 'Identité inconnue')}</div>
+                    <span class="character-type type-${char.type}">${char.type}</span>
+                    ${char.fictional ? '<span class="character-type" style="border-color:#888;color:#888">Fictif</span>' : '<span class="character-type type-expert">Réel</span>'}
+                </div>
+            </div>
+            <div class="character-body">
+                <div class="character-section">
+                    <div class="character-section-title">Informations</div>
+                    <div style="font-family: var(--font-mono); font-size: 0.85rem;">
+                        <div><strong>Âge:</strong> ${char.age || '?'} ans</div>
+                        <div><strong>Localisation:</strong> ${esc(char.location || '?')}</div>
+                        <div><strong>Couverture:</strong> ${esc(char.cover || '?')}</div>
+                        <div><strong>Statut:</strong> ${statusLabels[char.status] || char.status}</div>
+                    </div>
+                </div>
+                
+                ${char.legend ? `
+                <div class="character-section">
+                    <div class="character-section-title">Légende</div>
+                    <div class="character-legend">${esc(char.legend)}</div>
+                </div>
+                ` : ''}
+                
+                ${char.stats ? `
+                <div class="character-section">
+                    <div class="character-section-title">Statistiques</div>
+                    <div class="character-stats">
+                        ${Object.entries(char.stats).map(([k, v]) => `
+                            <div class="stat-item">
+                                <div class="stat-value">${v}</div>
+                                <div class="stat-label">${k}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                ` : ''}
+                
+                ${char.skills?.length ? `
+                <div class="character-section">
+                    <div class="character-section-title">Compétences</div>
+                    <div class="character-traits">
+                        ${char.skills.map(s => `<span class="trait trait-neutral">${s}</span>`).join('')}
+                    </div>
+                </div>
+                ` : ''}
+                
+                ${(char.strengths?.length || char.weaknesses?.length) ? `
+                <div class="character-section">
+                    <div class="character-section-title">Traits</div>
+                    <div class="character-traits">
+                        ${(char.strengths || []).map(s => `<span class="trait trait-positive">+ ${s}</span>`).join('')}
+                        ${(char.weaknesses || []).map(s => `<span class="trait trait-negative">- ${s}</span>`).join('')}
+                    </div>
+                </div>
+                ` : ''}
+            </div>
+        </div>
+    `;
+}
+
+function saveGeneratedCharacter() {
+    if (!state.previewData) return;
+    state.characters.push(state.previewData);
+    saveCharacters();
+    updateCounts();
+    toast('Personnage sauvegardé!', 'success');
+}
+
+function addToTeamDirect() {
+    if (!state.previewData) return;
+    if (state.team.length >= 9) return toast('Équipe complète (9 max)', 'error');
+    
+    // Save to roster first if not already
+    if (!state.characters.find(c => c.id === state.previewData.id)) {
+        state.characters.push(state.previewData);
+        saveCharacters();
+    }
+    
+    state.team.push(state.previewData.id);
+    saveTeam();
+    updateCounts();
+    toast('Ajouté à l\'équipe!', 'success');
+}
+
+// ============================================
+// HELPERS - GENERATION
+// ============================================
+
+function generateId() {
+    return 'Z242-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+}
+
+function generateCodename() {
+    const category = pick(Object.keys(DATA.codeNames));
+    const base = pick(DATA.codeNames[category]);
+    
+    // Sometimes add a modifier
+    if (Math.random() > 0.7) {
+        const modifiers = ['Alpha', 'Beta', 'Prime', 'Zero', 'Rouge', 'Noir', 'Blanc'];
+        return pick(modifiers) + ' ' + base;
+    }
+    return base;
+}
+
+function generateRealName(gender) {
+    const first = pick(DATA.firstNames[gender] || DATA.firstNames.nb);
+    const last = pick(DATA.lastNames);
+    return `${first} ${last}`;
+}
+
+function generateLegend(complexity, char) {
+    const templates = DATA.legendTemplates[complexity] || DATA.legendTemplates.standard;
+    let template = pick(templates);
+    
+    // Replace placeholders
+    const replacements = {
+        '{sector}': pick(['administration', 'bancaire', 'commercial', 'industriel']),
+        '{city}': pick(DATA.cities),
+        '{years}': String(2 + Math.floor(Math.random() * 8)),
+        '{place}': pick(['Le Falstaff', 'À la Mort Subite', 'Le Cirio', 'Chez Léon']),
+        '{hobby}': pick(DATA.hobbies),
+        '{specialty}': pick(['transformation digitale', 'gestion de projet', 'communication', 'RH']),
+        '{institution}': pick(['SPF Finances', 'SPF Emploi', 'ONSS', 'INAMI', 'ONEm'])
+    };
+    
+    for (const [key, value] of Object.entries(replacements)) {
+        template = template.replace(new RegExp(key, 'g'), value);
+    }
+    
+    return template;
+}
+
+function rollStat() {
+    // 3d6 style, 3-18 range weighted toward middle
+    return Math.floor(Math.random() * 6) + Math.floor(Math.random() * 6) + Math.floor(Math.random() * 6) + 3;
+}
+
+function pick(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function pickMultiple(arr, count) {
+    const shuffled = [...arr].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, count);
+}
+
+// ============================================
+// EDITOR
+// ============================================
+
+function initEditor() {
+    document.getElementById('editorRef').textContent = generateId();
+    document.getElementById('saveCharBtn').addEventListener('click', saveFromEditor);
+    document.getElementById('previewCharBtn').addEventListener('click', previewFromEditor);
+}
+
+function resetEditor() {
+    document.getElementById('editorRef').textContent = generateId();
+    ['editCodename', 'editRealname', 'editAge', 'editLocation', 'editCover', 'editLegend', 'editSkills', 'editStrengths', 'editWeaknesses', 'editNotes'].forEach(id => {
+        document.getElementById(id).value = '';
+    });
+    document.getElementById('editType').value = 'agent';
+    document.getElementById('editStatus').value = 'actif';
+    document.getElementById('editFictional').checked = true;
+}
+
+function getEditorData() {
+    return {
+        id: document.getElementById('editorRef').textContent,
+        codename: document.getElementById('editCodename').value.trim(),
+        realname: document.getElementById('editRealname').value.trim(),
+        type: document.getElementById('editType').value,
+        status: document.getElementById('editStatus').value,
+        age: parseInt(document.getElementById('editAge').value) || null,
+        location: document.getElementById('editLocation').value.trim(),
+        cover: document.getElementById('editCover').value.trim(),
+        legend: document.getElementById('editLegend').value.trim(),
+        skills: document.getElementById('editSkills').value.split(',').map(s => s.trim()).filter(Boolean),
+        strengths: document.getElementById('editStrengths').value.split(',').map(s => s.trim()).filter(Boolean),
+        weaknesses: document.getElementById('editWeaknesses').value.split(',').map(s => s.trim()).filter(Boolean),
+        notes: document.getElementById('editNotes').value.trim(),
+        fictional: document.getElementById('editFictional').checked,
+        createdAt: new Date().toISOString()
+    };
+}
+
+function previewFromEditor() {
+    const data = getEditorData();
+    if (!data.codename) return toast('Nom de code requis', 'error');
+    
+    state.previewData = data;
+    document.getElementById('characterPreviewContent').innerHTML = renderCharacterCard(data);
+    openModal('characterPreviewModal');
+}
+
+function saveFromEditor() {
+    const data = getEditorData();
+    if (!data.codename) return toast('Nom de code requis', 'error');
+    
+    state.characters.push(data);
+    saveCharacters();
+    updateCounts();
+    toast('Personnage sauvegardé!', 'success');
+    resetEditor();
+}
+
+function saveFromPreview() {
+    if (!state.previewData) return;
+    
+    // Check if already exists
+    const existing = state.characters.findIndex(c => c.id === state.previewData.id);
+    if (existing >= 0) {
+        state.characters[existing] = state.previewData;
+    } else {
+        state.characters.push(state.previewData);
+    }
+    
+    saveCharacters();
+    updateCounts();
+    closeModal('characterPreviewModal');
+    toast('Personnage sauvegardé!', 'success');
+}
+
+// ============================================
+// LEGENDS GENERATOR
+// ============================================
+
+function initLegends() {
+    document.getElementById('generateLegendBtn').addEventListener('click', generateLegendOnly);
+}
+
+function generateLegendOnly() {
+    const sector = document.getElementById('legendSector').value;
+    const complexity = document.getElementById('legendComplexity').value;
+    
+    const actualSector = sector === 'random' ? pick(Object.keys(DATA.coverProfessions)) : sector;
+    const cover = pick(DATA.coverProfessions[actualSector] || DATA.coverProfessions.admin);
+    
+    const legend = generateLegend(complexity, { cover });
+    
+    document.getElementById('legendResult').innerHTML = `
+        <div class="dossier" style="margin-top: 1rem;">
+            <div class="dossier-header">
+                <div>
+                    <h3 class="dossier-title">Légende générée</h3>
+                    <div class="dossier-ref">Couverture: ${cover}</div>
+                </div>
+                <div class="stamp stamp-${complexity === 'profonde' ? 'classified' : 'blue'}">${complexity}</div>
+            </div>
+            <div class="dossier-body">
+                <div class="character-legend">${esc(legend)}</div>
+            </div>
+            <div class="dossier-footer">
+                <button class="btn btn-ghost" onclick="generateLegendOnly()">🎲 Régénérer</button>
+                <button class="btn btn-secondary" onclick="copyLegend('${esc(legend).replace(/'/g, "\\'")}')">📋 Copier</button>
+            </div>
+        </div>
+    `;
+}
+
+function copyLegend(text) {
+    navigator.clipboard.writeText(text).then(() => toast('Copié!', 'success'));
+}
+
+// ============================================
+// NAMES GENERATOR
+// ============================================
+
+function initNames() {
+    document.getElementById('generateNamesBtn').addEventListener('click', generateNames);
+}
+
+function generateNames() {
+    const type = document.getElementById('nameType').value;
+    const style = document.getElementById('nameStyle').value;
+    
+    const names = [];
+    for (let i = 0; i < 10; i++) {
+        names.push(generateNameByType(type, style));
+    }
+    
+    const container = document.getElementById('namesResult');
+    container.style.display = 'block';
+    container.innerHTML = names.map((n, i) => `
+        <div class="result-line" style="cursor: pointer;" onclick="copyName('${esc(n)}')">
+            <span class="result-label">[${String(i + 1).padStart(2, '0')}]</span> ${esc(n)}
+        </div>
+    `).join('');
+}
+
+function generateNameByType(type, style) {
+    const gender = pick(['m', 'f', 'nb']);
+    
+    switch (type) {
+        case 'codename':
+            if (style === 'food') return 'Agent ' + pick(DATA.codeNames.food);
+            if (style === 'spy') return pick(DATA.codeNames.abstract);
+            if (style === 'absurd') return pick(['Le', 'La']) + ' ' + pick(['Grand', 'Petit', 'Vrai', 'Faux']) + ' ' + pick(DATA.codeNames.food);
+            return generateCodename();
+            
+        case 'pseudo':
+            const bases = ['Shadow', 'Dark', 'Neo', 'Cyber', 'Zero', 'Alpha'];
+            const suffixes = ['_42', '_BE', '2000', '_x', 'Pro', 'Master'];
+            return pick(bases) + pick(DATA.codeNames.animals) + pick(suffixes);
+            
+        case 'cover':
+            return generateRealName(gender);
+            
+        default: // full
+            if (style === 'bureaucratic') {
+                const titles = ['M.', 'Mme', 'Dr.', 'Maître'];
+                return pick(titles) + ' ' + generateRealName(gender) + ', ' + pick(['attaché', 'conseiller', 'inspecteur', 'greffier']);
+            }
+            return generateRealName(gender);
+    }
+}
+
+function copyName(name) {
+    navigator.clipboard.writeText(name).then(() => toast('Copié: ' + name, 'success'));
+}
+
+// ============================================
+// TEAM
+// ============================================
+
+function initTeam() {
+    // Source options in modal
+    document.querySelectorAll('#addSourceOptions .generator-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+            document.querySelectorAll('#addSourceOptions .generator-option').forEach(o => o.classList.remove('selected'));
+            opt.classList.add('selected');
+            state.addSource = opt.dataset.source;
+            
+            document.getElementById('addFromRoster').style.display = state.addSource === 'roster' ? 'block' : 'none';
+            document.getElementById('addRealPerson').style.display = state.addSource === 'real' ? 'block' : 'none';
+        });
+    });
+}
+
+function renderTeam() {
+    const grid = document.getElementById('teamGrid');
+    const slots = [];
+    
+    // Render filled slots
+    state.team.forEach((charId, idx) => {
+        const char = state.characters.find(c => c.id === charId);
+        if (char) {
+            slots.push(`
+                <div class="character-card team-slot filled">
+                    <div class="character-header" style="padding: 1rem;">
+                        <div class="character-photo" style="width: 60px; height: 75px; font-size: 2rem;">
+                            ${{agent:'🕵️',complice:'🤝',figurant:'👤',temoin:'👁️',expert:'🎓'}[char.type] || '👤'}
+                        </div>
+                        <div class="character-identity">
+                            <div class="character-codename" style="font-size: 1.1rem;">${esc(char.codename)}</div>
+                            <span class="character-type type-${char.type}">${char.type}</span>
+                        </div>
+                    </div>
+                    <div style="padding: 0.75rem; border-top: 1px solid var(--border-light); display: flex; justify-content: space-between;">
+                        <button class="btn btn-ghost btn-sm" onclick="viewTeamMember('${char.id}')">👁️</button>
+                        <button class="btn btn-ghost btn-sm" onclick="removeFromTeam(${idx})">🗑️</button>
+                    </div>
+                </div>
+            `);
+        }
+    });
+    
+    // Add empty slots up to 9
+    for (let i = slots.length; i < 9; i++) {
+        slots.push(`
+            <div class="team-slot" onclick="openModal('addToTeamModal')">
+                <div class="slot-empty">
+                    <div class="slot-empty-icon">➕</div>
+                    <div>Slot ${i + 1}</div>
+                </div>
+            </div>
+        `);
+    }
+    
+    grid.innerHTML = slots.join('');
+    
+    // Update roster select in modal
+    const select = document.getElementById('rosterSelect');
+    select.innerHTML = '<option value="">-- Choisir --</option>' + 
+        state.characters
+            .filter(c => !state.team.includes(c.id))
+            .map(c => `<option value="${c.id}">${esc(c.codename)} (${c.type})</option>`)
+            .join('');
+}
+
+function viewTeamMember(id) {
+    const char = state.characters.find(c => c.id === id);
+    if (char) {
+        state.previewData = char;
+        document.getElementById('characterPreviewContent').innerHTML = renderCharacterCard(char);
+        openModal('characterPreviewModal');
+    }
+}
+
+function removeFromTeam(idx) {
+    state.team.splice(idx, 1);
+    saveTeam();
+    renderTeam();
+    toast('Retiré de l\'équipe', 'success');
+}
+
+function addToTeam() {
+    if (state.team.length >= 9) return toast('Équipe complète (9 max)', 'error');
+    
+    if (state.addSource === 'roster') {
+        const charId = document.getElementById('rosterSelect').value;
+        if (!charId) return toast('Sélectionnez un personnage', 'error');
+        if (state.team.includes(charId)) return toast('Déjà dans l\'équipe', 'error');
+        
+        state.team.push(charId);
+        
+    } else if (state.addSource === 'generate') {
+        // Generate and add
+        generateCharacter();
+        if (state.previewData) {
+            state.characters.push(state.previewData);
+            state.team.push(state.previewData.id);
+            saveCharacters();
+        }
+        
+    } else if (state.addSource === 'real') {
+        const name = document.getElementById('realPersonName').value.trim();
+        const role = document.getElementById('realPersonRole').value;
+        const note = document.getElementById('realPersonNote').value.trim();
+        
+        if (!name) return toast('Nom requis', 'error');
+        
+        const char = {
+            id: generateId(),
+            codename: name,
+            realname: name,
+            type: role,
+            status: 'actif',
+            fictional: false,
+            notes: note,
+            createdAt: new Date().toISOString()
+        };
+        
+        state.characters.push(char);
+        state.team.push(char.id);
+        saveCharacters();
+        
+        document.getElementById('realPersonName').value = '';
+        document.getElementById('realPersonNote').value = '';
+    }
+    
+    saveTeam();
+    closeModal('addToTeamModal');
+    renderTeam();
+    updateCounts();
+    toast('Ajouté à l\'équipe!', 'success');
+}
+
+// ============================================
+// ROSTER
+// ============================================
+
+function renderRoster() {
+    const search = document.getElementById('rosterSearch')?.value.toLowerCase() || '';
+    const filter = document.getElementById('rosterFilter')?.value || '';
+    
+    let filtered = state.characters;
+    if (search) filtered = filtered.filter(c => c.codename?.toLowerCase().includes(search) || c.realname?.toLowerCase().includes(search));
+    if (filter) filtered = filtered.filter(c => c.type === filter);
+    
+    const container = document.getElementById('rosterList');
+    
+    if (!filtered.length) {
+        container.innerHTML = `<div class="dossier" style="text-align: center; padding: 3rem;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
+            <p>Aucun personnage dans le roster</p>
+            <button class="btn btn-primary mt-2" onclick="showView('generator')">🎲 Générer un personnage</button>
+        </div>`;
+        return;
+    }
+    
+    container.innerHTML = `<div class="team-grid">${filtered.map(c => `
+        <div class="character-card" style="cursor: pointer;" onclick="viewRosterCharacter('${c.id}')">
+            <div class="character-header" style="padding: 1rem;">
+                <div class="character-photo" style="width: 60px; height: 75px; font-size: 2rem;">
+                    ${{agent:'🕵️',complice:'🤝',figurant:'👤',temoin:'👁️',expert:'🎓'}[c.type] || '👤'}
+                </div>
+                <div class="character-identity">
+                    <div class="character-codename" style="font-size: 1rem;">${esc(c.codename)}</div>
+                    <div class="character-realname">${esc(c.realname || '')}</div>
+                    <span class="character-type type-${c.type}">${c.type}</span>
+                    ${c.fictional === false ? '<span class="character-type type-expert">Réel</span>' : ''}
+                </div>
+            </div>
+            <div style="padding: 0.5rem 1rem; font-size: 0.75rem; color: var(--text-muted); border-top: 1px solid var(--border-light);">
+                ${c.location || '?'} • ${c.cover || '?'}
+            </div>
+        </div>
+    `).join('')}</div>`;
+}
+
+function viewRosterCharacter(id) {
+    const char = state.characters.find(c => c.id === id);
+    if (char) {
+        state.previewData = char;
+        document.getElementById('characterPreviewContent').innerHTML = renderCharacterCard(char) + `
+            <div class="flex gap-1 mt-2">
+                <button class="btn btn-secondary" onclick="editCharacter('${id}')">✏️ Modifier</button>
+                <button class="btn btn-danger" onclick="deleteCharacter('${id}')">🗑️ Supprimer</button>
+            </div>
+        `;
+        openModal('characterPreviewModal');
+    }
+}
+
+function editCharacter(id) {
+    const char = state.characters.find(c => c.id === id);
+    if (!char) return;
+    
+    // Fill editor
+    document.getElementById('editorRef').textContent = char.id;
+    document.getElementById('editCodename').value = char.codename || '';
+    document.getElementById('editRealname').value = char.realname || '';
+    document.getElementById('editType').value = char.type || 'agent';
+    document.getElementById('editStatus').value = char.status || 'actif';
+    document.getElementById('editAge').value = char.age || '';
+    document.getElementById('editLocation').value = char.location || '';
+    document.getElementById('editCover').value = char.cover || '';
+    document.getElementById('editLegend').value = char.legend || '';
+    document.getElementById('editSkills').value = (char.skills || []).join(', ');
+    document.getElementById('editStrengths').value = (char.strengths || []).join(', ');
+    document.getElementById('editWeaknesses').value = (char.weaknesses || []).join(', ');
+    document.getElementById('editNotes').value = char.notes || '';
+    document.getElementById('editFictional').checked = char.fictional !== false;
+    
+    closeModal('characterPreviewModal');
+    showView('editor');
+}
+
+function deleteCharacter(id) {
+    if (!confirm('Supprimer ce personnage?')) return;
+    
+    state.characters = state.characters.filter(c => c.id !== id);
+    state.team = state.team.filter(tid => tid !== id);
+    saveCharacters();
+    saveTeam();
+    updateCounts();
+    closeModal('characterPreviewModal');
+    renderRoster();
+    toast('Personnage supprimé', 'success');
+}
+
+document.getElementById('rosterSearch')?.addEventListener('input', renderRoster);
+document.getElementById('rosterFilter')?.addEventListener('change', renderRoster);
+
+// ============================================
+// EXPORT / IMPORT
+// ============================================
+
+function exportData(format) {
+    const data = {
+        version: '1.0',
+        app: 'Le Guichet Z-242',
+        exportedAt: new Date().toISOString(),
+        characters: state.characters,
+        team: state.team
+    };
+    
+    let content, filename, mime;
+    
+    switch (format) {
+        case 'json':
+            content = JSON.stringify(data, null, 2);
+            filename = 'z242-dossiers.json';
+            mime = 'application/json';
+            break;
+            
+        case 'md':
+            content = `# Le Guichet Z-242 — Dossiers\n\nExport du ${new Date().toLocaleString('fr-BE')}\n\n---\n\n` +
+                state.characters.map(c => `## ${c.codename}\n\n**Type:** ${c.type}\n**Nom réel:** ${c.realname || '?'}\n**Localisation:** ${c.location || '?'}\n**Couverture:** ${c.cover || '?'}\n\n${c.legend || ''}\n\n---\n`).join('\n');
+            filename = 'z242-dossiers.md';
+            mime = 'text/markdown';
+            break;
+            
+        case 'html':
+            content = generateHTMLExport();
+            filename = 'z242-dossiers.html';
+            mime = 'text/html';
+            break;
+            
+        case 'pdf':
+            // Open print dialog
+            window.print();
+            return;
+    }
+    
+    download(content, filename, mime);
+    toast('Export terminé', 'success');
+}
+
+function generateHTMLExport() {
+    return `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Dossiers Z-242</title>
+    <style>body{font-family:monospace;max-width:800px;margin:0 auto;padding:2rem;background:#f4f1eb}
+    .card{border:2px solid #333;padding:1.5rem;margin-bottom:2rem;page-break-inside:avoid}
+    h1{font-size:1.5rem;border-bottom:2px solid #333;padding-bottom:0.5rem}</style></head>
+    <body><h1>🏛️ LE GUICHET Z-242</h1><p>Dossiers exportés le ${new Date().toLocaleString('fr-BE')}</p>
+    ${state.characters.map(c => `<div class="card"><h2>${esc(c.codename)}</h2>
+    <p><strong>Type:</strong> ${c.type} | <strong>Statut:</strong> ${c.status}</p>
+    <p><strong>Nom réel:</strong> ${esc(c.realname || '?')} | <strong>Âge:</strong> ${c.age || '?'}</p>
+    <p><strong>Localisation:</strong> ${esc(c.location || '?')}</p>
+    <p><strong>Couverture:</strong> ${esc(c.cover || '?')}</p>
+    ${c.legend ? `<p><strong>Légende:</strong><br>${esc(c.legend)}</p>` : ''}
+    </div>`).join('')}</body></html>`;
+}
+
+function importData(input) {
+    const file = input.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = e => {
+        try {
+            const data = JSON.parse(e.target.result);
+            if (data.characters) {
+                const count = data.characters.length;
+                if (confirm(`Importer ${count} personnages? (Les données actuelles seront conservées)`)) {
+                    state.characters = [...state.characters, ...data.characters];
+                    if (data.team) state.team = [...state.team, ...data.team];
+                    saveCharacters();
+                    saveTeam();
+                    updateCounts();
+                    renderRoster();
+                    toast(`${count} personnages importés`, 'success');
+                }
+            }
+        } catch (err) {
+            toast('Erreur d\'import', 'error');
+        }
+    };
+    reader.readAsText(file);
+    input.value = '';
+}
+
+function exportToReserve() {
+    // Format for La Réserve
+    const recrues = state.team.map(id => {
+        const c = state.characters.find(x => x.id === id);
+        if (!c) return null;
+        return {
+            name: c.codename,
+            type: c.type === 'agent' ? 'complice' : c.type,
+            role: c.cover || c.legend?.substring(0, 100) || 'Membre de l\'équipe',
+            notes: c.notes || ''
+        };
+    }).filter(Boolean);
+    
+    const data = {
+        source: 'Le Guichet Z-242',
+        exportedAt: new Date().toISOString(),
+        recrues: recrues
+    };
+    
+    download(JSON.stringify(data, null, 2), 'z242-recrues-export.json', 'application/json');
+    toast('Export La Réserve terminé', 'success');
+}
+
+// ============================================
+// UTILITIES
+// ============================================
+
+function saveCharacters() {
+    localStorage.setItem('z242-characters', JSON.stringify(state.characters));
+}
+
+function saveTeam() {
+    localStorage.setItem('z242-team', JSON.stringify(state.team));
+}
+
+function updateCounts() {
+    document.getElementById('characterCount').textContent = state.characters.length;
+}
+
+function esc(s) {
+    if (!s) return '';
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function download(content, filename, mime) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([content], { type: mime }));
+    a.download = filename;
+    a.click();
+}
+
+function openModal(id) {
+    document.getElementById(id).classList.add('active');
+}
+
+function closeModal(id) {
+    document.getElementById(id).classList.remove('active');
+}
+
+function toast(msg, type = 'success') {
+    const container = document.getElementById('toastContainer');
+    const t = document.createElement('div');
+    t.className = `toast toast-${type}`;
+    t.innerHTML = `<span>${type === 'success' ? '✅' : '❌'}</span><span>${msg}</span>`;
+    container.appendChild(t);
+    setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 3000);
+}
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(m => {
+    m.addEventListener('click', e => { if (e.target === m) m.classList.remove('active'); });
+});
+
+// Keyboard
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+});
+
+console.log(`
+╔═══════════════════════════════════════════════════════════╗
+║           🏛️ LE GUICHET Z-242                              ║
+║        Générateur de Personnages & Légendes               ║
+║     « Forgez votre identité, assemblez votre équipe »     ║
+╚═══════════════════════════════════════════════════════════╝
+`);
+    </script>
+</body>
+</html>
