@@ -1,0 +1,2074 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Z-242 — Forge d'Identités</title>
+    <meta name="description" content="Générateur de personnages et légendes pour La Réserve">
+    <meta name="theme-color" content="#0a0a0f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+/* ============================================
+   Z-242 — OBSIDIAN GRAPH VIEW AESTHETIC
+   Mobile-first design system
+   ============================================ */
+
+:root {
+    /* Obsidian Dark Background */
+    --bg-void: #050508;
+    --bg-deep: #0a0a0f;
+    --bg-surface: #111118;
+    --bg-elevated: #1a1a24;
+    --bg-card: #16161e;
+    --bg-hover: #1e1e2a;
+    
+    /* Graph Node Colors - Obsidian Style */
+    --node-purple: #a855f7;
+    --node-cyan: #06b6d4;
+    --node-pink: #ec4899;
+    --node-green: #22c55e;
+    --node-amber: #f59e0b;
+    --node-blue: #3b82f6;
+    --node-red: #ef4444;
+    --node-white: #e2e8f0;
+    
+    /* Glow variants */
+    --glow-purple: rgba(168, 85, 247, 0.5);
+    --glow-cyan: rgba(6, 182, 212, 0.5);
+    --glow-pink: rgba(236, 72, 153, 0.5);
+    --glow-green: rgba(34, 197, 94, 0.5);
+    --glow-amber: rgba(245, 158, 11, 0.5);
+    
+    /* Text */
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --text-dim: #475569;
+    
+    /* Lines/Borders */
+    --line-dim: rgba(148, 163, 184, 0.1);
+    --line-subtle: rgba(148, 163, 184, 0.2);
+    --line-active: rgba(168, 85, 247, 0.5);
+    
+    /* Type colors */
+    --type-agent: var(--node-purple);
+    --type-complice: var(--node-pink);
+    --type-figurant: var(--node-cyan);
+    --type-temoin: var(--node-amber);
+    --type-expert: var(--node-green);
+    
+    /* Typography */
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Inter', -apple-system, sans-serif;
+    
+    /* Spacing */
+    --nav-height: 64px;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --radius-lg: 16px;
+    --radius-full: 9999px;
+    
+    /* Transitions */
+    --transition-fast: 150ms ease;
+    --transition-normal: 250ms ease;
+    --transition-slow: 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reset */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: var(--bg-void);
+    color: var(--text-primary);
+    line-height: 1.5;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    padding-bottom: calc(var(--nav-height) + var(--safe-bottom));
+}
+
+/* Background Graph Effect */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 20%, var(--glow-purple) 0%, transparent 25%),
+        radial-gradient(circle at 80% 30%, var(--glow-cyan) 0%, transparent 20%),
+        radial-gradient(circle at 40% 80%, var(--glow-pink) 0%, transparent 25%),
+        radial-gradient(circle at 90% 80%, var(--glow-green) 0%, transparent 15%);
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line-subtle); border-radius: 2px; }
+
+/* Selection */
+::selection { background: var(--node-purple); color: white; }
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+h1, h2, h3, h4 {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.mono { font-family: var(--font-mono); }
+
+.text-gradient {
+    background: linear-gradient(135deg, var(--node-purple), var(--node-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ============================================
+   LAYOUT
+   ============================================ */
+
+.app {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 1rem;
+    background: linear-gradient(to bottom, var(--bg-void) 0%, var(--bg-void) 60%, transparent 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--node-purple), var(--node-pink));
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    box-shadow: 0 0 20px var(--glow-purple);
+}
+
+.logo-text {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Main Content */
+.main {
+    flex: 1;
+    padding: 0 1rem 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Views */
+.view {
+    display: none;
+    animation: fadeIn var(--transition-slow);
+}
+
+.view.active { display: block; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Bottom Navigation */
+.nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: calc(var(--nav-height) + var(--safe-bottom));
+    padding-bottom: var(--safe-bottom);
+    background: var(--bg-surface);
+    border-top: 1px solid var(--line-dim);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem 1rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    position: relative;
+    cursor: pointer;
+}
+
+.nav-item::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--node-purple);
+    border-radius: 1px;
+    transition: width var(--transition-normal);
+    box-shadow: 0 0 10px var(--glow-purple);
+}
+
+.nav-item.active {
+    color: var(--node-purple);
+}
+
+.nav-item.active::before {
+    width: 24px;
+}
+
+.nav-icon {
+    font-size: 1.25rem;
+    transition: transform var(--transition-fast);
+}
+
+.nav-item.active .nav-icon {
+    transform: scale(1.1);
+}
+
+.nav-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ============================================
+   COMPONENTS
+   ============================================ */
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--node-purple), var(--node-pink));
+    color: white;
+    box-shadow: 0 4px 20px var(--glow-purple);
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 10px var(--glow-purple);
+}
+
+.btn-secondary {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    border: 1px solid var(--line-subtle);
+}
+
+.btn-secondary:active {
+    background: var(--bg-hover);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    padding: 0.5rem;
+}
+
+.btn-ghost:active {
+    color: var(--text-primary);
+    background: var(--bg-hover);
+}
+
+.btn-node {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    padding: 0;
+    font-size: 1.25rem;
+    position: relative;
+}
+
+.btn-node::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    opacity: 0;
+    transition: all var(--transition-fast);
+}
+
+.btn-node:active::after {
+    opacity: 0.5;
+    inset: -8px;
+}
+
+.btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    border-radius: var(--radius);
+}
+
+.btn-sm {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+/* Cards */
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--line-dim);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: all var(--transition-fast);
+}
+
+.card:active {
+    background: var(--bg-hover);
+}
+
+.card-glow {
+    box-shadow: 0 0 30px -10px var(--glow-purple);
+}
+
+/* Node Cards - Character display */
+.node-card {
+    background: var(--bg-card);
+    border: 1px solid var(--line-dim);
+    border-radius: var(--radius);
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.node-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--node-color, var(--node-purple));
+    box-shadow: 0 0 20px var(--node-color, var(--glow-purple));
+}
+
+.node-card[data-type="agent"] { --node-color: var(--node-purple); }
+.node-card[data-type="complice"] { --node-color: var(--node-pink); }
+.node-card[data-type="figurant"] { --node-color: var(--node-cyan); }
+.node-card[data-type="temoin"] { --node-color: var(--node-amber); }
+.node-card[data-type="expert"] { --node-color: var(--node-green); }
+
+.node-header {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.node-avatar {
+    width: 48px;
+    height: 48px;
+    background: var(--bg-elevated);
+    border: 2px solid var(--node-color, var(--node-purple));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    box-shadow: 0 0 15px var(--node-color, var(--glow-purple));
+    flex-shrink: 0;
+}
+
+.node-identity {
+    flex: 1;
+    min-width: 0;
+}
+
+.node-codename {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--node-color, var(--node-purple));
+    margin-bottom: 0.125rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.node-realname {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.node-type {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--node-color, var(--line-subtle));
+    border-radius: var(--radius-full);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--node-color, var(--text-secondary));
+}
+
+.node-content {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.node-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.node-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Graph Visualization */
+.graph-container {
+    position: relative;
+    height: 300px;
+    background: var(--bg-card);
+    border: 1px solid var(--line-dim);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.graph-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.graph-node {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    transform: translate(-50%, -50%);
+}
+
+.graph-node::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: inherit;
+    filter: blur(15px);
+    opacity: 0.5;
+    z-index: -1;
+}
+
+.graph-node:active {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.graph-node[data-type="agent"] { background: var(--node-purple); }
+.graph-node[data-type="complice"] { background: var(--node-pink); }
+.graph-node[data-type="figurant"] { background: var(--node-cyan); }
+.graph-node[data-type="temoin"] { background: var(--node-amber); }
+.graph-node[data-type="expert"] { background: var(--node-green); }
+.graph-node.empty { background: var(--bg-elevated); border: 2px dashed var(--line-subtle); }
+.graph-node.empty::before { display: none; }
+
+.graph-line {
+    position: absolute;
+    height: 2px;
+    background: var(--line-subtle);
+    transform-origin: left center;
+    pointer-events: none;
+}
+
+.graph-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--node-purple), var(--node-pink));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    box-shadow: 0 0 40px var(--glow-purple);
+    z-index: 10;
+}
+
+/* Form Elements */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    color: var(--text-primary);
+    background: var(--bg-elevated);
+    border: 1px solid var(--line-dim);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+    -webkit-appearance: none;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--node-purple);
+    box-shadow: 0 0 0 3px var(--glow-purple);
+}
+
+.form-input::placeholder {
+    color: var(--text-dim);
+}
+
+.form-textarea {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.form-select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+/* Option Grid */
+.option-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 0.5rem;
+}
+
+.option-card {
+    padding: 1rem 0.75rem;
+    background: var(--bg-elevated);
+    border: 2px solid transparent;
+    border-radius: var(--radius-sm);
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.option-card:active {
+    transform: scale(0.98);
+}
+
+.option-card.selected {
+    border-color: var(--node-purple);
+    background: rgba(168, 85, 247, 0.1);
+    box-shadow: 0 0 20px -5px var(--glow-purple);
+}
+
+.option-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.option-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+}
+
+.option-card.selected .option-label {
+    color: var(--node-purple);
+}
+
+/* Stats */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+}
+
+.stat-item {
+    background: var(--bg-elevated);
+    border: 1px solid var(--line-dim);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 0.5rem;
+    text-align: center;
+}
+
+.stat-value {
+    font-family: var(--font-mono);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--node-purple);
+    text-shadow: 0 0 10px var(--glow-purple);
+}
+
+.stat-label {
+    font-size: 0.6rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-top: 0.125rem;
+}
+
+/* Tags/Chips */
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+}
+
+.tag {
+    padding: 0.25rem 0.625rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--line-dim);
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.tag-positive { border-color: var(--node-green); color: var(--node-green); }
+.tag-negative { border-color: var(--node-red); color: var(--node-red); }
+.tag-neutral { border-color: var(--node-cyan); color: var(--node-cyan); }
+
+/* Sections */
+.section {
+    margin-bottom: 2rem;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.section-title {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: var(--text-muted);
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-title {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.empty-text {
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 5, 8, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-normal);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal {
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: translateY(100%);
+    transition: transform var(--transition-slow);
+}
+
+.modal-overlay.active .modal {
+    transform: translateY(0);
+}
+
+.modal-handle {
+    width: 36px;
+    height: 4px;
+    background: var(--line-subtle);
+    border-radius: 2px;
+    margin: 0.75rem auto;
+}
+
+.modal-header {
+    padding: 0.5rem 1.25rem 1rem;
+    text-align: center;
+}
+
+.modal-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.modal-body {
+    padding: 0 1.25rem 1.25rem;
+}
+
+.modal-footer {
+    padding: 1rem 1.25rem;
+    padding-bottom: calc(1rem + var(--safe-bottom));
+    background: var(--bg-elevated);
+    display: flex;
+    gap: 0.75rem;
+}
+
+.modal-footer .btn {
+    flex: 1;
+}
+
+/* Toast */
+.toast-container {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    z-index: 3000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    pointer-events: none;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--line-dim);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    animation: toastIn var(--transition-slow);
+    pointer-events: auto;
+}
+
+.toast-success { border-left: 3px solid var(--node-green); }
+.toast-error { border-left: 3px solid var(--node-red); }
+.toast-info { border-left: 3px solid var(--node-cyan); }
+
+@keyframes toastIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Result Display */
+.result-card {
+    background: var(--bg-card);
+    border: 1px solid var(--line-dim);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-top: 1.5rem;
+}
+
+.result-actions {
+    display: flex;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: var(--bg-elevated);
+    border-top: 1px solid var(--line-dim);
+}
+
+.result-actions .btn {
+    flex: 1;
+}
+
+/* List */
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.list-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--line-dim);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.list-item:active {
+    background: var(--bg-hover);
+    transform: scale(0.99);
+}
+
+.list-item-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--bg-elevated);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.list-item-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.list-item-title {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.list-item-sub {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* Divider */
+.divider {
+    height: 1px;
+    background: var(--line-dim);
+    margin: 1.5rem 0;
+}
+
+/* Hero */
+.hero {
+    text-align: center;
+    padding: 2rem 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.hero-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.hero-text {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Pulse animation for nodes */
+@keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.05); }
+}
+
+.pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Utility */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* Tablet+ adjustments */
+@media (min-width: 640px) {
+    .main { padding: 0 2rem 2rem; }
+    .header { padding: 1.5rem 2rem; }
+    
+    .modal {
+        border-radius: var(--radius-lg);
+        margin: auto;
+        max-height: 85vh;
+    }
+    
+    .modal-footer {
+        padding-bottom: 1.25rem;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">⚡</div>
+                    <span class="logo-text">Z-242</span>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-ghost" id="exportBtn" title="Export">📤</button>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Forge View (Generator) -->
+            <div class="view active" id="view-forge">
+                <div class="hero">
+                    <h1 class="hero-title text-gradient">Forge d'Identités</h1>
+                    <p class="hero-text">Générez des personnages et légendes pour vos opérations</p>
+                </div>
+                
+                <div class="section">
+                    <div class="section-header">
+                        <span class="section-title">Type</span>
+                    </div>
+                    <div class="option-grid" id="typeGrid">
+                        <div class="option-card selected" data-type="agent">
+                            <div class="option-icon">🕵️</div>
+                            <div class="option-label">Agent</div>
+                        </div>
+                        <div class="option-card" data-type="complice">
+                            <div class="option-icon">🤝</div>
+                            <div class="option-label">Complice</div>
+                        </div>
+                        <div class="option-card" data-type="figurant">
+                            <div class="option-icon">👤</div>
+                            <div class="option-label">Figurant</div>
+                        </div>
+                        <div class="option-card" data-type="temoin">
+                            <div class="option-icon">👁️</div>
+                            <div class="option-label">Témoin</div>
+                        </div>
+                        <div class="option-card" data-type="expert">
+                            <div class="option-icon">🎓</div>
+                            <div class="option-label">Expert</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row" style="margin-bottom: 1.5rem;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Genre</label>
+                        <select class="form-input form-select" id="genGender">
+                            <option value="random">🎲 Aléatoire</option>
+                            <option value="m">Masculin</option>
+                            <option value="f">Féminin</option>
+                            <option value="nb">Non-binaire</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Complexité</label>
+                        <select class="form-input form-select" id="genComplexity">
+                            <option value="simple">Simple</option>
+                            <option value="standard" selected>Standard</option>
+                            <option value="detailed">Détaillée</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary btn-lg btn-block" id="generateBtn">
+                    ⚡ Générer
+                </button>
+                
+                <div id="forgeResult"></div>
+            </div>
+            
+            <!-- Team View -->
+            <div class="view" id="view-team">
+                <div class="section-header">
+                    <span class="section-title">Équipe (${0}/9)</span>
+                    <button class="btn btn-sm btn-secondary" id="addTeamBtn">+ Ajouter</button>
+                </div>
+                
+                <!-- Graph visualization -->
+                <div class="graph-container" id="teamGraph">
+                    <div class="graph-center pulse">🎯</div>
+                </div>
+                
+                <div class="list" id="teamList">
+                    <div class="empty-state">
+                        <div class="empty-icon">👥</div>
+                        <div class="empty-title">Équipe vide</div>
+                        <div class="empty-text">Générez ou ajoutez des personnages</div>
+                        <button class="btn btn-primary" onclick="showView('forge')">⚡ Générer</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Roster View -->
+            <div class="view" id="view-roster">
+                <div class="form-group">
+                    <input type="text" class="form-input" id="rosterSearch" placeholder="🔍 Rechercher un personnage...">
+                </div>
+                
+                <div class="list" id="rosterList">
+                    <div class="empty-state">
+                        <div class="empty-icon">📋</div>
+                        <div class="empty-title">Roster vide</div>
+                        <div class="empty-text">Les personnages générés apparaîtront ici</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Create/Edit View -->
+            <div class="view" id="view-create">
+                <div class="section-header">
+                    <span class="section-title">Nouveau dossier</span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Nom de code *</label>
+                    <input type="text" class="form-input" id="editCodename" placeholder="Agent Gaufre">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Nom réel</label>
+                        <input type="text" class="form-input" id="editRealname" placeholder="Jean Dupont">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Âge</label>
+                        <input type="number" class="form-input" id="editAge" placeholder="35">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Type</label>
+                        <select class="form-input form-select" id="editType">
+                            <option value="agent">🕵️ Agent</option>
+                            <option value="complice">🤝 Complice</option>
+                            <option value="figurant">👤 Figurant</option>
+                            <option value="temoin">👁️ Témoin</option>
+                            <option value="expert">🎓 Expert</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Localisation</label>
+                        <input type="text" class="form-input" id="editLocation" placeholder="Bruxelles">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Couverture</label>
+                    <input type="text" class="form-input" id="editCover" placeholder="Profession de couverture">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Légende</label>
+                    <textarea class="form-input form-textarea" id="editLegend" placeholder="Histoire de couverture..."></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Forces</label>
+                        <input type="text" class="form-input" id="editStrengths" placeholder="Discret, Patient">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Faiblesses</label>
+                        <input type="text" class="form-input" id="editWeaknesses" placeholder="Méfiant">
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+                    <button class="btn btn-secondary" style="flex: 1;" onclick="resetEditor()">Effacer</button>
+                    <button class="btn btn-primary" style="flex: 2;" id="saveCharBtn">💾 Sauvegarder</button>
+                </div>
+            </div>
+            
+            <!-- Names View -->
+            <div class="view" id="view-names">
+                <div class="hero">
+                    <h2 class="hero-title">🏷️ Générateur de Noms</h2>
+                    <p class="hero-text">Noms de code, pseudos et identités</p>
+                </div>
+                
+                <div class="form-row" style="margin-bottom: 1rem;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Type</label>
+                        <select class="form-input form-select" id="nameType">
+                            <option value="codename">Nom de code</option>
+                            <option value="full">Nom complet</option>
+                            <option value="pseudo">Pseudonyme</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Style</label>
+                        <select class="form-input form-select" id="nameStyle">
+                            <option value="belgian">🧇 Belge</option>
+                            <option value="spy">🕵️ Espion</option>
+                            <option value="food">🍟 Gastro</option>
+                            <option value="absurd">🎪 Absurde</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary btn-block" id="generateNamesBtn">🏷️ Générer 10 noms</button>
+                
+                <div class="list" id="namesList" style="margin-top: 1.5rem;"></div>
+            </div>
+        </main>
+        
+        <!-- Bottom Navigation -->
+        <nav class="nav">
+            <div class="nav-item active" data-view="forge">
+                <span class="nav-icon">⚡</span>
+                <span class="nav-label">Forge</span>
+            </div>
+            <div class="nav-item" data-view="team">
+                <span class="nav-icon">👥</span>
+                <span class="nav-label">Team</span>
+            </div>
+            <div class="nav-item" data-view="roster">
+                <span class="nav-icon">📋</span>
+                <span class="nav-label">Roster</span>
+            </div>
+            <div class="nav-item" data-view="create">
+                <span class="nav-icon">✏️</span>
+                <span class="nav-label">Créer</span>
+            </div>
+            <div class="nav-item" data-view="names">
+                <span class="nav-icon">🏷️</span>
+                <span class="nav-label">Noms</span>
+            </div>
+        </nav>
+    </div>
+    
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <!-- Character Detail Modal -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal">
+            <div class="modal-handle"></div>
+            <div class="modal-body" id="detailContent"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('detailModal')">Fermer</button>
+                <button class="btn btn-primary" id="detailActionBtn">👥 Ajouter à l'équipe</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add to Team Modal -->
+    <div class="modal-overlay" id="addTeamModal">
+        <div class="modal">
+            <div class="modal-handle"></div>
+            <div class="modal-header">
+                <h3 class="modal-title">Ajouter à l'équipe</h3>
+            </div>
+            <div class="modal-body">
+                <div class="option-grid" style="margin-bottom: 1rem;">
+                    <div class="option-card selected" data-source="roster" onclick="setAddSource('roster')">
+                        <div class="option-icon">📋</div>
+                        <div class="option-label">Roster</div>
+                    </div>
+                    <div class="option-card" data-source="generate" onclick="setAddSource('generate')">
+                        <div class="option-icon">🎲</div>
+                        <div class="option-label">Générer</div>
+                    </div>
+                    <div class="option-card" data-source="real" onclick="setAddSource('real')">
+                        <div class="option-icon">👤</div>
+                        <div class="option-label">Réel</div>
+                    </div>
+                </div>
+                
+                <div id="addRosterSection">
+                    <div class="form-group">
+                        <label class="form-label">Sélectionner</label>
+                        <select class="form-input form-select" id="rosterSelect"></select>
+                    </div>
+                </div>
+                
+                <div id="addRealSection" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Nom</label>
+                        <input type="text" class="form-input" id="realName" placeholder="Nom de la personne">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Rôle</label>
+                        <select class="form-input form-select" id="realRole">
+                            <option value="complice">🤝 Complice</option>
+                            <option value="figurant">👤 Figurant</option>
+                            <option value="temoin">👁️ Témoin</option>
+                            <option value="expert">🎓 Expert</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('addTeamModal')">Annuler</button>
+                <button class="btn btn-primary" onclick="confirmAddToTeam()">Ajouter</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// ============================================
+// Z-242 — MOBILE-FIRST APP
+// Obsidian Graph View Edition
+// ============================================
+
+// Data pools
+const DATA = {
+    firstNames: {
+        m: ['Jean', 'Pierre', 'Marc', 'Philippe', 'Michel', 'Luc', 'Thierry', 'Patrick', 'Eric', 'Benoît', 'François', 'Christophe', 'Olivier', 'Laurent', 'Nicolas', 'Wim', 'Jan', 'Dirk', 'Koen', 'Bart', 'Pieter', 'Tom'],
+        f: ['Marie', 'Anne', 'Isabelle', 'Nathalie', 'Catherine', 'Sophie', 'Véronique', 'Martine', 'Brigitte', 'Sylvie', 'Caroline', 'Céline', 'Julie', 'Aurélie', 'Hilde', 'An', 'Katrien', 'Sofie', 'Els', 'Charlotte'],
+        nb: ['Alex', 'Charlie', 'Dominique', 'Claude', 'Camille', 'Sacha', 'Eden', 'Lou', 'Sam']
+    },
+    lastNames: ['Peeters', 'Janssens', 'Maes', 'Jacobs', 'Mertens', 'Willems', 'Claes', 'Goossens', 'Wouters', 'De Smedt', 'Dubois', 'Lambert', 'Dupont', 'Martin', 'Simon', 'Laurent', 'Leroy', 'Moreau', 'Van den Berg', 'Leclercq'],
+    codeNames: {
+        food: ['Gaufre', 'Frites', 'Speculoos', 'Carbonnade', 'Moules', 'Praline', 'Waterzooi', 'Stoofvlees', 'Boulet', 'Cramique', 'Pistolet', 'Crevette', 'Chicon'],
+        spy: ['Spectre', 'Nexus', 'Cipher', 'Vector', 'Prism', 'Nova', 'Zenith', 'Vertex', 'Echo', 'Shadow', 'Phantom', 'Wraith'],
+        animals: ['Renard', 'Hibou', 'Faucon', 'Loup', 'Corbeau', 'Héron', 'Blaireau'],
+        colors: ['Écarlate', 'Azur', 'Ombre', 'Jade', 'Ambre', 'Cobalt', 'Opale']
+    },
+    covers: [
+        'Fonctionnaire SPF Emploi', 'Agent FOREM', 'Employé communal', 'Développeur web', 'Analyste IT', 
+        'Assistant social', 'Conseiller emploi', 'Journaliste freelance', 'Comptable', 'Commercial',
+        'Secrétaire administratif', 'Formateur', 'Community manager', 'Bibliothécaire', 'Infirmier'
+    ],
+    cities: ['Bruxelles', 'Anvers', 'Gand', 'Charleroi', 'Liège', 'Bruges', 'Namur', 'Louvain', 'Mons', 'Hasselt', 'Ostende', 'Waterloo', 'Wavre'],
+    traits: {
+        positive: ['Discret', 'Méthodique', 'Patient', 'Loyal', 'Observateur', 'Adaptable', 'Calme', 'Analytique', 'Empathique', 'Fiable'],
+        negative: ['Méfiant', 'Obstiné', 'Impatient', 'Cynique', 'Solitaire', 'Perfectionniste', 'Paranoïaque', 'Réservé', 'Anxieux']
+    },
+    skills: ['Infiltration', 'Surveillance', 'Langues', 'Informatique', 'Négociation', 'Analyse', 'Bureaucratie', 'Photographie', 'Réseautage'],
+    legends: {
+        simple: [
+            "Employé·e de bureau standard, célibataire, vit seul·e. Routine prévisible.",
+            "Jeune diplômé·e en recherche d'emploi. Profil discret sur les réseaux.",
+            "Travailleur·se indépendant·e, horaires flexibles, peu de contacts réguliers."
+        ],
+        standard: [
+            "Ancien·ne employé·e reconverti·e après un burn-out. A déménagé il y a quelques années pour un nouveau départ. Fréquente régulièrement les cafés du quartier.",
+            "Consultant·e freelance, travaille depuis son domicile avec des missions ponctuelles. Voyage occasionnellement pour le travail. Discret·e sur sa vie privée.",
+            "Fonctionnaire de carrière sans vagues. 15 ans d'ancienneté. Routine très stable, passions le week-end uniquement."
+        ],
+        detailed: [
+            "Parcours complet : études universitaires, premier emploi à 24 ans, progression normale. Propriétaire depuis 5 ans. Un animal de compagnie. Abonnement salle de sport. Compte épargne standard. Réseau social modéré mais vérifié."
+        ]
+    }
+};
+
+// State
+const state = {
+    characters: JSON.parse(localStorage.getItem('z242-chars') || '[]'),
+    team: JSON.parse(localStorage.getItem('z242-team') || '[]'),
+    selectedType: 'agent',
+    addSource: 'roster',
+    currentChar: null,
+    editingId: null
+};
+
+// ============================================
+// INIT
+// ============================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    initNav();
+    initForge();
+    initEditor();
+    initNames();
+    initTeam();
+    renderRoster();
+    updateTeamCount();
+});
+
+// ============================================
+// NAVIGATION
+// ============================================
+
+function initNav() {
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => showView(item.dataset.view));
+    });
+    
+    document.getElementById('exportBtn').addEventListener('click', exportAll);
+}
+
+function showView(view) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.view === view));
+    document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === `view-${view}`));
+    
+    if (view === 'team') { renderTeam(); renderTeamGraph(); }
+    if (view === 'roster') renderRoster();
+}
+
+// ============================================
+// FORGE (Generator)
+// ============================================
+
+function initForge() {
+    document.querySelectorAll('#typeGrid .option-card').forEach(card => {
+        card.addEventListener('click', () => {
+            document.querySelectorAll('#typeGrid .option-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            state.selectedType = card.dataset.type;
+        });
+    });
+    
+    document.getElementById('generateBtn').addEventListener('click', generateCharacter);
+}
+
+function generateCharacter() {
+    const type = state.selectedType;
+    const gender = document.getElementById('genGender').value;
+    const complexity = document.getElementById('genComplexity').value;
+    const actualGender = gender === 'random' ? pick(['m', 'f', 'nb']) : gender;
+    
+    const char = {
+        id: genId(),
+        codename: genCodename(),
+        realname: genRealName(actualGender),
+        type,
+        gender: actualGender,
+        age: 25 + Math.floor(Math.random() * 30),
+        location: pick(DATA.cities),
+        cover: pick(DATA.covers),
+        legend: pick(DATA.legends[complexity] || DATA.legends.standard),
+        strengths: pickMultiple(DATA.traits.positive, 2),
+        weaknesses: pickMultiple(DATA.traits.negative, 1),
+        skills: pickMultiple(DATA.skills, 3),
+        stats: {
+            INF: roll(), DIS: roll(), PER: roll(),
+            TEC: roll(), END: roll(), ADA: roll()
+        },
+        fictional: true,
+        createdAt: new Date().toISOString()
+    };
+    
+    state.currentChar = char;
+    displayResult(char);
+    
+    // Haptic feedback
+    if (navigator.vibrate) navigator.vibrate(10);
+}
+
+function displayResult(char) {
+    const icons = { agent: '🕵️', complice: '🤝', figurant: '👤', temoin: '👁️', expert: '🎓' };
+    
+    document.getElementById('forgeResult').innerHTML = `
+        <div class="result-card">
+            <div class="node-card" data-type="${char.type}" style="border-radius: var(--radius) var(--radius) 0 0;">
+                <div class="node-header">
+                    <div class="node-avatar">${icons[char.type]}</div>
+                    <div class="node-identity">
+                        <div class="node-codename">${esc(char.codename)}</div>
+                        <div class="node-realname">${esc(char.realname)}</div>
+                        <span class="node-type">${char.type}</span>
+                    </div>
+                </div>
+                
+                <div class="node-meta">
+                    <span class="node-meta-item">📍 ${esc(char.location)}</span>
+                    <span class="node-meta-item">🎂 ${char.age} ans</span>
+                </div>
+                
+                <div class="divider"></div>
+                
+                <div style="margin-bottom: 1rem;">
+                    <div class="section-title" style="margin-bottom: 0.5rem;">Couverture</div>
+                    <div style="font-size: 0.9rem; color: var(--text-secondary);">${esc(char.cover)}</div>
+                </div>
+                
+                <div style="margin-bottom: 1rem;">
+                    <div class="section-title" style="margin-bottom: 0.5rem;">Légende</div>
+                    <div class="node-content">${esc(char.legend)}</div>
+                </div>
+                
+                <div style="margin-bottom: 1rem;">
+                    <div class="section-title" style="margin-bottom: 0.5rem;">Stats</div>
+                    <div class="stats-grid">
+                        ${Object.entries(char.stats).map(([k, v]) => `
+                            <div class="stat-item">
+                                <div class="stat-value">${v}</div>
+                                <div class="stat-label">${k}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="section-title" style="margin-bottom: 0.5rem;">Traits</div>
+                    <div class="tag-list">
+                        ${char.strengths.map(s => `<span class="tag tag-positive">+ ${s}</span>`).join('')}
+                        ${char.weaknesses.map(s => `<span class="tag tag-negative">− ${s}</span>`).join('')}
+                    </div>
+                </div>
+                
+                <div style="margin-top: 1rem;">
+                    <div class="section-title" style="margin-bottom: 0.5rem;">Compétences</div>
+                    <div class="tag-list">
+                        ${char.skills.map(s => `<span class="tag tag-neutral">${s}</span>`).join('')}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="result-actions">
+                <button class="btn btn-secondary" onclick="generateCharacter()">🎲</button>
+                <button class="btn btn-secondary" onclick="saveToRoster()">💾 Roster</button>
+                <button class="btn btn-primary" onclick="saveAndAddToTeam()">👥 Team</button>
+            </div>
+        </div>
+    `;
+}
+
+function saveToRoster() {
+    if (!state.currentChar) return;
+    if (!state.characters.find(c => c.id === state.currentChar.id)) {
+        state.characters.push(state.currentChar);
+        saveChars();
+    }
+    toast('Ajouté au roster', 'success');
+}
+
+function saveAndAddToTeam() {
+    if (!state.currentChar) return;
+    if (state.team.length >= 9) return toast('Équipe complète (9 max)', 'error');
+    
+    saveToRoster();
+    if (!state.team.includes(state.currentChar.id)) {
+        state.team.push(state.currentChar.id);
+        saveTeam();
+        updateTeamCount();
+    }
+    toast('Ajouté à l\'équipe!', 'success');
+}
+
+// ============================================
+// TEAM
+// ============================================
+
+function initTeam() {
+    document.getElementById('addTeamBtn').addEventListener('click', () => {
+        updateRosterSelect();
+        openModal('addTeamModal');
+    });
+}
+
+function renderTeam() {
+    const list = document.getElementById('teamList');
+    const icons = { agent: '🕵️', complice: '🤝', figurant: '👤', temoin: '👁️', expert: '🎓' };
+    
+    if (!state.team.length) {
+        list.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">👥</div>
+                <div class="empty-title">Équipe vide</div>
+                <div class="empty-text">Générez ou ajoutez des personnages</div>
+                <button class="btn btn-primary" onclick="showView('forge')">⚡ Générer</button>
+            </div>
+        `;
+        return;
+    }
+    
+    list.innerHTML = state.team.map((id, idx) => {
+        const char = state.characters.find(c => c.id === id);
+        if (!char) return '';
+        return `
+            <div class="list-item" onclick="viewCharacter('${char.id}')">
+                <div class="list-item-icon" style="background: var(--type-${char.type}); box-shadow: 0 0 15px var(--glow-${getGlowColor(char.type)});">
+                    ${icons[char.type]}
+                </div>
+                <div class="list-item-content">
+                    <div class="list-item-title">${esc(char.codename)}</div>
+                    <div class="list-item-sub">${char.type} • ${esc(char.location || '?')}</div>
+                </div>
+                <button class="btn btn-ghost" onclick="event.stopPropagation(); removeFromTeam(${idx})">✕</button>
+            </div>
+        `;
+    }).join('');
+}
+
+function renderTeamGraph() {
+    const container = document.getElementById('teamGraph');
+    const centerX = container.offsetWidth / 2;
+    const centerY = container.offsetHeight / 2;
+    const radius = Math.min(centerX, centerY) - 50;
+    const icons = { agent: '🕵️', complice: '🤝', figurant: '👤', temoin: '👁️', expert: '🎓' };
+    
+    // Clear existing nodes (keep center)
+    container.querySelectorAll('.graph-node, .graph-line').forEach(el => el.remove());
+    
+    // Create nodes for team members
+    const count = Math.max(state.team.length, 1);
+    
+    for (let i = 0; i < 9; i++) {
+        const angle = (i * 2 * Math.PI / 9) - Math.PI / 2;
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
+        
+        // Draw line to center
+        const line = document.createElement('div');
+        line.className = 'graph-line';
+        const dx = centerX - x;
+        const dy = centerY - y;
+        const length = Math.sqrt(dx * dx + dy * dy);
+        const rotation = Math.atan2(dy, dx) * 180 / Math.PI;
+        line.style.cssText = `left:${x}px; top:${y}px; width:${length}px; transform:rotate(${rotation}deg);`;
+        container.appendChild(line);
+        
+        // Draw node
+        const node = document.createElement('div');
+        node.className = 'graph-node';
+        node.style.left = x + 'px';
+        node.style.top = y + 'px';
+        
+        if (state.team[i]) {
+            const char = state.characters.find(c => c.id === state.team[i]);
+            if (char) {
+                node.dataset.type = char.type;
+                node.textContent = icons[char.type];
+                node.onclick = () => viewCharacter(char.id);
+            }
+        } else {
+            node.classList.add('empty');
+            node.textContent = '+';
+            node.onclick = () => { updateRosterSelect(); openModal('addTeamModal'); };
+        }
+        
+        container.appendChild(node);
+    }
+}
+
+function getGlowColor(type) {
+    const map = { agent: 'purple', complice: 'pink', figurant: 'cyan', temoin: 'amber', expert: 'green' };
+    return map[type] || 'purple';
+}
+
+function removeFromTeam(idx) {
+    state.team.splice(idx, 1);
+    saveTeam();
+    renderTeam();
+    renderTeamGraph();
+    updateTeamCount();
+    toast('Retiré de l\'équipe', 'info');
+}
+
+function updateTeamCount() {
+    document.querySelectorAll('.section-title').forEach(el => {
+        if (el.textContent.includes('Équipe')) {
+            el.textContent = `Équipe (${state.team.length}/9)`;
+        }
+    });
+}
+
+function setAddSource(source) {
+    state.addSource = source;
+    document.querySelectorAll('#addTeamModal .option-card').forEach(c => {
+        c.classList.toggle('selected', c.dataset.source === source);
+    });
+    document.getElementById('addRosterSection').style.display = source === 'roster' ? 'block' : 'none';
+    document.getElementById('addRealSection').style.display = source === 'real' ? 'block' : 'none';
+}
+
+function updateRosterSelect() {
+    const select = document.getElementById('rosterSelect');
+    const available = state.characters.filter(c => !state.team.includes(c.id));
+    select.innerHTML = '<option value="">Sélectionner...</option>' + 
+        available.map(c => `<option value="${c.id}">${esc(c.codename)} (${c.type})</option>`).join('');
+}
+
+function confirmAddToTeam() {
+    if (state.team.length >= 9) return toast('Équipe complète', 'error');
+    
+    if (state.addSource === 'roster') {
+        const id = document.getElementById('rosterSelect').value;
+        if (!id) return toast('Sélectionnez un personnage', 'error');
+        if (state.team.includes(id)) return toast('Déjà dans l\'équipe', 'error');
+        state.team.push(id);
+        
+    } else if (state.addSource === 'generate') {
+        generateCharacter();
+        if (state.currentChar) {
+            state.characters.push(state.currentChar);
+            state.team.push(state.currentChar.id);
+            saveChars();
+        }
+        
+    } else if (state.addSource === 'real') {
+        const name = document.getElementById('realName').value.trim();
+        if (!name) return toast('Nom requis', 'error');
+        
+        const char = {
+            id: genId(),
+            codename: name,
+            realname: name,
+            type: document.getElementById('realRole').value,
+            fictional: false,
+            createdAt: new Date().toISOString()
+        };
+        state.characters.push(char);
+        state.team.push(char.id);
+        saveChars();
+        document.getElementById('realName').value = '';
+    }
+    
+    saveTeam();
+    closeModal('addTeamModal');
+    renderTeam();
+    renderTeamGraph();
+    updateTeamCount();
+    toast('Ajouté à l\'équipe!', 'success');
+}
+
+// ============================================
+// ROSTER
+// ============================================
+
+function renderRoster() {
+    const search = document.getElementById('rosterSearch')?.value.toLowerCase() || '';
+    const filtered = state.characters.filter(c => 
+        !search || c.codename?.toLowerCase().includes(search) || c.realname?.toLowerCase().includes(search)
+    );
+    
+    const list = document.getElementById('rosterList');
+    const icons = { agent: '🕵️', complice: '🤝', figurant: '👤', temoin: '👁️', expert: '🎓' };
+    
+    if (!filtered.length) {
+        list.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">📋</div>
+                <div class="empty-title">Roster vide</div>
+                <div class="empty-text">Les personnages générés apparaîtront ici</div>
+            </div>
+        `;
+        return;
+    }
+    
+    list.innerHTML = filtered.map(c => `
+        <div class="list-item" onclick="viewCharacter('${c.id}')">
+            <div class="list-item-icon" style="border: 2px solid var(--type-${c.type});">
+                ${icons[c.type]}
+            </div>
+            <div class="list-item-content">
+                <div class="list-item-title">${esc(c.codename)}</div>
+                <div class="list-item-sub">${c.type} • ${esc(c.cover || c.location || '?')}</div>
+            </div>
+            ${state.team.includes(c.id) ? '<span style="color: var(--node-green);">✓</span>' : ''}
+        </div>
+    `).join('');
+}
+
+document.getElementById('rosterSearch')?.addEventListener('input', renderRoster);
+
+function viewCharacter(id) {
+    const char = state.characters.find(c => c.id === id);
+    if (!char) return;
+    
+    state.currentChar = char;
+    const icons = { agent: '🕵️', complice: '🤝', figurant: '👤', temoin: '👁️', expert: '🎓' };
+    const inTeam = state.team.includes(char.id);
+    
+    document.getElementById('detailContent').innerHTML = `
+        <div class="node-card" data-type="${char.type}">
+            <div class="node-header">
+                <div class="node-avatar">${icons[char.type]}</div>
+                <div class="node-identity">
+                    <div class="node-codename">${esc(char.codename)}</div>
+                    <div class="node-realname">${esc(char.realname || 'Identité inconnue')}</div>
+                    <span class="node-type">${char.type}</span>
+                    ${char.fictional === false ? '<span class="node-type" style="border-color: var(--node-amber); color: var(--node-amber);">Réel</span>' : ''}
+                </div>
+            </div>
+            
+            ${char.location || char.age ? `
+            <div class="node-meta">
+                ${char.location ? `<span class="node-meta-item">📍 ${esc(char.location)}</span>` : ''}
+                ${char.age ? `<span class="node-meta-item">🎂 ${char.age} ans</span>` : ''}
+            </div>
+            ` : ''}
+            
+            ${char.cover ? `
+            <div class="divider"></div>
+            <div style="margin-bottom: 1rem;">
+                <div class="section-title" style="margin-bottom: 0.5rem;">Couverture</div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary);">${esc(char.cover)}</div>
+            </div>
+            ` : ''}
+            
+            ${char.legend ? `
+            <div style="margin-bottom: 1rem;">
+                <div class="section-title" style="margin-bottom: 0.5rem;">Légende</div>
+                <div class="node-content">${esc(char.legend)}</div>
+            </div>
+            ` : ''}
+            
+            ${char.stats ? `
+            <div style="margin-bottom: 1rem;">
+                <div class="section-title" style="margin-bottom: 0.5rem;">Stats</div>
+                <div class="stats-grid">
+                    ${Object.entries(char.stats).map(([k, v]) => `
+                        <div class="stat-item">
+                            <div class="stat-value">${v}</div>
+                            <div class="stat-label">${k}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            ` : ''}
+            
+            ${(char.strengths?.length || char.weaknesses?.length) ? `
+            <div style="margin-bottom: 1rem;">
+                <div class="section-title" style="margin-bottom: 0.5rem;">Traits</div>
+                <div class="tag-list">
+                    ${(char.strengths || []).map(s => `<span class="tag tag-positive">+ ${s}</span>`).join('')}
+                    ${(char.weaknesses || []).map(s => `<span class="tag tag-negative">− ${s}</span>`).join('')}
+                </div>
+            </div>
+            ` : ''}
+            
+            ${char.skills?.length ? `
+            <div>
+                <div class="section-title" style="margin-bottom: 0.5rem;">Compétences</div>
+                <div class="tag-list">
+                    ${char.skills.map(s => `<span class="tag tag-neutral">${s}</span>`).join('')}
+                </div>
+            </div>
+            ` : ''}
+        </div>
+    `;
+    
+    const actionBtn = document.getElementById('detailActionBtn');
+    if (inTeam) {
+        actionBtn.textContent = '🗑️ Supprimer';
+        actionBtn.onclick = () => deleteCharacter(char.id);
+    } else {
+        actionBtn.textContent = '👥 Ajouter à l\'équipe';
+        actionBtn.onclick = () => addCharToTeam(char.id);
+    }
+    
+    openModal('detailModal');
+}
+
+function addCharToTeam(id) {
+    if (state.team.length >= 9) return toast('Équipe complète', 'error');
+    if (state.team.includes(id)) return toast('Déjà dans l\'équipe', 'error');
+    
+    state.team.push(id);
+    saveTeam();
+    updateTeamCount();
+    closeModal('detailModal');
+    toast('Ajouté à l\'équipe!', 'success');
+}
+
+function deleteCharacter(id) {
+    state.characters = state.characters.filter(c => c.id !== id);
+    state.team = state.team.filter(tid => tid !== id);
+    saveChars();
+    saveTeam();
+    updateTeamCount();
+    closeModal('detailModal');
+    renderRoster();
+    toast('Supprimé', 'info');
+}
+
+// ============================================
+// EDITOR
+// ============================================
+
+function initEditor() {
+    document.getElementById('saveCharBtn').addEventListener('click', saveFromEditor);
+}
+
+function resetEditor() {
+    state.editingId = null;
+    ['editCodename', 'editRealname', 'editAge', 'editLocation', 'editCover', 'editLegend', 'editStrengths', 'editWeaknesses'].forEach(id => {
+        document.getElementById(id).value = '';
+    });
+    document.getElementById('editType').value = 'agent';
+}
+
+function saveFromEditor() {
+    const codename = document.getElementById('editCodename').value.trim();
+    if (!codename) return toast('Nom de code requis', 'error');
+    
+    const char = {
+        id: state.editingId || genId(),
+        codename,
+        realname: document.getElementById('editRealname').value.trim(),
+        age: parseInt(document.getElementById('editAge').value) || null,
+        type: document.getElementById('editType').value,
+        location: document.getElementById('editLocation').value.trim(),
+        cover: document.getElementById('editCover').value.trim(),
+        legend: document.getElementById('editLegend').value.trim(),
+        strengths: document.getElementById('editStrengths').value.split(',').map(s => s.trim()).filter(Boolean),
+        weaknesses: document.getElementById('editWeaknesses').value.split(',').map(s => s.trim()).filter(Boolean),
+        fictional: true,
+        createdAt: new Date().toISOString()
+    };
+    
+    const idx = state.characters.findIndex(c => c.id === char.id);
+    if (idx >= 0) state.characters[idx] = char;
+    else state.characters.push(char);
+    
+    saveChars();
+    resetEditor();
+    toast('Sauvegardé!', 'success');
+}
+
+// ============================================
+// NAMES GENERATOR
+// ============================================
+
+function initNames() {
+    document.getElementById('generateNamesBtn').addEventListener('click', generateNames);
+}
+
+function generateNames() {
+    const type = document.getElementById('nameType').value;
+    const style = document.getElementById('nameStyle').value;
+    
+    const names = [];
+    for (let i = 0; i < 10; i++) {
+        names.push(genNameByStyle(type, style));
+    }
+    
+    document.getElementById('namesList').innerHTML = names.map(name => `
+        <div class="list-item" onclick="copyToClipboard('${esc(name)}')">
+            <div class="list-item-content">
+                <div class="list-item-title mono">${esc(name)}</div>
+            </div>
+            <span style="color: var(--text-muted);">📋</span>
+        </div>
+    `).join('');
+}
+
+function genNameByStyle(type, style) {
+    if (type === 'codename') {
+        if (style === 'food') return 'Agent ' + pick(DATA.codeNames.food);
+        if (style === 'spy') return pick(DATA.codeNames.spy);
+        if (style === 'absurd') return pick(['Le Grand', 'La Vraie', 'Le Faux']) + ' ' + pick(DATA.codeNames.food);
+        return genCodename();
+    }
+    if (type === 'pseudo') {
+        const pre = pick(['Neo', 'Dark', 'Cyber', 'Zero', 'Alpha']);
+        const suf = pick(['_42', '_BE', '2K', 'X']);
+        return pre + pick(DATA.codeNames.animals) + suf;
+    }
+    return genRealName(pick(['m', 'f', 'nb']));
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => toast('Copié: ' + text, 'success'));
+}
+
+// ============================================
+// EXPORT
+// ============================================
+
+function exportAll() {
+    const data = {
+        app: 'Z-242',
+        version: '2.0',
+        exportedAt: new Date().toISOString(),
+        characters: state.characters,
+        team: state.team
+    };
+    
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'z242-export.json';
+    a.click();
+    toast('Exporté!', 'success');
+}
+
+// ============================================
+// HELPERS
+// ============================================
+
+function genId() { return 'Z' + Math.random().toString(36).substr(2, 8).toUpperCase(); }
+
+function genCodename() {
+    const cat = pick(Object.keys(DATA.codeNames));
+    return pick(DATA.codeNames[cat]);
+}
+
+function genRealName(g) {
+    return pick(DATA.firstNames[g] || DATA.firstNames.nb) + ' ' + pick(DATA.lastNames);
+}
+
+function roll() { return 3 + Math.floor(Math.random() * 6) + Math.floor(Math.random() * 6) + Math.floor(Math.random() * 6); }
+
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function pickMultiple(arr, n) { return [...arr].sort(() => Math.random() - 0.5).slice(0, n); }
+
+function esc(s) { return s ? String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])) : ''; }
+
+function saveChars() { localStorage.setItem('z242-chars', JSON.stringify(state.characters)); }
+function saveTeam() { localStorage.setItem('z242-team', JSON.stringify(state.team)); }
+
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+function toast(msg, type = 'info') {
+    const t = document.createElement('div');
+    t.className = `toast toast-${type}`;
+    t.innerHTML = `<span>${{success:'✓',error:'✕',info:'ℹ'}[type]}</span><span>${msg}</span>`;
+    document.getElementById('toastContainer').appendChild(t);
+    setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 2500);
+}
+
+// Modal close handlers
+document.querySelectorAll('.modal-overlay').forEach(m => {
+    m.addEventListener('click', e => { if (e.target === m) m.classList.remove('active'); });
+});
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+});
+
+console.log('%c⚡ Z-242 v2.0', 'color: #a855f7; font-size: 20px; font-weight: bold;');
+console.log('%cObsidian Graph View Edition', 'color: #06b6d4; font-size: 12px;');
+    </script>
+</body>
+</html>
